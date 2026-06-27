@@ -288,8 +288,7 @@
     $("#modalBody").textContent = `${t("master_modal_body")} «${master.name[lang]}».`;
     $("#bookingForm").hidden = false;
     $("#formMsg").hidden = true;
-    $("#bkName").value = ""; $("#bkContact").value = ""; $("#bkDate").value = ""; $("#bkTime").value = "";
-    $("#bkDate").min = todayKey();
+    $("#bkName").value = ""; $("#bkContact").value = "";
     $("#modalWhatsapp").hidden = true; // booking uses confirm button; WhatsApp built on submit
     setupPayment(master.sessionPrice, master.name[lang]);
     showModal();
@@ -312,10 +311,8 @@
     e.preventDefault();
     const name = $("#bkName").value.trim();
     const contact = $("#bkContact").value.trim();
-    const date = $("#bkDate").value;
-    const time = $("#bkTime").value;
     const msgEl = $("#formMsg");
-    if (!name || !contact || !date || !time) {
+    if (!name || !contact) {
       msgEl.textContent = t("book_fill"); msgEl.className = "form-msg err"; msgEl.hidden = false; return;
     }
     const m = currentMaster;
@@ -323,12 +320,12 @@
     await saveBooking({
       master_id: m ? m.id : "", master_name: m ? m.name.en : "",
       service: m ? m.specialty.en : "", customer_name: name,
-      customer_contact: contact, session_date: date, session_time: time
+      customer_contact: contact
     });
     msgEl.textContent = t("book_success"); msgEl.className = "form-msg ok"; msgEl.hidden = false;
-    // Open WhatsApp with full booking details
+    // Open WhatsApp with the booking request details (support team arranges the time)
     const mname = m ? m.name[lang] : "";
-    const details = `${t("wa_master_msg")} ${mname}\n👤 ${name}\n📞 ${contact}\n📅 ${date}\n⏰ ${time}`;
+    const details = `${t("wa_master_msg")} ${mname}\n👤 ${name}\n📞 ${contact}`;
     window.open(waLink(details), "_blank", "noopener");
   });
 

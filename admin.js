@@ -90,8 +90,8 @@
     data.forEach((b) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td>${b.session_date || ""}</td>
-        <td>${b.session_time || ""}</td>
+        <td>${b.session_date || (b.created_at ? new Date(b.created_at).toLocaleDateString() : "—")}</td>
+        <td>${b.session_time || "—"}</td>
         <td>${esc(b.master_name) || ""}</td>
         <td>${esc(b.customer_name) || ""}</td>
         <td>${esc(b.customer_contact) || ""}</td>

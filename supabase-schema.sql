@@ -15,8 +15,8 @@ create table if not exists public.bookings (
   service          text,
   customer_name    text not null,
   customer_contact text not null,
-  session_date     date not null,
-  session_time     text not null,
+  session_date     date,          -- optional: the support team arranges the time
+  session_time     text,          -- optional
   status           text not null default 'pending'   -- pending | confirmed | cancelled
 );
 alter table public.bookings enable row level security;

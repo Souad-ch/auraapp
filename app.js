@@ -441,8 +441,10 @@
     revealObserver.observe(el);
   }
   function setupReveals() {
-    document.querySelectorAll(".section-title, .section-lead, .daily-card, .card-deck, .support-card, .premium-card")
-      .forEach((el) => reveal(el));
+    document.querySelectorAll(
+      ".section-title, .section-lead, .daily-card, .card-deck, .cards-actions, " +
+      ".support-card, .premium-card, .footer > *"
+    ).forEach((el, i) => reveal(el, i % 4));
   }
   // subtle parallax on decorative background blobs
   if (!reduceMotion) {

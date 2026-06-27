@@ -130,9 +130,10 @@ body {
   animation: float 6s ease-in-out infinite; }
 .hero-title { font-family: "Cinzel", serif; font-size: clamp(3.6rem, 14vw, 7.2rem);
   letter-spacing: 14px; font-weight: 700; text-indent: 14px;
-  background: linear-gradient(180deg, #fff 0%, #f9e8b0 45%, var(--gold-2) 100%);
+  background: linear-gradient(110deg, #c99a3a 0%, #f9e8b0 18%, #fffdf2 28%, #f9e8b0 38%, #c99a3a 55%, #f9e8b0 78%, #c99a3a 100%);
+  background-size: 240% auto;
   -webkit-background-clip: text; background-clip: text; color: transparent;
-  filter: drop-shadow(0 6px 30px rgba(232,199,119,.35)); }
+  filter: drop-shadow(0 6px 34px rgba(232,199,119,.4)); }
 .hero-divider { display: flex; align-items: center; justify-content: center; gap: 14px;
   color: var(--gold); margin: 14px auto 4px; font-size: .9rem; max-width: 280px; }
 .hero-divider span { height: 1px; flex: 1;
@@ -330,6 +331,59 @@ body {
 .ad-placeholder { color: var(--muted); letter-spacing: 3px; text-transform: uppercase;
   font-size: .8rem; opacity: .6; }
 #adGateBtn:disabled { opacity: .55; cursor: default; transform: none; }
+
+/* ============================================================
+   LUXURY layer — gold shimmer, sparkles, shine sweeps, halo
+   ============================================================ */
+
+/* refined section ornament: glowing ✦ above the gold line */
+.section-title::before { content: "✦"; position: absolute; left: 50%; bottom: 6px;
+  transform: translateX(-50%); color: var(--gold); font-size: .72rem; opacity: .9;
+  text-shadow: 0 0 10px rgba(232,199,119,.7); }
+
+/* gold sparkles layer */
+.sparkles { position: absolute; inset: 0; }
+.sparkle { position: absolute; width: 4px; height: 4px; border-radius: 50%;
+  background: radial-gradient(circle, #fff7df, var(--gold) 60%, transparent 70%);
+  box-shadow: 0 0 8px rgba(232,199,119,.8); opacity: 0; }
+
+/* gold scrollbar */
+* { scrollbar-color: var(--gold-2) #0c0820; scrollbar-width: thin; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #0c0820; }
+::-webkit-scrollbar-thumb { background: linear-gradient(var(--gold), var(--gold-2));
+  border-radius: 10px; border: 2px solid #0c0820; }
+
+/* glossy sweep on buttons & cards */
+.btn { position: relative; overflow: hidden; }
+.btn-primary::after { content: ""; position: absolute; top: 0; left: -160%; width: 55%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,.55), transparent);
+  transform: skewX(-20deg); pointer-events: none; }
+.tile::after, .support-card::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,.07) 50%, transparent 65%);
+  transform: translateX(-130%); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-title { animation: goldShimmer 7s linear infinite; }
+  .brand-name { background-size: 200% auto; animation: goldShimmer 9s linear infinite; }
+  .sparkle { animation: sparkleFloat var(--dur, 7s) ease-in-out infinite; animation-delay: var(--dly, 0s); }
+  .hero-emblem::before { content: ""; position: absolute; inset: -7px; border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent, rgba(232,199,119,.55), transparent 55%);
+    -webkit-mask: radial-gradient(transparent 58%, #000 60%);
+            mask: radial-gradient(transparent 58%, #000 60%);
+    animation: spin 7s linear infinite; }
+  .btn-primary:hover::after { left: 170%; transition: left .7s var(--ease-soft); }
+  .tile:hover::after, .support-card:hover::after { transform: translateX(130%); transition: transform .8s var(--ease-soft); }
+}
+
+@keyframes goldShimmer { to { background-position: 240% center; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes sparkleFloat {
+  0%, 100% { opacity: 0; transform: translateY(0) scale(.6); }
+  20% { opacity: 1; }
+  50% { opacity: .9; transform: translateY(-22px) scale(1); }
+  80% { opacity: .5; }
+}
 
 @media (max-width: 600px) {
   .nav-links { display: none; }

@@ -25,6 +25,23 @@
     box.innerHTML = html;
   })();
 
+  /* ---------- Gold sparkles ---------- */
+  (function sparkles() {
+    const sky = document.querySelector(".sky");
+    if (!sky) return;
+    const layer = document.createElement("div");
+    layer.className = "sparkles";
+    let html = "";
+    for (let i = 0; i < 18; i++) {
+      const x = Math.random() * 100, y = Math.random() * 100;
+      const dur = (5 + Math.random() * 5).toFixed(1), dly = (Math.random() * 6).toFixed(1);
+      const sc = (0.6 + Math.random() * 0.9).toFixed(2);
+      html += `<span class="sparkle" style="left:${x}%;top:${y}%;--dur:${dur}s;--dly:${dly}s;transform:scale(${sc})"></span>`;
+    }
+    layer.innerHTML = html;
+    sky.appendChild(layer);
+  })();
+
   /* ---------- Language ---------- */
   function applyLang() {
     document.documentElement.lang = lang;

@@ -35,7 +35,26 @@ const I18N = {
     wa_course_msg: "مرحباً AURA، أرغب بالاشتراك في كورس:",
     wa_master_msg: "مرحباً AURA، أرغب بحجز جلسة مع:",
     wa_general_msg: "مرحباً AURA، لدي استفسار 🌙",
-    wa_tech_msg: "مرحباً AURA، أحتاج مساعدة من الدعم الفني."
+    wa_tech_msg: "مرحباً AURA، أحتاج مساعدة من الدعم الفني.",
+    share: "شارك", copied: "تم النسخ ✓",
+    share_daily_title: "طاقتي اليوم من AURA",
+    share_card_title: "كرت الطاقة من AURA",
+    birth_prompt: "أدخل تاريخ ميلادك لطاقة مخصّصة",
+    save: "حفظ", your_sign: "برجك",
+    sign_energy: "طاقة برجك اليوم",
+    book_name: "اسمك", book_contact: "رقمك / إيميلك",
+    book_date: "اختر التاريخ", book_time: "اختر الوقت",
+    book_confirm: "أكّد الحجز", book_choose: "— اختر —",
+    book_success: "تم استلام طلب حجزك! سنتواصل معك للتأكيد 🌙",
+    book_fill: "يرجى تعبئة الاسم ووسيلة التواصل والتاريخ والوقت.",
+    premium_title: "⭐ AURA Premium",
+    premium_lead: "تجربة أعمق، بدون إعلانات.",
+    premium_f1: "بدون إعلانات نهائياً",
+    premium_f2: "كروت وقراءات إضافية",
+    premium_f3: "قراءات طاقة متقدمة يومياً",
+    premium_btn: "أعلمني عند الإطلاق",
+    wa_premium_msg: "مرحباً AURA، يهمّني اشتراك Premium 🌟",
+    ad_label: "إعلان"
   },
   en: {
     nav_daily: "Daily Energy", nav_cards: "Energy Cards", nav_courses: "Courses",
@@ -71,9 +90,53 @@ const I18N = {
     wa_course_msg: "Hello AURA, I'd like to subscribe to the course:",
     wa_master_msg: "Hello AURA, I'd like to book a session with:",
     wa_general_msg: "Hello AURA, I have a question 🌙",
-    wa_tech_msg: "Hello AURA, I need help from technical support."
+    wa_tech_msg: "Hello AURA, I need help from technical support.",
+    share: "Share", copied: "Copied ✓",
+    share_daily_title: "My AURA energy today",
+    share_card_title: "My AURA energy card",
+    birth_prompt: "Enter your birth date for personalized energy",
+    save: "Save", your_sign: "Your sign",
+    sign_energy: "Your sign's energy today",
+    book_name: "Your name", book_contact: "Your phone / email",
+    book_date: "Pick a date", book_time: "Pick a time",
+    book_confirm: "Confirm booking", book_choose: "— select —",
+    book_success: "Your booking request was received! We'll contact you to confirm 🌙",
+    book_fill: "Please fill name, contact, date and time.",
+    premium_title: "⭐ AURA Premium",
+    premium_lead: "A deeper experience, ad-free.",
+    premium_f1: "No ads at all",
+    premium_f2: "Extra cards & readings",
+    premium_f3: "Advanced daily energy readings",
+    premium_btn: "Notify me at launch",
+    wa_premium_msg: "Hello AURA, I'm interested in Premium 🌟",
+    ad_label: "Advertisement"
   }
 };
+
+/* Zodiac signs (by month/day) + a daily-style energy note */
+const ZODIAC = [
+  { ar: "الجدي ♑", en: "Capricorn ♑", from: [12,22], to: [1,19], note: { ar: "ثباتك اليوم يبني ما يدوم.", en: "Your steadiness today builds what lasts." } },
+  { ar: "الدلو ♒", en: "Aquarius ♒", from: [1,20], to: [2,18], note: { ar: "أفكارك المختلفة هي قوتك اليوم.", en: "Your unique ideas are your power today." } },
+  { ar: "الحوت ♓", en: "Pisces ♓", from: [2,19], to: [3,20], note: { ar: "حدسك مرتفع، ثق بإحساسك.", en: "Your intuition is high—trust your feeling." } },
+  { ar: "الحمل ♈", en: "Aries ♈", from: [3,21], to: [4,19], note: { ar: "شجاعتك تفتح باباً جديداً.", en: "Your courage opens a new door." } },
+  { ar: "الثور ♉", en: "Taurus ♉", from: [4,20], to: [5,20], note: { ar: "الصبر اليوم يثمر وفرة.", en: "Patience today bears abundance." } },
+  { ar: "الجوزاء ♊", en: "Gemini ♊", from: [5,21], to: [6,20], note: { ar: "كلماتك اليوم لها تأثير ساحر.", en: "Your words carry magic today." } },
+  { ar: "السرطان ♋", en: "Cancer ♋", from: [6,21], to: [7,22], note: { ar: "اعتنِ بقلبك، الراحة قوة.", en: "Care for your heart—rest is power." } },
+  { ar: "الأسد ♌", en: "Leo ♌", from: [7,23], to: [8,22], note: { ar: "نورك يجذب الأنظار، اسطع.", en: "Your light draws all eyes—shine." } },
+  { ar: "العذراء ♍", en: "Virgo ♍", from: [8,23], to: [9,22], note: { ar: "تفاصيلك الدقيقة تصنع الفرق.", en: "Your fine details make the difference." } },
+  { ar: "الميزان ♎", en: "Libra ♎", from: [9,23], to: [10,22], note: { ar: "توازنك اليوم يجلب السلام.", en: "Your balance today brings peace." } },
+  { ar: "العقرب ♏", en: "Scorpio ♏", from: [10,23], to: [11,21], note: { ar: "عمقك يكشف حقيقة مهمة.", en: "Your depth reveals an important truth." } },
+  { ar: "القوس ♐", en: "Sagittarius ♐", from: [11,22], to: [12,21], note: { ar: "روح المغامرة تقودك لخير.", en: "Your adventurous spirit leads to good." } }
+];
+
+function zodiacFor(month, day) {
+  for (const z of ZODIAC) {
+    const [fm, fd] = z.from, [tm, td] = z.to;
+    if (fm === tm) { if (month === fm && day >= fd && day <= td) return z; }
+    else if ((month === fm && day >= fd) || (month === tm && day <= td)) return z;
+  }
+  return ZODIAC[0];
+}
 
 /* Daily energy content pools */
 const DAILY = {

@@ -82,6 +82,24 @@
           <div class="stat"><span class="stat-label" data-i18n="stat_color">لون اليوم</span><span class="stat-value"><span class="color-dot" id="dailyColorDot"></span><span id="dailyColor">—</span></span></div>
           <div class="stat"><span class="stat-label" data-i18n="stat_element">العنصر</span><span class="stat-value" id="dailyElement">—</span></div>
         </div>
+
+        <div class="zodiac" id="zodiacBox">
+          <div class="zodiac-set" id="zodiacSet">
+            <label class="zodiac-label" for="birthDate" data-i18n="birth_prompt">أدخل تاريخ ميلادك لطاقة مخصّصة</label>
+            <div class="zodiac-row">
+              <input type="date" id="birthDate" class="zodiac-input" />
+              <button class="btn btn-ghost btn-sm" id="birthSave" data-i18n="save">حفظ</button>
+            </div>
+          </div>
+          <div class="zodiac-result" id="zodiacResult" hidden>
+            <span class="zodiac-sign" id="zodiacSign"></span>
+            <span class="zodiac-note" id="zodiacNote"></span>
+          </div>
+        </div>
+
+        <div class="daily-actions">
+          <button class="btn btn-ghost btn-sm share-btn" id="shareDaily">🔗 <span data-i18n="share">شارك</span></button>
+        </div>
         <p class="daily-note" id="dailyNote" data-i18n="daily_note">ارجع غداً لطاقة جديدة 🌙</p>
       </div>
     </div>
@@ -96,11 +114,18 @@
     <div class="card-result" id="cardResult" hidden>
       <h3 class="card-name" id="cardName"></h3>
       <p class="card-meaning" id="cardMeaning"></p>
+      <button class="btn btn-ghost btn-sm share-btn" id="shareCard">🔗 <span data-i18n="share">شارك</span></button>
     </div>
     <div class="cards-actions">
       <button class="btn btn-ghost" id="reshuffleBtn" data-i18n="reshuffle">اسحب من جديد</button>
     </div>
   </section>
+
+  <!-- ===== Ad slot (top) ===== -->
+  <div class="ad-slot" id="adTop" hidden>
+    <span class="ad-label" data-i18n="ad_label">إعلان</span>
+    <div class="ad-box" id="adBoxTop"></div>
+  </div>
 
   <!-- ===== Courses ===== -->
   <section class="section" id="courses">
@@ -115,6 +140,26 @@
     <p class="section-lead" data-i18n="masters_lead">احجز جلستك المباشرة مع أستاذ متخصّص.</p>
     <div class="grid" id="mastersGrid"></div>
   </section>
+
+  <!-- ===== Premium ===== -->
+  <section class="section" id="premium">
+    <div class="premium-card">
+      <h2 class="premium-title" data-i18n="premium_title">⭐ AURA Premium</h2>
+      <p class="premium-lead" data-i18n="premium_lead">تجربة أعمق، بدون إعلانات.</p>
+      <ul class="premium-list">
+        <li data-i18n="premium_f1">بدون إعلانات نهائياً</li>
+        <li data-i18n="premium_f2">كروت وقراءات إضافية</li>
+        <li data-i18n="premium_f3">قراءات طاقة متقدمة يومياً</li>
+      </ul>
+      <a class="btn btn-primary" id="premiumBtn" target="_blank" rel="noopener" data-i18n="premium_btn">أعلمني عند الإطلاق</a>
+    </div>
+  </section>
+
+  <!-- ===== Ad slot (bottom) ===== -->
+  <div class="ad-slot" id="adBottom" hidden>
+    <span class="ad-label" data-i18n="ad_label">إعلان</span>
+    <div class="ad-box" id="adBoxBottom"></div>
+  </div>
 
   <!-- ===== Support ===== -->
   <section class="section" id="support">
@@ -157,6 +202,17 @@
       <button class="modal-close" id="modalClose" aria-label="close">×</button>
       <h3 class="modal-title" id="modalTitle"></h3>
       <p class="modal-body" id="modalBody"></p>
+
+      <!-- Booking form (shown only for session bookings) -->
+      <form class="booking-form" id="bookingForm" hidden>
+        <input type="text" id="bkName" class="field" data-i18n-ph="book_name" placeholder="اسمك" />
+        <input type="text" id="bkContact" class="field" data-i18n-ph="book_contact" placeholder="رقمك / إيميلك" />
+        <input type="date" id="bkDate" class="field" />
+        <select id="bkTime" class="field"></select>
+        <p class="form-msg" id="formMsg" hidden></p>
+        <button type="submit" class="btn btn-primary btn-block" id="bkConfirm" data-i18n="book_confirm">أكّد الحجز</button>
+      </form>
+
       <div class="modal-actions">
         <a class="btn btn-primary" id="modalWhatsapp" target="_blank" rel="noopener" data-i18n="modal_wa">احجز عبر واتساب</a>
         <a class="btn btn-ghost" id="modalPaypal" target="_blank" rel="noopener" data-i18n="modal_pay">ادفع عبر PayPal</a>

@@ -1,5 +1,5 @@
 /* AURA — service worker (offline support) */
-const CACHE = "aura-v1";
+const CACHE = "aura-v2";
 const ASSETS = [
   "./",
   "./index.html",

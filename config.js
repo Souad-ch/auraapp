@@ -15,6 +15,32 @@ const AURA_CONFIG = {
      Your PayPal link (paypal.me or a checkout link). */
   paypal: "https://www.paypal.com/paypalme/YOUR_LINK",
 
+  /* ---------------------------------------------------------------------
+     Supabase — نظام الحجز الحقيقي (اختياري). اتركيه فارغاً وسيعمل الحجز
+     عبر واتساب فقط. لتفعيله: أنشئي مشروع Supabase وشغّلي ملف
+     supabase-schema.sql ثم ضعي الرابط والمفتاح العام هنا.
+     Leave empty to use WhatsApp-only booking. To enable DB booking,
+     create a Supabase project, run supabase-schema.sql, then fill these.
+     --------------------------------------------------------------------- */
+  supabase: {
+    url: "",       // https://YOUR-PROJECT.supabase.co
+    anonKey: ""    // public anon key
+  },
+
+  /* ---------------------------------------------------------------------
+     Google AdSense — الإعلانات (اختياري). اتركيه فارغاً ولن تظهر إعلانات.
+     لتفعيلها: سجّلي في AdSense وضعي معرّف العميل ومعرّفات الوحدات.
+     Leave empty to hide ads. Fill after AdSense approval.
+     --------------------------------------------------------------------- */
+  adsense: {
+    client: "",        // ca-pub-XXXXXXXXXXXXXXXX
+    slotTop: "",       // ad unit id
+    slotBottom: ""     // ad unit id
+  },
+
+  /* أوقات الجلسات المتاحة للحجز — Available session time slots */
+  timeSlots: ["10:00", "12:00", "14:00", "16:00", "18:00", "20:00"],
+
   /* الكورسات المسجّلة — Recorded courses */
   courses: [
     {

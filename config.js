@@ -11,9 +11,20 @@ const AURA_CONFIG = {
      WhatsApp number, international format, no + or leading zeros. */
   whatsapp: "9639XXXXXXXX",
 
-  /* رابط PayPal الخاص بك (paypal.me أو رابط دفع).
-     Your PayPal link (paypal.me or a checkout link). */
+  /* العنوان العام للموقع (يُستخدم في روابط المشاركة). غيّريه إذا استخدمتِ نطاقاً خاصاً.
+     Public site URL (used for share links). Change if you use a custom domain. */
+  site: "https://souad-ch.github.io/auraapp/",
+
+  /* رابط PayPal الاحتياطي (paypal.me). يُستخدم إن لم يُفعّل الدفع المباشر.
+     Fallback PayPal link (paypal.me), used when direct checkout is off. */
   paypal: "https://www.paypal.com/paypalme/YOUR_LINK",
+
+  /* الدفع المباشر عبر PayPal (اختياري). ضعي Client ID من حساب PayPal Developer
+     لتظهر أزرار دفع فورية. اتركيه فارغاً ليُستخدم رابط paypal.me أعلاه.
+     PayPal direct checkout (optional). Add your Client ID to show Smart Buttons.
+     Leave empty to use the paypal.me link above. */
+  paypalClientId: "",
+  currency: "USD",
 
   /* ---------------------------------------------------------------------
      Supabase — نظام الحجز الحقيقي (اختياري). اتركيه فارغاً وسيعمل الحجز
@@ -49,7 +60,7 @@ const AURA_CONFIG = {
       title: { ar: "أساسيات الطاقة", en: "Energy Foundations" },
       desc:  { ar: "مدخلك لفهم الطاقة وموازنتها في حياتك اليومية.",
                en: "Your gateway to understanding and balancing energy in daily life." },
-      price: { ar: "٤٩ $", en: "$49" }
+      price: { ar: "٤٩ $", en: "$49" }, amount: 49
     },
     {
       id: "c2",
@@ -57,7 +68,7 @@ const AURA_CONFIG = {
       title: { ar: "قراءة التاروت للمبتدئين", en: "Tarot Reading for Beginners" },
       desc:  { ar: "تعلّم رموز الكروت وكيفية قراءتها بثقة.",
                en: "Learn the card symbols and how to read them with confidence." },
-      price: { ar: "٥٩ $", en: "$59" }
+      price: { ar: "٥٩ $", en: "$59" }, amount: 59
     },
     {
       id: "c3",
@@ -65,7 +76,7 @@ const AURA_CONFIG = {
       title: { ar: "اليوغا وتنفّس الطاقة", en: "Yoga & Energy Breathing" },
       desc:  { ar: "تمارين عملية لتهدئة العقل وتنشيط طاقتك.",
                en: "Practical exercises to calm the mind and activate your energy." },
-      price: { ar: "٣٩ $", en: "$39" }
+      price: { ar: "٣٩ $", en: "$39" }, amount: 39
     },
     {
       id: "c4",
@@ -73,7 +84,7 @@ const AURA_CONFIG = {
       title: { ar: "الشفاء الذاتي بالطاقة", en: "Self-Healing with Energy" },
       desc:  { ar: "أدوات لإعادة التوازن الداخلي والشفاء العاطفي.",
                en: "Tools for inner rebalancing and emotional healing." },
-      price: { ar: "٦٩ $", en: "$69" }
+      price: { ar: "٦٩ $", en: "$69" }, amount: 69
     }
   ],
 
@@ -84,21 +95,24 @@ const AURA_CONFIG = {
       avatar: "🌙",
       name:      { ar: "الأستاذة الأولى", en: "Master One" },
       specialty: { ar: "ماسترة طاقة وشفاء", en: "Energy & Healing Master" },
-      services:  { ar: "جلسات طاقة • توازن الشاكرات", en: "Energy sessions • Chakra balancing" }
+      services:  { ar: "جلسات طاقة • توازن الشاكرات", en: "Energy sessions • Chakra balancing" },
+      sessionPrice: 40
     },
     {
       id: "m2",
       avatar: "🔮",
       name:      { ar: "الأستاذة الثانية", en: "Master Two" },
       specialty: { ar: "ماسترة تاروت", en: "Tarot Master" },
-      services:  { ar: "جلسات تاروت • قراءة طاقة", en: "Tarot sessions • Energy reading" }
+      services:  { ar: "جلسات تاروت • قراءة طاقة", en: "Tarot sessions • Energy reading" },
+      sessionPrice: 35
     },
     {
       id: "m3",
       avatar: "🧘",
       name:      { ar: "الأستاذة الثالثة", en: "Master Three" },
       specialty: { ar: "ماسترة يوغا وتأمّل", en: "Yoga & Meditation Master" },
-      services:  { ar: "جلسات يوغا • تأمّل موجّه", en: "Yoga sessions • Guided meditation" }
+      services:  { ar: "جلسات يوغا • تأمّل موجّه", en: "Yoga sessions • Guided meditation" },
+      sessionPrice: 30
     }
   ]
 };

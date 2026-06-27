@@ -54,7 +54,8 @@ const I18N = {
     premium_f3: "قراءات طاقة متقدمة يومياً",
     premium_btn: "أعلمني عند الإطلاق",
     wa_premium_msg: "مرحباً AURA، يهمّني اشتراك Premium 🌟",
-    ad_label: "إعلان"
+    ad_label: "إعلان",
+    pay_success: "تم الدفع بنجاح! شكراً لك 🌟 سنتواصل معك قريباً."
   },
   en: {
     nav_daily: "Daily Energy", nav_cards: "Energy Cards", nav_courses: "Courses",
@@ -109,7 +110,8 @@ const I18N = {
     premium_f3: "Advanced daily energy readings",
     premium_btn: "Notify me at launch",
     wa_premium_msg: "Hello AURA, I'm interested in Premium 🌟",
-    ad_label: "Advertisement"
+    ad_label: "Advertisement",
+    pay_success: "Payment successful! Thank you 🌟 We'll contact you soon."
   }
 };
 

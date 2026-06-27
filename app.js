@@ -55,7 +55,7 @@
 
   /* ---------- Share helper ---------- */
   async function share(title, text) {
-    const url = location.href.split("#")[0];
+    const url = (cfg.site || location.href).split("#")[0];
     if (navigator.share) {
       try { await navigator.share({ title, text, url }); return; } catch (e) { /* cancelled */ }
     }
@@ -192,7 +192,7 @@
           <span class="price">${c.price[lang]}</span>
           <button class="btn btn-primary btn-sm">${t("subscribe")}</button>
         </div>`;
-      card.querySelector("button").addEventListener("click", () => openCourse(c.title[lang]));
+      card.querySelector("button").addEventListener("click", () => openCourse(c));
       grid.appendChild(card);
     });
   }
@@ -222,15 +222,15 @@
   }
 
   /* ---------- Modal: course subscription ---------- */
-  function openCourse(name) {
+  function openCourse(course) {
+    const name = course.title[lang];
     currentMaster = null;
     $("#modalTitle").textContent = t("course_modal_title");
     $("#modalBody").textContent = `${t("course_modal_body")} «${name}».`;
     $("#bookingForm").hidden = true;
     $("#modalWhatsapp").href = waLink(`${t("wa_course_msg")} ${name}`);
     $("#modalWhatsapp").hidden = false;
-    $("#modalPaypal").href = cfg.paypal || "#";
-    $("#modalPaypal").hidden = false;
+    setupPayment(course.amount, name);
     showModal();
   }
 
@@ -244,9 +244,21 @@
     $("#bkName").value = ""; $("#bkContact").value = ""; $("#bkDate").value = ""; $("#bkTime").value = "";
     $("#bkDate").min = todayKey();
     $("#modalWhatsapp").hidden = true; // booking uses confirm button; WhatsApp built on submit
-    $("#modalPaypal").href = cfg.paypal || "#";
-    $("#modalPaypal").hidden = false;
+    setupPayment(master.sessionPrice, master.name[lang]);
     showModal();
+  }
+
+  /* Choose direct PayPal buttons (if client id set) or fallback paypal.me link */
+  function setupPayment(amount, label) {
+    const box = $("#paypalBox");
+    box.innerHTML = ""; box.hidden = true;
+    if (cfg.paypalClientId && amount > 0) {
+      $("#modalPaypal").hidden = true;
+      renderPaypal(amount, label);
+    } else {
+      $("#modalPaypal").href = cfg.paypal || "#";
+      $("#modalPaypal").hidden = false;
+    }
   }
 
   $("#bookingForm").addEventListener("submit", async (e) => {
@@ -295,6 +307,66 @@
       if (!sb) return;
       await sb.from("bookings").insert(row);
     } catch (e) { /* fall back silently to WhatsApp */ }
+  }
+
+  /* Load courses & masters from Supabase (overrides config defaults when present) */
+  function fmtPrice(amount, l) { const n = Number(amount) || 0; return l === "ar" ? `${n} $` : `$${n}`; }
+  function normCourse(r) {
+    return { id: r.id, icon: r.icon || "📘", amount: Number(r.amount) || 0,
+      title: { ar: r.title_ar, en: r.title_en || r.title_ar },
+      desc: { ar: r.desc_ar || "", en: r.desc_en || r.desc_ar || "" },
+      price: { ar: fmtPrice(r.amount, "ar"), en: fmtPrice(r.amount, "en") } };
+  }
+  function normMaster(r) {
+    return { id: r.id, avatar: r.avatar || "🌟", sessionPrice: Number(r.session_price) || 0,
+      name: { ar: r.name_ar, en: r.name_en || r.name_ar },
+      specialty: { ar: r.specialty_ar || "", en: r.specialty_en || r.specialty_ar || "" },
+      services: { ar: r.services_ar || "", en: r.services_en || r.services_ar || "" } };
+  }
+  async function hydrateFromSupabase() {
+    const sb = await loadSupabase();
+    if (!sb) return;
+    try {
+      const [cs, ms] = await Promise.all([
+        sb.from("courses").select("*").eq("active", true).order("sort"),
+        sb.from("masters").select("*").eq("active", true).order("sort")
+      ]);
+      if (cs.data && cs.data.length) { cfg.courses = cs.data.map(normCourse); renderCourses(); }
+      if (ms.data && ms.data.length) { cfg.masters = ms.data.map(normMaster); renderMasters(); }
+    } catch (e) { /* keep config defaults */ }
+  }
+
+  /* ---------- PayPal direct checkout (optional) ---------- */
+  let _ppLoading = null;
+  function loadPaypal() {
+    if (window.paypal) return Promise.resolve(window.paypal);
+    if (!cfg.paypalClientId) return Promise.resolve(null);
+    if (_ppLoading) return _ppLoading;
+    _ppLoading = new Promise((resolve) => {
+      const s = document.createElement("script");
+      s.src = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(cfg.paypalClientId)}&currency=${cfg.currency || "USD"}`;
+      s.onload = () => resolve(window.paypal || null);
+      s.onerror = () => resolve(null);
+      document.head.appendChild(s);
+    });
+    return _ppLoading;
+  }
+  async function renderPaypal(amount, label) {
+    const box = $("#paypalBox");
+    const pp = await loadPaypal();
+    if (!pp) { $("#modalPaypal").href = cfg.paypal || "#"; $("#modalPaypal").hidden = false; return; }
+    box.hidden = false;
+    pp.Buttons({
+      style: { color: "gold", shape: "pill", label: "pay" },
+      createOrder: (data, actions) => actions.order.create({
+        purchase_units: [{ description: `AURA — ${label}`, amount: { value: String(amount) } }]
+      }),
+      onApprove: (data, actions) => actions.order.capture().then(() => {
+        box.innerHTML = `<p class="form-msg ok">${t("pay_success")}</p>`;
+      })
+    }).render(box).catch(() => {
+      $("#modalPaypal").href = cfg.paypal || "#"; $("#modalPaypal").hidden = false;
+    });
   }
 
   /* ---------- Generic modal controls ---------- */
@@ -352,4 +424,5 @@
   $("#year").textContent = new Date().getFullYear();
   applyLang();
   initAds();
+  hydrateFromSupabase();
 })();

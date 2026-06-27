@@ -4,8 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#1a1140" />
-  <meta name="description" content="AURA — منصة الطاقة والروحانيات: طاقة يومية، كروت طاقة، كورسات، وجلسات مع أساتذة متخصصين." />
-  <title>AURA — منصة الطاقة والروحانيات</title>
+  <meta name="description" content="AURA — منصة الطاقة والروحانيات: طاقة يومية، كروت طاقة، كورسات، وجلسات مع أساتذة متخصصين. عربي + إنجليزي." />
+  <title>AURA — منصة الطاقة والروحانيات | Energy & Spirituality</title>
+  <link rel="canonical" href="https://souad-ch.github.io/auraapp/" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- ===== Social preview (Open Graph) ===== -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="AURA" />
+  <meta property="og:title" content="AURA — منصة الطاقة والروحانيات" />
+  <meta property="og:description" content="اكشف طاقة يومك، اسحب كروتك، تعلّم من أساتذة متخصصين، واحجز جلستك. عربي + إنجليزي." />
+  <meta property="og:url" content="https://souad-ch.github.io/auraapp/" />
+  <meta property="og:image" content="https://souad-ch.github.io/auraapp/icons/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ar_AR" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AURA — منصة الطاقة والروحانيات" />
+  <meta name="twitter:description" content="اكشف طاقة يومك، اسحب كروتك، واحجز جلستك. عربي + إنجليزي." />
+  <meta name="twitter:image" content="https://souad-ch.github.io/auraapp/icons/og.png" />
+
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
   <link rel="icon" type="image/png" href="icons/icon-192.png" />
@@ -212,6 +231,8 @@
         <p class="form-msg" id="formMsg" hidden></p>
         <button type="submit" class="btn btn-primary btn-block" id="bkConfirm" data-i18n="book_confirm">أكّد الحجز</button>
       </form>
+
+      <div class="paypal-box" id="paypalBox" hidden></div>
 
       <div class="modal-actions">
         <a class="btn btn-primary" id="modalWhatsapp" target="_blank" rel="noopener" data-i18n="modal_wa">احجز عبر واتساب</a>

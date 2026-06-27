@@ -11,6 +11,11 @@
   "lang": "ar",
   "dir": "rtl",
   "categories": ["lifestyle", "education", "health"],
+  "shortcuts": [
+    { "name": "طاقة اليوم", "short_name": "الطاقة", "url": "./index.html#daily" },
+    { "name": "كروت الطاقة", "short_name": "الكروت", "url": "./index.html#cards" },
+    { "name": "احجز جلسة", "short_name": "حجز", "url": "./index.html#masters" }
+  ],
   "icons": [
     { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
     { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }

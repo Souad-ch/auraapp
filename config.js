@@ -34,8 +34,8 @@ const AURA_CONFIG = {
      create a Supabase project, run supabase-schema.sql, then fill these.
      --------------------------------------------------------------------- */
   supabase: {
-    url: "",       // https://YOUR-PROJECT.supabase.co
-    anonKey: ""    // public anon key
+    url: "https://xuxuvvzzamjwvliovduz.supabase.co",
+    anonKey: "sb_publishable_HbwUZ2OxpG0ufS_MSedVEw_K2jhntpM"
   },
 
   /* ---------------------------------------------------------------------

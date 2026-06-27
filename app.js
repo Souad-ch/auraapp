@@ -9,6 +9,8 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const t = (k) => (I18N[lang] && I18N[lang][k]) || k;
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
   /* ---------- Stars ---------- */
   (function stars() {
@@ -185,12 +187,12 @@
       const card = document.createElement("div");
       card.className = "tile";
       card.innerHTML = `
-        <div class="tile-icon">${c.icon || "📘"}</div>
-        <h3 class="tile-title">${c.title[lang]}</h3>
-        <p class="tile-desc">${c.desc[lang]}</p>
+        <div class="tile-icon">${esc(c.icon || "📘")}</div>
+        <h3 class="tile-title">${esc(c.title[lang])}</h3>
+        <p class="tile-desc">${esc(c.desc[lang])}</p>
         <div class="tile-foot">
-          <span class="price">${c.price[lang]}</span>
-          <button class="btn btn-primary btn-sm">${t("subscribe")}</button>
+          <span class="price">${esc(c.price[lang])}</span>
+          <button class="btn btn-primary btn-sm">${esc(t("subscribe"))}</button>
         </div>`;
       card.querySelector("button").addEventListener("click", () => openCourse(c));
       grid.appendChild(card);
@@ -205,11 +207,11 @@
       const card = document.createElement("div");
       card.className = "tile tile-master";
       card.innerHTML = `
-        <div class="avatar">${m.avatar || "🌟"}</div>
-        <h3 class="tile-title">${m.name[lang]}</h3>
-        <p class="tile-specialty">${m.specialty[lang]}</p>
-        <p class="tile-desc">${m.services[lang]}</p>
-        <button class="btn btn-ghost btn-sm">${t("book")}</button>`;
+        <div class="avatar">${esc(m.avatar || "🌟")}</div>
+        <h3 class="tile-title">${esc(m.name[lang])}</h3>
+        <p class="tile-specialty">${esc(m.specialty[lang])}</p>
+        <p class="tile-desc">${esc(m.services[lang])}</p>
+        <button class="btn btn-ghost btn-sm">${esc(t("book"))}</button>`;
       card.querySelector("button").addEventListener("click", () => openBooking(m));
       grid.appendChild(card);
     });

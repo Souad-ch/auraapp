@@ -183,7 +183,7 @@
   function renderCourses() {
     const grid = $("#coursesGrid"); if (!grid) return;
     grid.innerHTML = "";
-    (cfg.courses || []).forEach((c) => {
+    (cfg.courses || []).forEach((c, i) => {
       const card = document.createElement("div");
       card.className = "tile";
       card.innerHTML = `
@@ -196,6 +196,7 @@
         </div>`;
       card.querySelector("button").addEventListener("click", () => openCourse(c));
       grid.appendChild(card);
+      reveal(card, i);
     });
   }
 
@@ -203,7 +204,7 @@
   function renderMasters() {
     const grid = $("#mastersGrid"); if (!grid) return;
     grid.innerHTML = "";
-    (cfg.masters || []).forEach((m) => {
+    (cfg.masters || []).forEach((m, i) => {
       const card = document.createElement("div");
       card.className = "tile tile-master";
       card.innerHTML = `
@@ -214,6 +215,7 @@
         <button class="btn btn-ghost btn-sm">${esc(t("book"))}</button>`;
       card.querySelector("button").addEventListener("click", () => openBooking(m));
       grid.appendChild(card);
+      reveal(card, i);
     });
   }
   function renderTimeSlots() {
@@ -422,9 +424,45 @@
   });
   window.addEventListener("appinstalled", () => { banner.hidden = true; });
 
+  /* ---------- Motion: scroll reveal + parallax ---------- */
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let revealObserver = null;
+  if (!reduceMotion && "IntersectionObserver" in window) {
+    revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) { en.target.classList.add("in"); revealObserver.unobserve(en.target); }
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
+  }
+  function reveal(el, i) {
+    if (!revealObserver || !el) return;
+    el.classList.add("reveal");
+    if (i) el.style.transitionDelay = (Math.min(i, 6) * 70) + "ms";
+    revealObserver.observe(el);
+  }
+  function setupReveals() {
+    document.querySelectorAll(".section-title, .section-lead, .daily-card, .card-deck, .support-card, .premium-card")
+      .forEach((el) => reveal(el));
+  }
+  // subtle parallax on decorative background blobs
+  if (!reduceMotion) {
+    let ticking = false;
+    window.addEventListener("scroll", () => {
+      if (ticking) return; ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY || 0;
+        const g1 = document.querySelector(".glow-1"), g2 = document.querySelector(".glow-2");
+        if (g1) g1.style.transform = `translateY(${y * 0.10}px)`;
+        if (g2) g2.style.transform = `translateY(${-y * 0.07}px)`;
+        ticking = false;
+      });
+    }, { passive: true });
+  }
+
   /* ---------- Init ---------- */
   $("#year").textContent = new Date().getFullYear();
   applyLang();
   initAds();
   hydrateFromSupabase();
+  setupReveals();
 })();

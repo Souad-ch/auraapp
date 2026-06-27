@@ -17,6 +17,27 @@
 /* hidden attribute must always win over component display rules */
 [hidden] { display: none !important; }
 
+/* ===== Premium motion (minimal, modern) ===== */
+:root { --ease-soft: cubic-bezier(0.22, 1, 0.36, 1); }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Scroll-triggered reveal: fade + slide up + subtle zoom */
+  .reveal { opacity: 0; transform: translateY(30px) scale(0.98); will-change: opacity, transform;
+    transition: opacity .6s var(--ease-soft), transform .6s var(--ease-soft); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* Hero entrance on load (staggered) */
+  .hero-title, .hero-sub, .hero-desc, .hero-cta {
+    opacity: 0; animation: heroIn .8s var(--ease-soft) forwards; }
+  .hero-sub  { animation-delay: .12s; }
+  .hero-desc { animation-delay: .24s; }
+  .hero-cta  { animation-delay: .36s; }
+  @keyframes heroIn { from { opacity: 0; transform: translateY(24px) scale(.98); } to { opacity: 1; transform: none; } }
+
+  /* Parallax depth on background blobs */
+  .glow { transition: transform .1s linear; }
+}
+
 html { scroll-behavior: smooth; }
 
 body {
@@ -64,9 +85,10 @@ body {
 /* ===== Buttons ===== */
 .btn { display: inline-block; border: none; cursor: pointer; text-decoration: none;
   font-family: inherit; font-weight: 700; font-size: 1rem; border-radius: 999px;
-  padding: 13px 28px; transition: transform .15s, box-shadow .2s, opacity .2s; text-align: center; }
+  padding: 13px 28px; text-align: center;
+  transition: transform .18s cubic-bezier(.22,1,.36,1), box-shadow .2s, opacity .2s, border-color .2s; }
 .btn:hover { transform: translateY(-2px); }
-.btn:active { transform: translateY(0); }
+.btn:active { transform: translateY(0) scale(.96); }
 .btn-sm { padding: 9px 18px; font-size: .9rem; }
 .btn-primary { background: linear-gradient(135deg, var(--purple), var(--purple-soft));
   color: #fff; box-shadow: 0 10px 26px rgba(155,92,255,.45); }

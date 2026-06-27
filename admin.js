@@ -63,7 +63,7 @@
     const { error } = await sb.auth.signInWithPassword({
       email: $("#email").value.trim(), password: $("#password").value
     });
-    if (error) { msg.textContent = "فشل الدخول: تأكدي من الإيميل وكلمة المرور."; msg.hidden = false; return; }
+    if (error) { msg.textContent = "تعذّر الدخول: " + (error.message || "تأكدي من الإيميل وكلمة المرور."); msg.hidden = false; return; }
     enterDashboard();
   });
   $("#logoutBtn").addEventListener("click", async () => { await sb.auth.signOut(); show("#loginView"); });

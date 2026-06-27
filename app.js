@@ -11,6 +11,7 @@
   const t = (k) => (I18N[lang] && I18N[lang][k]) || k;
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g,
     (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---------- Stars ---------- */
   (function stars() {
@@ -23,6 +24,17 @@
       html += `<span class="star" style="left:${x}%;top:${y}%;width:${s}px;height:${s}px;animation-delay:${d}s"></span>`;
     }
     box.innerHTML = html;
+  })();
+
+  /* ---------- Splash intro (cinematic, once per session) ---------- */
+  (function splash() {
+    const sp = document.getElementById("splash");
+    if (!sp) return;
+    const rm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (rm || sessionStorage.getItem("aura_splash")) { sp.remove(); return; }
+    sessionStorage.setItem("aura_splash", "1");
+    // CSS auto-hides it; remove the node afterwards to free interactions
+    setTimeout(() => sp.remove(), 3600);
   })();
 
   /* ---------- Gold sparkles ---------- */
@@ -127,8 +139,19 @@
       localStorage.setItem("aura_streak", String(count));
       localStorage.setItem("aura_last", today);
     }
-    $("#streakCount").textContent = count;
+    countUp($("#streakCount"), count);
     $("#streakBox").hidden = false;
+  }
+  function countUp(el, to) {
+    if (!el) return;
+    if (reduceMotion || to <= 0) { el.textContent = to; return; }
+    const start = performance.now(), dur = 900, from = 0;
+    (function step(now) {
+      const p = Math.min((now - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(from + (to - from) * eased);
+      if (p < 1) requestAnimationFrame(step);
+    })(start);
   }
   $("#revealBtn").addEventListener("click", revealDaily);
   $("#shareDaily").addEventListener("click", () => {
@@ -171,7 +194,7 @@
     idx.forEach((i) => {
       const el = document.createElement("button");
       el.className = "tcard";
-      el.innerHTML = `<span class="tcard-inner"><span class="tcard-back">✦</span></span>`;
+      el.innerHTML = `<span class="tcard-inner"><span class="tcard-face tcard-front">✦</span><span class="tcard-face tcard-back"></span></span>`;
       el.addEventListener("click", () => onCardClick(el, CARDS[i]));
       deck.appendChild(el);
     });
@@ -187,8 +210,8 @@
     if (el.classList.contains("flipped")) return;
     cardOpensUsed++;
     lastCard = card;
+    el.querySelector(".tcard-back").textContent = card.sym;
     el.classList.add("flipped");
-    el.querySelector(".tcard-inner").innerHTML = `<span class="tcard-face">${card.sym}</span>`;
     $("#cardName").textContent = card.name[lang];
     $("#cardMeaning").textContent = card.meaning[lang];
     const res = $("#cardResult");
@@ -482,7 +505,6 @@
   window.addEventListener("appinstalled", () => { banner.hidden = true; });
 
   /* ---------- Motion: scroll reveal + parallax ---------- */
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let revealObserver = null;
   if (!reduceMotion && "IntersectionObserver" in window) {
     revealObserver = new IntersectionObserver((entries) => {
@@ -503,20 +525,23 @@
       ".support-card, .premium-card, .footer > *"
     ).forEach((el, i) => reveal(el, i % 4));
   }
-  // subtle parallax on decorative background blobs
-  if (!reduceMotion) {
+  // gold scroll-progress bar at the top
+  (function scrollProgress() {
+    const bar = document.getElementById("scrollProgress");
+    if (!bar) return;
     let ticking = false;
+    function update() {
+      const h = document.documentElement;
+      const max = h.scrollHeight - h.clientHeight;
+      const pct = max > 0 ? (h.scrollTop || window.scrollY) / max * 100 : 0;
+      bar.style.width = pct + "%";
+      ticking = false;
+    }
     window.addEventListener("scroll", () => {
-      if (ticking) return; ticking = true;
-      requestAnimationFrame(() => {
-        const y = window.scrollY || 0;
-        const g1 = document.querySelector(".glow-1"), g2 = document.querySelector(".glow-2");
-        if (g1) g1.style.transform = `translateY(${y * 0.10}px)`;
-        if (g2) g2.style.transform = `translateY(${-y * 0.07}px)`;
-        ticking = false;
-      });
+      if (ticking) return; ticking = true; requestAnimationFrame(update);
     }, { passive: true });
-  }
+    update();
+  })();
 
   /* ---------- Init ---------- */
   $("#year").textContent = new Date().getFullYear();

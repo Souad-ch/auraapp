@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1a1140" />
+  <meta name="description" content="AURA — منصة الطاقة والروحانيات: طاقة يومية، كروت طاقة، كورسات، وجلسات مع أساتذة متخصصين." />
+  <title>AURA — منصة الطاقة والروحانيات</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="icon" type="image/png" href="icons/icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="AURA" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Cinzel:wght@500;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- ===== Animated background ===== -->
+  <div class="sky" aria-hidden="true">
+    <div class="stars" id="stars"></div>
+    <div class="moon"></div>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+  </div>
+
+  <!-- ===== Install banner ===== -->
+  <div class="install-banner" id="installBanner" hidden>
+    <span class="ib-text" data-i18n="install_banner">ثبّت تطبيق AURA على موبايلك ✨</span>
+    <button class="ib-btn" id="installBtn" data-i18n="install_now">ثبّت</button>
+    <button class="ib-close" id="installClose" aria-label="close">×</button>
+  </div>
+
+  <!-- ===== Header ===== -->
+  <header class="nav">
+    <div class="brand">
+      <span class="brand-mark">✦</span>
+      <span class="brand-name">AURA</span>
+    </div>
+    <nav class="nav-links" id="navLinks">
+      <a href="#daily" data-i18n="nav_daily">طاقة اليوم</a>
+      <a href="#cards" data-i18n="nav_cards">كروت الطاقة</a>
+      <a href="#courses" data-i18n="nav_courses">الكورسات</a>
+      <a href="#masters" data-i18n="nav_masters">الأساتذة</a>
+      <a href="#support" data-i18n="nav_support">الدعم</a>
+    </nav>
+    <button class="lang-toggle" id="langToggle" aria-label="language">EN</button>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <h1 class="hero-title">AURA</h1>
+    <p class="hero-sub" data-i18n="hero_sub">منصّتك اليومية للطاقة والروحانيات</p>
+    <p class="hero-desc" data-i18n="hero_desc">اكشف طاقة يومك، اسحب كروتك، تعلّم من أساتذة متخصصين، واحجز جلستك الخاصة.</p>
+    <div class="hero-cta">
+      <a href="#daily" class="btn btn-primary" data-i18n="hero_btn">ابدأ رحلتك</a>
+      <button class="btn btn-ghost" id="installBtnHero" data-i18n="install_app">ثبّت التطبيق على موبايلك</button>
+    </div>
+  </section>
+
+  <!-- ===== Daily Energy ===== -->
+  <section class="section" id="daily">
+    <h2 class="section-title" data-i18n="daily_title">🔮 طاقة اليوم</h2>
+    <p class="section-lead" data-i18n="daily_lead">افتح كل يوم لتكشف رسالتك ورقمك ولونك وعنصرك.</p>
+
+    <div class="daily-card" id="dailyCard">
+      <div class="daily-front" id="dailyFront">
+        <div class="daily-orb">✦</div>
+        <button class="btn btn-primary" id="revealBtn" data-i18n="reveal_btn">اكشف طاقتي</button>
+        <div class="streak" id="streakBox" hidden>
+          <span class="streak-fire">🔥</span>
+          <span data-i18n="streak_label">أيام متتالية:</span>
+          <strong id="streakCount">0</strong>
+        </div>
+      </div>
+      <div class="daily-back" id="dailyBack" hidden>
+        <p class="daily-message" id="dailyMessage"></p>
+        <div class="daily-stats">
+          <div class="stat"><span class="stat-label" data-i18n="stat_number">رقم الحظ</span><span class="stat-value" id="dailyNumber">—</span></div>
+          <div class="stat"><span class="stat-label" data-i18n="stat_color">لون اليوم</span><span class="stat-value"><span class="color-dot" id="dailyColorDot"></span><span id="dailyColor">—</span></span></div>
+          <div class="stat"><span class="stat-label" data-i18n="stat_element">العنصر</span><span class="stat-value" id="dailyElement">—</span></div>
+        </div>
+        <p class="daily-note" id="dailyNote" data-i18n="daily_note">ارجع غداً لطاقة جديدة 🌙</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Energy / Tarot Cards ===== -->
+  <section class="section" id="cards">
+    <h2 class="section-title" data-i18n="cards_title">🃏 كروت الطاقة</h2>
+    <p class="section-lead" data-i18n="cards_lead">ركّز على سؤالك بقلبك، ثم اسحب كرتك.</p>
+
+    <div class="card-deck" id="cardDeck"></div>
+    <div class="card-result" id="cardResult" hidden>
+      <h3 class="card-name" id="cardName"></h3>
+      <p class="card-meaning" id="cardMeaning"></p>
+    </div>
+    <div class="cards-actions">
+      <button class="btn btn-ghost" id="reshuffleBtn" data-i18n="reshuffle">اسحب من جديد</button>
+    </div>
+  </section>
+
+  <!-- ===== Courses ===== -->
+  <section class="section" id="courses">
+    <h2 class="section-title" data-i18n="courses_title">📚 الكورسات المسجّلة</h2>
+    <p class="section-lead" data-i18n="courses_lead">تعلّم في وقتك من كورسات معدّة بعناية.</p>
+    <div class="grid" id="coursesGrid"></div>
+  </section>
+
+  <!-- ===== Masters ===== -->
+  <section class="section" id="masters">
+    <h2 class="section-title" data-i18n="masters_title">👩‍🏫 الأساتذة والحجوزات</h2>
+    <p class="section-lead" data-i18n="masters_lead">احجز جلستك المباشرة مع أستاذ متخصّص.</p>
+    <div class="grid" id="mastersGrid"></div>
+  </section>
+
+  <!-- ===== Support ===== -->
+  <section class="section" id="support">
+    <h2 class="section-title" data-i18n="support_title">💬 الدعم والدفع</h2>
+    <p class="section-lead" data-i18n="support_lead">نحن هنا لمساعدتك في أي وقت.</p>
+    <div class="support-grid">
+      <div class="support-card">
+        <div class="support-icon">💳</div>
+        <h3 data-i18n="pay_title">الدفع</h3>
+        <p data-i18n="pay_desc">ادفع بأمان عبر PayPal. شام كاش قريباً.</p>
+        <div class="pay-methods">
+          <span class="pay-pill">PayPal</span>
+          <span class="pay-pill pay-soon" data-i18n="sham_soon">شام كاش (قريباً)</span>
+        </div>
+      </div>
+      <div class="support-card">
+        <div class="support-icon">🟢</div>
+        <h3 data-i18n="wa_title">واتساب</h3>
+        <p data-i18n="wa_desc">تواصل معنا مباشرة للحجز أو الاستفسار.</p>
+        <a class="btn btn-primary btn-sm" id="whatsappBtn" target="_blank" rel="noopener" data-i18n="wa_btn">راسلنا على واتساب</a>
+      </div>
+      <div class="support-card">
+        <div class="support-icon">🛟</div>
+        <h3 data-i18n="tech_title">الدعم الفني</h3>
+        <p data-i18n="tech_desc">واجهت مشكلة؟ فريق الدعم بخدمتك.</p>
+        <a class="btn btn-ghost btn-sm" id="techBtn" target="_blank" rel="noopener" data-i18n="tech_btn">تواصل مع الدعم</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="brand brand-footer"><span class="brand-mark">✦</span><span class="brand-name">AURA</span></div>
+    <p class="footer-tag" data-i18n="footer_tag">طاقتك تبدأ من هنا 🌙</p>
+    <p class="footer-copy">© <span id="year"></span> AURA. <span data-i18n="rights">جميع الحقوق محفوظة.</span></p>
+  </footer>
+
+  <!-- ===== Payment / Booking modal ===== -->
+  <div class="modal-overlay" id="modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true">
+      <button class="modal-close" id="modalClose" aria-label="close">×</button>
+      <h3 class="modal-title" id="modalTitle"></h3>
+      <p class="modal-body" id="modalBody"></p>
+      <div class="modal-actions">
+        <a class="btn btn-primary" id="modalWhatsapp" target="_blank" rel="noopener" data-i18n="modal_wa">احجز عبر واتساب</a>
+        <a class="btn btn-ghost" id="modalPaypal" target="_blank" rel="noopener" data-i18n="modal_pay">ادفع عبر PayPal</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+    }
+  </script>
+</body>
+</html>

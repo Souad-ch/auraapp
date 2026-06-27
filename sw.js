@@ -1,5 +1,5 @@
 /* AURA — service worker (offline support) */
-const CACHE = "aura-v3";
+const CACHE = "aura-v4";
 const ASSETS = [
   "./",
   "./index.html",
@@ -25,18 +25,29 @@ self.addEventListener("activate", (e) => {
   );
 });
 
+// config.js and HTML must always be fresh (network-first) so config/content
+// changes show up immediately; static assets stay cache-first for speed/offline.
+function networkFirst(req) {
+  return fetch(req).then((res) => {
+    const copy = res.clone();
+    caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {});
+    return res;
+  }).catch(() => caches.match(req));
+}
+function cacheFirst(req) {
+  return caches.match(req).then((cached) =>
+    cached || fetch(req).then((res) => {
+      const copy = res.clone();
+      caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {});
+      return res;
+    }).catch(() => cached)
+  );
+}
+
 self.addEventListener("fetch", (e) => {
   if (e.request.method !== "GET") return;
-  e.respondWith(
-    caches.match(e.request).then((cached) =>
-      cached ||
-      fetch(e.request)
-        .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE).then((c) => c.put(e.request, copy)).catch(() => {});
-          return res;
-        })
-        .catch(() => cached)
-    )
-  );
+  const url = new URL(e.request.url);
+  const fresh = e.request.mode === "navigate" ||
+    url.pathname.endsWith("config.js") || url.pathname.endsWith(".html");
+  e.respondWith(fresh ? networkFirst(e.request) : cacheFirst(e.request));
 });

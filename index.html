@@ -215,6 +215,17 @@
     <p class="footer-copy">© <span id="year"></span> AURA. <span data-i18n="rights">جميع الحقوق محفوظة.</span></p>
   </footer>
 
+  <!-- ===== Ad gate modal (rewarded card) ===== -->
+  <div class="modal-overlay" id="adGate" hidden>
+    <div class="modal adgate-modal">
+      <button class="modal-close" id="adGateClose" aria-label="close">×</button>
+      <h3 class="modal-title" data-i18n="adgate_title">شاهد إعلاناً لفتح الكرت</h3>
+      <p class="modal-body" data-i18n="adgate_body">الكرت الأول مجاني. لفتح كرت إضافي، شاهد إعلاناً قصيراً ✨</p>
+      <div class="adgate-box" id="adGateBox"></div>
+      <button class="btn btn-primary btn-block" id="adGateBtn" disabled>افتح الكرت 🔓</button>
+    </div>
+  </div>
+
   <!-- ===== Payment / Booking modal ===== -->
   <div class="modal-overlay" id="modal" hidden>
     <div class="modal" role="dialog" aria-modal="true">

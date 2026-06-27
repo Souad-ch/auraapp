@@ -155,14 +155,21 @@
       const el = document.createElement("button");
       el.className = "tcard";
       el.innerHTML = `<span class="tcard-inner"><span class="tcard-back">✦</span></span>`;
-      el.addEventListener("click", () => drawCard(el, CARDS[i]));
+      el.addEventListener("click", () => onCardClick(el, CARDS[i]));
       deck.appendChild(el);
     });
   }
-  function drawCard(el, card) {
+  // First card is free; every additional open requires watching an ad.
+  let cardOpensUsed = 0;
+  function onCardClick(el, card) {
     if (el.classList.contains("flipped")) return;
+    if (cardOpensUsed < 1) { revealCard(el, card); }
+    else { openAdGate(() => revealCard(el, card)); }
+  }
+  function revealCard(el, card) {
+    if (el.classList.contains("flipped")) return;
+    cardOpensUsed++;
     lastCard = card;
-    $$(".tcard").forEach((c) => { if (c !== el) c.classList.add("dim"); });
     el.classList.add("flipped");
     el.querySelector(".tcard-inner").innerHTML = `<span class="tcard-face">${card.sym}</span>`;
     $("#cardName").textContent = card.name[lang];
@@ -171,6 +178,42 @@
     res.hidden = false;
     setTimeout(() => res.scrollIntoView({ behavior: "smooth", block: "nearest" }), 250);
   }
+
+  /* ---------- Ad gate (rewarded card) ---------- */
+  let pendingUnlock = null, gateTimer = null;
+  function fillAdGate() {
+    const box = $("#adGateBox"); const a = cfg.adsense || {};
+    if (a.client && a.slotTop) {
+      box.innerHTML = `<ins class="adsbygoogle" style="display:block;min-height:250px" data-ad-client="${a.client}" data-ad-slot="${a.slotTop}" data-ad-format="auto" data-full-width-responsive="true"></ins>`;
+      try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
+    } else {
+      box.innerHTML = `<div class="ad-placeholder">${esc(t("ad_label"))}</div>`;
+    }
+  }
+  function openAdGate(onUnlock) {
+    pendingUnlock = onUnlock;
+    fillAdGate();
+    const btn = $("#adGateBtn");
+    let n = 5; btn.disabled = true; btn.textContent = `${t("adgate_after")} ${n} ${t("adgate_sec")}`;
+    $("#adGate").hidden = false; document.body.style.overflow = "hidden";
+    clearInterval(gateTimer);
+    gateTimer = setInterval(() => {
+      n--;
+      if (n > 0) { btn.textContent = `${t("adgate_after")} ${n} ${t("adgate_sec")}`; }
+      else { clearInterval(gateTimer); btn.disabled = false; btn.textContent = t("adgate_open"); }
+    }, 1000);
+  }
+  function closeAdGate() {
+    $("#adGate").hidden = true; document.body.style.overflow = "";
+    clearInterval(gateTimer); pendingUnlock = null;
+  }
+  $("#adGateBtn").addEventListener("click", () => {
+    if ($("#adGateBtn").disabled) return;
+    const f = pendingUnlock; closeAdGate(); if (f) f();
+  });
+  $("#adGateClose").addEventListener("click", closeAdGate);
+  $("#adGate").addEventListener("click", (e) => { if (e.target.id === "adGate") closeAdGate(); });
+
   $("#reshuffleBtn").addEventListener("click", renderDeck);
   $("#shareCard").addEventListener("click", () => {
     if (!lastCard) return;

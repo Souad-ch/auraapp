@@ -55,7 +55,12 @@ const I18N = {
     premium_btn: "أعلمني عند الإطلاق",
     wa_premium_msg: "مرحباً AURA، يهمّني اشتراك Premium 🌟",
     ad_label: "إعلان",
-    pay_success: "تم الدفع بنجاح! شكراً لك 🌟 سنتواصل معك قريباً."
+    pay_success: "تم الدفع بنجاح! شكراً لك 🌟 سنتواصل معك قريباً.",
+    adgate_title: "شاهد إعلاناً لفتح الكرت",
+    adgate_body: "الكرت الأول مجاني. لفتح كرت إضافي، شاهد إعلاناً قصيراً ✨",
+    adgate_after: "افتح بعد",
+    adgate_open: "افتح الكرت 🔓",
+    adgate_sec: "ثانية"
   },
   en: {
     nav_daily: "Daily Energy", nav_cards: "Energy Cards", nav_courses: "Courses",
@@ -111,7 +116,12 @@ const I18N = {
     premium_btn: "Notify me at launch",
     wa_premium_msg: "Hello AURA, I'm interested in Premium 🌟",
     ad_label: "Advertisement",
-    pay_success: "Payment successful! Thank you 🌟 We'll contact you soon."
+    pay_success: "Payment successful! Thank you 🌟 We'll contact you soon.",
+    adgate_title: "Watch an ad to open the card",
+    adgate_body: "The first card is free. To open another card, watch a short ad ✨",
+    adgate_after: "Open in",
+    adgate_open: "Open the card 🔓",
+    adgate_sec: "s"
   }
 };
 

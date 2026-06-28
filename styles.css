@@ -295,17 +295,19 @@ body {
 .tcard { width: 110px; height: 165px; border: none; background: transparent; cursor: pointer;
   perspective: 1000px; transition: transform .25s var(--ease-soft); padding: 0; }
 .tcard:hover { transform: translateY(-8px); }
-.tcard-inner { position: relative; width: 100%; height: 100%;
-  transform-style: preserve-3d; transition: transform .8s var(--ease-soft); }
-.tcard.flipped .tcard-inner { transform: rotateY(180deg); }
-.tcard-face { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+.tcard-inner { position: relative; width: 110px; height: 165px;
+  -webkit-transform-style: preserve-3d; transform-style: preserve-3d;
+  transition: -webkit-transform .8s var(--ease-soft), transform .8s var(--ease-soft); }
+.tcard.flipped .tcard-inner { -webkit-transform: rotateY(180deg); transform: rotateY(180deg); }
+.tcard-face { position: absolute; top: 0; left: 0; width: 110px; height: 165px;
+  display: flex; align-items: center; justify-content: center;
   border-radius: 16px; -webkit-backface-visibility: hidden; backface-visibility: hidden;
   box-shadow: var(--shadow); }
 .tcard-front { background: linear-gradient(160deg, #241753, #120a28);
   border: 1px solid rgba(232,199,119,.28); font-size: 2rem; color: var(--gold);
   filter: drop-shadow(0 0 8px rgba(232,199,119,.4)); }
 .tcard:hover .tcard-front { border-color: rgba(232,199,119,.6); box-shadow: var(--shadow), var(--shadow-gold); }
-.tcard-back { transform: rotateY(180deg); font-size: 3rem;
+.tcard-back { -webkit-transform: rotateY(180deg); transform: rotateY(180deg); font-size: 3rem;
   background: linear-gradient(160deg, #322168, #1a1040);
   border: 1px solid var(--gold); box-shadow: var(--shadow), 0 0 28px rgba(232,199,119,.4); }
 .card-result { max-width: 520px; margin: 30px auto 0; text-align: center;

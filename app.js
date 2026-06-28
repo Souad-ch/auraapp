@@ -199,19 +199,37 @@
       deck.appendChild(el);
     });
   }
-  // First card is free; every additional open requires watching an ad.
-  let cardOpensUsed = 0;
+  /* Energy economy: free daily energy; each reading costs 1; refill via ad. */
+  const ENERGY_DAILY = 5, ENERGY_REFILL = 5, CARD_COST = 1;
+  function getEnergy() {
+    if (localStorage.getItem("aura_energy_day") !== todayKey()) {
+      localStorage.setItem("aura_energy_day", todayKey());
+      localStorage.setItem("aura_energy", String(ENERGY_DAILY));
+    }
+    return parseInt(localStorage.getItem("aura_energy") || "0", 10);
+  }
+  function setEnergy(n) {
+    localStorage.setItem("aura_energy", String(Math.max(0, n)));
+    const el = $("#energyCount"); if (el) el.textContent = getEnergy();
+  }
+  function renderEnergy() { const el = $("#energyCount"); if (el) el.textContent = getEnergy(); }
+
   function onCardClick(el, card) {
     if (el.classList.contains("flipped")) return;
-    if (cardOpensUsed < 1) { revealCard(el, card); }
-    else { openAdGate(() => revealCard(el, card)); }
+    if (getEnergy() >= CARD_COST) {
+      setEnergy(getEnergy() - CARD_COST);
+      revealCard(el, card);
+    } else {
+      openAdGate(() => { setEnergy(getEnergy() + ENERGY_REFILL - CARD_COST); revealCard(el, card); },
+        { title: t("energy_gate_title"), body: t("energy_gate_body"), openLabel: t("energy_gate_btn") });
+    }
   }
   function revealCard(el, card) {
     if (el.classList.contains("flipped")) return;
-    cardOpensUsed++;
     lastCard = card;
     el.querySelector(".tcard-back").textContent = card.sym;
     el.classList.add("flipped");
+    burstParticles(el);
     $("#cardName").textContent = card.name[lang];
     $("#cardMeaning").textContent = card.meaning[lang];
     const res = $("#cardResult");
@@ -219,8 +237,27 @@
     setTimeout(() => res.scrollIntoView({ behavior: "smooth", block: "nearest" }), 250);
   }
 
-  /* ---------- Ad gate (rewarded card) ---------- */
-  let pendingUnlock = null, gateTimer = null;
+  /* Gold particle burst from an element's center */
+  function burstParticles(el) {
+    if (reduceMotion || !el) return;
+    const r = el.getBoundingClientRect();
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    for (let i = 0; i < 14; i++) {
+      const p = document.createElement("div");
+      p.className = "burst";
+      const sz = (Math.random() * 6 + 4).toFixed(0) + "px";
+      p.style.width = p.style.height = sz;
+      p.style.left = cx + "px"; p.style.top = cy + "px";
+      p.style.setProperty("--tx", ((Math.random() - 0.5) * 280).toFixed(0) + "px");
+      p.style.setProperty("--ty", ((Math.random() - 0.5) * 280).toFixed(0) + "px");
+      p.style.animationDuration = (Math.random() * 0.4 + 0.5).toFixed(2) + "s";
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 1100);
+    }
+  }
+
+  /* ---------- Ad gate (rewarded card / energy refill) ---------- */
+  let pendingUnlock = null, gateTimer = null, gateOpenLabel = "";
   function fillAdGate() {
     const box = $("#adGateBox"); const a = cfg.adsense || {};
     if (a.client && a.slotTop) {
@@ -230,8 +267,13 @@
       box.innerHTML = `<div class="ad-placeholder">${esc(t("ad_label"))}</div>`;
     }
   }
-  function openAdGate(onUnlock) {
+  function openAdGate(onUnlock, opts) {
+    opts = opts || {};
     pendingUnlock = onUnlock;
+    gateOpenLabel = opts.openLabel || t("adgate_open");
+    const tEl = $("#adGateTitle"), bEl = $("#adGateBody");
+    if (tEl) tEl.textContent = opts.title || t("adgate_title");
+    if (bEl) bEl.textContent = opts.body || t("adgate_body");
     fillAdGate();
     const btn = $("#adGateBtn");
     let n = 5; btn.disabled = true; btn.textContent = `${t("adgate_after")} ${n} ${t("adgate_sec")}`;
@@ -240,7 +282,7 @@
     gateTimer = setInterval(() => {
       n--;
       if (n > 0) { btn.textContent = `${t("adgate_after")} ${n} ${t("adgate_sec")}`; }
-      else { clearInterval(gateTimer); btn.disabled = false; btn.textContent = t("adgate_open"); }
+      else { clearInterval(gateTimer); btn.disabled = false; btn.textContent = gateOpenLabel; }
     }, 1000);
   }
   function closeAdGate() {
@@ -543,10 +585,30 @@
     update();
   })();
 
+  /* ---------- Bottom-nav active highlight ---------- */
+  function setupBottomNav() {
+    const items = $$(".bn-item");
+    if (!items.length || !("IntersectionObserver" in window)) return;
+    const map = {}; items.forEach((i) => { map[i.dataset.sec] = i; });
+    const secs = ["top", "daily", "cards", "courses", "support"]
+      .map((id) => document.getElementById(id)).filter(Boolean);
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) {
+          items.forEach((i) => i.classList.remove("active"));
+          if (map[en.target.id]) map[en.target.id].classList.add("active");
+        }
+      });
+    }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
+    secs.forEach((s) => obs.observe(s));
+  }
+
   /* ---------- Init ---------- */
   $("#year").textContent = new Date().getFullYear();
   applyLang();
   initAds();
   hydrateFromSupabase();
   setupReveals();
+  renderEnergy();
+  setupBottomNav();
 })();

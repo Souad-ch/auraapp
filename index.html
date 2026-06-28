@@ -82,7 +82,7 @@
   </header>
 
   <!-- ===== Hero ===== -->
-  <section class="hero">
+  <section class="hero" id="top">
     <div class="hero-stage" aria-hidden="true">
       <div class="hero-glow-bg"></div>
       <div class="orbit orbit-b"><span class="orb-item">🌙</span></div>
@@ -150,6 +150,12 @@
   <section class="section" id="cards">
     <h2 class="section-title" data-i18n="cards_title">🃏 كروت الطاقة</h2>
     <p class="section-lead" data-i18n="cards_lead">ركّز على سؤالك بقلبك، ثم اسحب كرتك.</p>
+
+    <div class="energy-bar">
+      <span class="energy-ic">⚡</span>
+      <span data-i18n="energy_label">طاقتك</span>:
+      <strong id="energyCount">5</strong>
+    </div>
 
     <div class="card-deck" id="cardDeck"></div>
     <div class="card-result" id="cardResult" hidden>
@@ -241,8 +247,8 @@
   <div class="modal-overlay" id="adGate" hidden>
     <div class="modal adgate-modal">
       <button class="modal-close" id="adGateClose" aria-label="close">×</button>
-      <h3 class="modal-title" data-i18n="adgate_title">شاهد إعلاناً لفتح الكرت</h3>
-      <p class="modal-body" data-i18n="adgate_body">الكرت الأول مجاني. لفتح كرت إضافي، شاهد إعلاناً قصيراً ✨</p>
+      <h3 class="modal-title" id="adGateTitle" data-i18n="adgate_title">شاهد إعلاناً لفتح الكرت</h3>
+      <p class="modal-body" id="adGateBody" data-i18n="adgate_body">الكرت الأول مجاني. لفتح كرت إضافي، شاهد إعلاناً قصيراً ✨</p>
       <div class="adgate-box" id="adGateBox"></div>
       <button class="btn btn-primary btn-block" id="adGateBtn" disabled>افتح الكرت 🔓</button>
     </div>
@@ -272,6 +278,15 @@
       </div>
     </div>
   </div>
+
+  <!-- ===== App-style bottom navigation ===== -->
+  <nav class="bottom-nav" id="bottomNav" aria-label="navigation">
+    <a href="#top" class="bn-item" data-sec="top"><span class="bn-ic">🏠</span><span class="bn-label" data-i18n="bn_home">الرئيسية</span></a>
+    <a href="#daily" class="bn-item" data-sec="daily"><span class="bn-ic">🔮</span><span class="bn-label" data-i18n="bn_daily">طاقتك</span></a>
+    <a href="#cards" class="bn-item" data-sec="cards"><span class="bn-ic">🃏</span><span class="bn-label" data-i18n="bn_cards">الكروت</span></a>
+    <a href="#courses" class="bn-item" data-sec="courses"><span class="bn-ic">📚</span><span class="bn-label" data-i18n="bn_courses">كورسات</span></a>
+    <a href="#support" class="bn-item" data-sec="support"><span class="bn-ic">💬</span><span class="bn-label" data-i18n="bn_support">الدعم</span></a>
+  </nav>
 
   <script src="config.js"></script>
   <script src="i18n.js"></script>

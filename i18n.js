@@ -60,7 +60,12 @@ const I18N = {
     adgate_body: "الكرت الأول مجاني. لفتح كرت إضافي، شاهد إعلاناً قصيراً ✨",
     adgate_after: "افتح بعد",
     adgate_open: "افتح الكرت 🔓",
-    adgate_sec: "ثانية"
+    adgate_sec: "ثانية",
+    energy_label: "طاقتك",
+    energy_gate_title: "طاقتك خلصت ⚡",
+    energy_gate_body: "شاهد إعلاناً قصيراً لتشحن +5 طاقة وتكمّل قراءتك ✨",
+    energy_gate_btn: "اشحن +5 ⚡",
+    bn_home: "الرئيسية", bn_daily: "طاقتك", bn_cards: "الكروت", bn_courses: "كورسات", bn_support: "الدعم"
   },
   en: {
     nav_daily: "Daily Energy", nav_cards: "Energy Cards", nav_courses: "Courses",
@@ -121,7 +126,12 @@ const I18N = {
     adgate_body: "The first card is free. To open another card, watch a short ad ✨",
     adgate_after: "Open in",
     adgate_open: "Open the card 🔓",
-    adgate_sec: "s"
+    adgate_sec: "s",
+    energy_label: "Energy",
+    energy_gate_title: "Out of energy ⚡",
+    energy_gate_body: "Watch a short ad to refill +5 energy and continue your reading ✨",
+    energy_gate_btn: "Refill +5 ⚡",
+    bn_home: "Home", bn_daily: "Energy", bn_cards: "Cards", bn_courses: "Courses", bn_support: "Support"
   }
 };
 

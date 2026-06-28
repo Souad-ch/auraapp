@@ -1,5 +1,5 @@
 /* AURA — service worker (offline support) */
-const CACHE = "aura-v12";
+const CACHE = "aura-v13";
 const ASSETS = [
   "./",
   "./index.html",
@@ -47,7 +47,9 @@ function cacheFirst(req) {
 self.addEventListener("fetch", (e) => {
   if (e.request.method !== "GET") return;
   const url = new URL(e.request.url);
-  const fresh = e.request.mode === "navigate" ||
-    url.pathname.endsWith("config.js") || url.pathname.endsWith(".html");
-  e.respondWith(fresh ? networkFirst(e.request) : cacheFirst(e.request));
+  // Same-origin app files (HTML/CSS/JS/JSON) are always network-first so the
+  // whole app updates together and never mixes new HTML with stale CSS/JS.
+  // Cross-origin assets (fonts, etc.) stay cache-first for speed/offline.
+  const sameOrigin = url.origin === self.location.origin;
+  e.respondWith(sameOrigin ? networkFirst(e.request) : cacheFirst(e.request));
 });

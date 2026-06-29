@@ -66,6 +66,7 @@
     renderTimeSlots();
     setupSupportLinks();
     refreshZodiac();
+    renderCardHint();
   }
   $("#langToggle").addEventListener("click", () => {
     lang = lang === "ar" ? "en" : "ar";
@@ -199,29 +200,20 @@
       deck.appendChild(el);
     });
   }
-  /* Energy economy: free daily energy; each reading costs 1; refill via ad. */
-  const ENERGY_DAILY = 5, ENERGY_REFILL = 5, CARD_COST = 1;
-  function getEnergy() {
-    if (localStorage.getItem("aura_energy_day") !== todayKey()) {
-      localStorage.setItem("aura_energy_day", todayKey());
-      localStorage.setItem("aura_energy", String(ENERGY_DAILY));
-    }
-    return parseInt(localStorage.getItem("aura_energy") || "0", 10);
+  /* One free card per day; every extra card requires watching an ad. */
+  function freeUsedToday() { return localStorage.getItem("aura_freecard_day") === todayKey(); }
+  function renderCardHint() {
+    const el = $("#cardHint");
+    if (el) el.textContent = freeUsedToday() ? t("card_hint_ad") : t("card_hint_free");
   }
-  function setEnergy(n) {
-    localStorage.setItem("aura_energy", String(Math.max(0, n)));
-    const el = $("#energyCount"); if (el) el.textContent = getEnergy();
-  }
-  function renderEnergy() { const el = $("#energyCount"); if (el) el.textContent = getEnergy(); }
-
   function onCardClick(el, card) {
     if (el.classList.contains("flipped")) return;
-    if (getEnergy() >= CARD_COST) {
-      setEnergy(getEnergy() - CARD_COST);
+    if (!freeUsedToday()) {
+      localStorage.setItem("aura_freecard_day", todayKey());
+      renderCardHint();
       revealCard(el, card);
     } else {
-      openAdGate(() => { setEnergy(getEnergy() + ENERGY_REFILL - CARD_COST); revealCard(el, card); },
-        { title: t("energy_gate_title"), body: t("energy_gate_body"), openLabel: t("energy_gate_btn") });
+      openAdGate(() => revealCard(el, card));
     }
   }
   function revealCard(el, card) {
@@ -609,6 +601,6 @@
   initAds();
   hydrateFromSupabase();
   setupReveals();
-  renderEnergy();
+  renderCardHint();
   setupBottomNav();
 })();

@@ -31,7 +31,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="AURA" />
-  <link rel="stylesheet" href="styles.css?v=14" />
+  <link rel="stylesheet" href="styles.css?v=15" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Cinzel:wght@500;600;700&family=El+Messiri:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -151,11 +151,7 @@
     <h2 class="section-title" data-i18n="cards_title">🃏 كروت الطاقة</h2>
     <p class="section-lead" data-i18n="cards_lead">ركّز على سؤالك بقلبك، ثم اسحب كرتك.</p>
 
-    <div class="energy-bar">
-      <span class="energy-ic">⚡</span>
-      <span data-i18n="energy_label">طاقتك</span>:
-      <strong id="energyCount">5</strong>
-    </div>
+    <div class="energy-bar" id="cardHint"></div>
 
     <div class="card-deck" id="cardDeck"></div>
     <div class="card-result" id="cardResult" hidden>
@@ -288,9 +284,9 @@
     <a href="#support" class="bn-item" data-sec="support"><span class="bn-ic">💬</span><span class="bn-label" data-i18n="bn_support">الدعم</span></a>
   </nav>
 
-  <script src="config.js?v=14"></script>
-  <script src="i18n.js?v=14"></script>
-  <script src="app.js?v=14"></script>
+  <script src="config.js?v=15"></script>
+  <script src="i18n.js?v=15"></script>
+  <script src="app.js?v=15"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));

@@ -2,8 +2,28 @@
 
 const I18N = {
   ar: {
-    nav_daily: "طاقة اليوم", nav_cards: "كروت الطاقة", nav_courses: "الكورسات",
+    nav_daily: "طاقة اليوم", nav_cards: "الكروت", nav_courses: "الكورسات",
     nav_masters: "الأساتذة", nav_support: "الدعم",
+    nav_services: "الخدمات", nav_pricing: "الأسعار", nav_book: "احجز الآن",
+    hero_eyebrow: "✦ منصّة الطاقة والروحانيات",
+    hero_headline: "طاقتك تبدأ من هنا",
+    hero_cta2: "احجز جلسة",
+    st_members: "عضو", st_sessions: "جلسة شهرياً", st_rating: "تقييم",
+    services_eyebrow: "✦ ماذا نقدّم", services_title: "خدمات AURA", services_lead: "كل ما تحتاجه لرحلتك الروحية في مكان واحد.",
+    daily_eyebrow: "✦ كل يوم", cards_eyebrow: "✦ اقرأ طاقتك",
+    how_eyebrow: "✦ بخطوات بسيطة", how_title: "كيف تبدأ رحلتك",
+    how_1_t: "اكتشف", how_1_d: "افتح طاقة يومك واسحب كروتك مجاناً.",
+    how_2_t: "تعلّم", how_2_d: "اختر كورساً أو خدمة تناسب رحلتك.",
+    how_3_t: "احجز", how_3_d: "احجز جلسة مع أستاذ متخصّص وعِش التجربة.",
+    courses_eyebrow: "✦ تعلّم في وقتك", masters_eyebrow: "✦ خبراء موثوقون",
+    tst_eyebrow: "✦ قالوا عنّا", tst_title: "آراء عملائنا",
+    price_eyebrow: "✦ باقات مرنة", price_title: "اختر باقتك", price_lead: "ابدأ مجاناً، وارتقِ متى شئت.",
+    price_choose: "اختر الباقة", price_popular: "الأكثر طلباً", price_free_badge: "مجاناً",
+    faq_eyebrow: "✦ أسئلة شائعة", faq_title: "عندك سؤال؟",
+    cta_title: "ابدأ رحلتك الروحية اليوم 🌙", cta_text: "انضم لآلاف الأعضاء واكتشف طاقتك الحقيقية.", cta_btn: "احجز جلستك الأولى",
+    support_eyebrow: "✦ نحن هنا",
+    foot_explore: "استكشف", foot_help: "مساعدة", bn_services: "الخدمات",
+    wa_price_msg: "مرحباً AURA، يهمّني الاشتراك في باقة:",
     hero_sub: "منصّتك اليومية للطاقة والروحانيات",
     hero_desc: "اكشف طاقة يومك، اسحب كروتك، تعلّم من أساتذة متخصصين، واحجز جلستك الخاصة.",
     hero_btn: "ابدأ رحلتك",
@@ -70,8 +90,28 @@ const I18N = {
     bn_home: "الرئيسية", bn_daily: "طاقتك", bn_cards: "الكروت", bn_courses: "كورسات", bn_support: "الدعم"
   },
   en: {
-    nav_daily: "Daily Energy", nav_cards: "Energy Cards", nav_courses: "Courses",
+    nav_daily: "Daily Energy", nav_cards: "Cards", nav_courses: "Courses",
     nav_masters: "Masters", nav_support: "Support",
+    nav_services: "Services", nav_pricing: "Pricing", nav_book: "Book now",
+    hero_eyebrow: "✦ Energy & Spirituality Platform",
+    hero_headline: "Your energy starts here",
+    hero_cta2: "Book a session",
+    st_members: "Members", st_sessions: "Sessions / mo", st_rating: "Rating",
+    services_eyebrow: "✦ What we offer", services_title: "AURA Services", services_lead: "Everything you need for your spiritual journey, in one place.",
+    daily_eyebrow: "✦ Every day", cards_eyebrow: "✦ Read your energy",
+    how_eyebrow: "✦ In simple steps", how_title: "How to begin",
+    how_1_t: "Discover", how_1_d: "Reveal your daily energy and draw your cards for free.",
+    how_2_t: "Learn", how_2_d: "Pick a course or service that fits your path.",
+    how_3_t: "Book", how_3_d: "Book a session with a specialized master and live it.",
+    courses_eyebrow: "✦ Learn at your pace", masters_eyebrow: "✦ Trusted experts",
+    tst_eyebrow: "✦ Testimonials", tst_title: "What our clients say",
+    price_eyebrow: "✦ Flexible plans", price_title: "Choose your plan", price_lead: "Start free, upgrade anytime.",
+    price_choose: "Choose plan", price_popular: "Most popular", price_free_badge: "Free",
+    faq_eyebrow: "✦ FAQ", faq_title: "Got a question?",
+    cta_title: "Start your spiritual journey today 🌙", cta_text: "Join thousands of members and discover your true energy.", cta_btn: "Book your first session",
+    support_eyebrow: "✦ We're here",
+    foot_explore: "Explore", foot_help: "Help", bn_services: "Services",
+    wa_price_msg: "Hello AURA, I'm interested in the plan:",
     hero_sub: "Your daily energy & spirituality platform",
     hero_desc: "Reveal your daily energy, draw your cards, learn from expert masters, and book your private session.",
     hero_btn: "Begin your journey",
@@ -214,4 +254,37 @@ const CARDS = [
   { sym: "🕊️", name: { ar: "السلام", en: "Peace" }, meaning: { ar: "هدوء داخلي وصفاء. حان وقت الراحة والتصالح.", en: "Inner calm and clarity. Time to rest and reconcile." } },
   { sym: "💎", name: { ar: "الوفرة", en: "Abundance" }, meaning: { ar: "خير قادم ونمو. افتح يديك لاستقبال العطاء.", en: "Abundance and growth coming. Open your hands to receive." } },
   { sym: "🌿", name: { ar: "النمو", en: "Growth" }, meaning: { ar: "بذرة تزرعها اليوم تثمر قريباً. استمر بثبات.", en: "A seed you plant today will soon bloom. Keep steady." } }
+];
+
+/* ===== Content for the new sections ===== */
+const SERVICES = [
+  { icon: "🃏", title: { ar: "قراءة التاروت", en: "Tarot Reading" }, desc: { ar: "اكشف رسائل الكون وطريقك عبر الكروت.", en: "Reveal the universe's messages through the cards." } },
+  { icon: "🌙", title: { ar: "جلسات الطاقة", en: "Energy Sessions" }, desc: { ar: "موازنة طاقتك وتنقيتها مع أساتذة متخصصين.", en: "Balance and cleanse your energy with expert masters." } },
+  { icon: "🧘", title: { ar: "يوغا وتأمّل", en: "Yoga & Meditation" }, desc: { ar: "جلسات هدوء وتنفّس لتصفية العقل.", en: "Calming, breathing sessions to clear the mind." } },
+  { icon: "✨", title: { ar: "شفاء الشاكرات", en: "Chakra Healing" }, desc: { ar: "إعادة التوازن الداخلي والشفاء العاطفي.", en: "Inner rebalancing and emotional healing." } },
+  { icon: "📚", title: { ar: "كورسات مسجّلة", en: "Recorded Courses" }, desc: { ar: "تعلّم الطاقة والتاروت في وقتك.", en: "Learn energy and tarot at your own pace." } },
+  { icon: "🔮", title: { ar: "قراءة يومية", en: "Daily Readings" }, desc: { ar: "طاقة ورسالة ورقم حظ كل يوم.", en: "Energy, a message and a lucky number every day." } }
+];
+
+const TESTIMONIALS = [
+  { name: { ar: "ليان م.", en: "Lian M." }, stars: 5, text: { ar: "تجربة غيّرت نظرتي لطاقتي اليومية، الجلسات رائعة!", en: "An experience that changed how I see my daily energy — amazing sessions!" } },
+  { name: { ar: "سارة ك.", en: "Sara K." }, stars: 5, text: { ar: "الكروت اليومية صارت عادتي الصباحية، والأساتذة محترفين.", en: "The daily cards became my morning ritual, and the masters are pros." } },
+  { name: { ar: "نور أ.", en: "Noor A." }, stars: 5, text: { ar: "كورس الطاقة كان بسيط وعميق بنفس الوقت. أنصح فيه بشدّة.", en: "The energy course was simple yet deep. Highly recommend it." } }
+];
+
+const FAQS = [
+  { q: { ar: "هل الخدمات مناسبة للمبتدئين؟", en: "Are the services suitable for beginners?" }, a: { ar: "نعم، كل خدماتنا مصمّمة لتناسب المبتدئ والمتقدّم على حد سواء.", en: "Yes, all our services are designed for both beginners and advanced seekers." } },
+  { q: { ar: "كيف أحجز جلسة مع أستاذ؟", en: "How do I book a session with a master?" }, a: { ar: "اختر الأستاذ، اضغط «احجز جلسة»، واملأ اسمك وتواصلك — وفريقنا يتواصل معك لتحديد الموعد.", en: "Pick a master, tap “Book a session”, add your name and contact — our team will reach out to arrange the time." } },
+  { q: { ar: "ما طرق الدفع المتاحة؟", en: "What payment methods are available?" }, a: { ar: "PayPal حالياً، والدفع عبر الدعم، وقريباً شام كاش.", en: "PayPal, payment via support, and Sham Cash coming soon." } },
+  { q: { ar: "هل الكرت اليومي مجاني؟", en: "Is the daily card free?" }, a: { ar: "نعم، كرت واحد مجاني كل يوم؛ كل كرت إضافي يتطلّب مشاهدة إعلان قصير.", en: "Yes — one free card daily; each extra card needs a short ad." } },
+  { q: { ar: "بأي لغة تُقدَّم الجلسات؟", en: "In which language are sessions offered?" }, a: { ar: "المنصّة كاملة بالعربية والإنجليزية، والجلسات حسب الأستاذ.", en: "The whole platform is Arabic + English; sessions depend on the master." } }
+];
+
+const PRICING = [
+  { id: "free", name: { ar: "مجاني", en: "Free" }, price: { ar: "0", en: "0" }, popular: false,
+    features: [ { ar: "طاقة يومية وكرت مجاني", en: "Daily energy & a free card" }, { ar: "قراءة الأبراج", en: "Zodiac readings" }, { ar: "تصفّح الكورسات والأساتذة", en: "Browse courses & masters" } ] },
+  { id: "premium", name: { ar: "بريميوم", en: "Premium" }, price: { ar: "٩ $ / شهر", en: "$9 / mo" }, popular: true,
+    features: [ { ar: "بدون إعلانات نهائياً", en: "No ads at all" }, { ar: "كروت غير محدودة", en: "Unlimited cards" }, { ar: "قراءات طاقة متقدمة", en: "Advanced energy readings" }, { ar: "خصم على الكورسات", en: "Discount on courses" } ] },
+  { id: "vip", name: { ar: "VIP", en: "VIP" }, price: { ar: "٢٩ $ / شهر", en: "$29 / mo" }, popular: false,
+    features: [ { ar: "كل مزايا بريميوم", en: "Everything in Premium" }, { ar: "جلسة شهرية مع أستاذ", en: "Monthly session with a master" }, { ar: "أولوية بالحجز والدعم", en: "Priority booking & support" } ] }
 ];

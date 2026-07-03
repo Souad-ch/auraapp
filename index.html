@@ -9,7 +9,6 @@
   <link rel="canonical" href="https://souad-ch.github.io/auraapp/" />
   <meta name="robots" content="index, follow" />
 
-  <!-- ===== Social preview (Open Graph) ===== -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="AURA" />
   <meta property="og:title" content="AURA — منصة الطاقة والروحانيات" />
@@ -22,7 +21,6 @@
   <meta property="og:locale:alternate" content="en_US" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="AURA — منصة الطاقة والروحانيات" />
-  <meta name="twitter:description" content="اكشف طاقة يومك، اسحب كروتك، واحجز جلستك. عربي + إنجليزي." />
   <meta name="twitter:image" content="https://souad-ch.github.io/auraapp/icons/og.png" />
 
   <link rel="manifest" href="manifest.json" />
@@ -31,13 +29,13 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="AURA" />
-  <link rel="stylesheet" href="styles.css?v=16" />
+  <link rel="stylesheet" href="styles.css?v=17" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Cinzel:wght@500;600;700&family=El+Messiri:wght@500;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <!-- ===== Cinematic splash intro ===== -->
+  <!-- Splash -->
   <div class="splash" id="splash" aria-hidden="true">
     <div class="splash-inner">
       <span class="splash-mark">✦</span>
@@ -47,10 +45,8 @@
     </div>
   </div>
 
-  <!-- scroll progress -->
   <div class="scroll-progress" id="scrollProgress"></div>
 
-  <!-- ===== Animated background ===== -->
   <div class="sky" aria-hidden="true">
     <div class="stars" id="stars"></div>
     <div class="moon"></div>
@@ -58,7 +54,7 @@
     <div class="glow glow-2"></div>
   </div>
 
-  <!-- ===== Install banner ===== -->
+  <!-- Install banner -->
   <div class="install-banner" id="installBanner" hidden>
     <span class="ib-text" data-i18n="install_banner">ثبّت تطبيق AURA على موبايلك ✨</span>
     <button class="ib-btn" id="installBtn" data-i18n="install_now">ثبّت</button>
@@ -67,45 +63,65 @@
 
   <!-- ===== Header ===== -->
   <header class="nav">
-    <div class="brand">
-      <span class="brand-mark">✦</span>
-      <span class="brand-name">AURA</span>
-    </div>
+    <div class="brand"><span class="brand-mark">✦</span><span class="brand-name">AURA</span></div>
     <nav class="nav-links" id="navLinks">
-      <a href="#daily" data-i18n="nav_daily">طاقة اليوم</a>
-      <a href="#cards" data-i18n="nav_cards">كروت الطاقة</a>
+      <a href="#services" data-i18n="nav_services">الخدمات</a>
+      <a href="#cards" data-i18n="nav_cards">الكروت</a>
       <a href="#courses" data-i18n="nav_courses">الكورسات</a>
       <a href="#masters" data-i18n="nav_masters">الأساتذة</a>
-      <a href="#support" data-i18n="nav_support">الدعم</a>
+      <a href="#pricing" data-i18n="nav_pricing">الأسعار</a>
     </nav>
-    <button class="lang-toggle" id="langToggle" aria-label="language">EN</button>
+    <div class="nav-actions">
+      <button class="lang-toggle" id="langToggle" aria-label="language">EN</button>
+      <a href="#masters" class="btn btn-primary btn-sm nav-cta" data-i18n="nav_book">احجز الآن</a>
+    </div>
   </header>
 
-  <!-- ===== Hero ===== -->
+  <!-- ===== Hero (split) ===== -->
   <section class="hero" id="top">
-    <div class="hero-stage" aria-hidden="true">
-      <div class="hero-glow-bg"></div>
-      <div class="orbit orbit-b"><span class="orb-item">🌙</span></div>
-      <div class="orbit orbit-a"><span class="orb-item">✦</span></div>
-      <div class="orbit orbit-c"><span class="orb-item">⭐</span></div>
-      <div class="orb"><span class="orb-shine"></span></div>
-      <div class="hero-mist"></div>
-    </div>
-    <h1 class="hero-title">AURA</h1>
-    <div class="hero-divider"><span></span>✦<span></span></div>
-    <p class="hero-sub" data-i18n="hero_sub">منصّتك اليومية للطاقة والروحانيات</p>
-    <p class="hero-desc" data-i18n="hero_desc">اكشف طاقة يومك، اسحب كروتك، تعلّم من أساتذة متخصصين، واحجز جلستك الخاصة.</p>
-    <div class="hero-cta">
-      <a href="#daily" class="btn btn-primary" data-i18n="hero_btn">ابدأ رحلتك</a>
-      <button class="btn btn-ghost" id="installBtnHero" data-i18n="install_app">ثبّت التطبيق على موبايلك</button>
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow" data-i18n="hero_eyebrow">✦ منصّة الطاقة والروحانيات</span>
+        <h1 class="hero-headline" data-i18n="hero_headline">طاقتك تبدأ من هنا</h1>
+        <p class="hero-desc" data-i18n="hero_desc">اكشف طاقة يومك، اسحب كروتك، تعلّم من أساتذة متخصصين، واحجز جلستك الخاصة — بتجربة روحانية أنيقة.</p>
+        <div class="hero-cta">
+          <a href="#services" class="btn btn-primary" data-i18n="hero_btn">ابدأ رحلتك</a>
+          <a href="#masters" class="btn btn-ghost" data-i18n="hero_cta2">احجز جلسة</a>
+        </div>
+        <div class="hero-ministats">
+          <div class="mini"><strong data-count="1200">0</strong><span data-i18n="st_members">عضو</span></div>
+          <div class="mini"><strong data-count="60">0</strong><span data-i18n="st_sessions">جلسة شهرياً</span></div>
+          <div class="mini"><strong>4.9★</strong><span data-i18n="st_rating">تقييم</span></div>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="hero-stage">
+          <div class="hero-glow-bg"></div>
+          <div class="orbit orbit-b"><span class="orb-item">🌙</span></div>
+          <div class="orbit orbit-a"><span class="orb-item">✦</span></div>
+          <div class="orbit orbit-c"><span class="orb-item">⭐</span></div>
+          <div class="orb"><span class="orb-shine"></span></div>
+          <div class="hero-mist"></div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- ===== Daily Energy ===== -->
-  <section class="section" id="daily">
-    <h2 class="section-title" data-i18n="daily_title">🔮 طاقة اليوم</h2>
-    <p class="section-lead" data-i18n="daily_lead">افتح كل يوم لتكشف رسالتك ورقمك ولونك وعنصرك.</p>
+  <!-- ===== Services ===== -->
+  <section class="section" id="services">
+    <span class="eyebrow center" data-i18n="services_eyebrow">✦ ماذا نقدّم</span>
+    <h2 class="section-title" data-i18n="services_title">خدمات AURA</h2>
+    <p class="section-lead" data-i18n="services_lead">كل ما تحتاجه لرحلتك الروحية في مكان واحد.</p>
+    <div class="grid" id="servicesGrid"></div>
+  </section>
 
+  <!-- ===== Daily Energy ===== -->
+  <section class="section split" id="daily">
+    <div class="split-copy">
+      <span class="eyebrow" data-i18n="daily_eyebrow">✦ كل يوم</span>
+      <h2 class="section-title start" data-i18n="daily_title">🔮 طاقة اليوم</h2>
+      <p class="section-lead start" data-i18n="daily_lead">افتح كل يوم لتكشف رسالتك ورقمك ولونك وعنصرك.</p>
+    </div>
     <div class="daily-card" id="dailyCard">
       <div class="daily-front" id="dailyFront">
         <div class="daily-orb">✦</div>
@@ -123,7 +139,6 @@
           <div class="stat"><span class="stat-label" data-i18n="stat_color">لون اليوم</span><span class="stat-value"><span class="color-dot" id="dailyColorDot"></span><span id="dailyColor">—</span></span></div>
           <div class="stat"><span class="stat-label" data-i18n="stat_element">العنصر</span><span class="stat-value" id="dailyElement">—</span></div>
         </div>
-
         <div class="zodiac" id="zodiacBox">
           <div class="zodiac-set" id="zodiacSet">
             <label class="zodiac-label" for="birthDate" data-i18n="birth_prompt">أدخل تاريخ ميلادك لطاقة مخصّصة</label>
@@ -137,7 +152,6 @@
             <span class="zodiac-note" id="zodiacNote"></span>
           </div>
         </div>
-
         <div class="daily-actions">
           <button class="btn btn-ghost btn-sm share-btn" id="shareDaily">🔗 <span data-i18n="share">شارك</span></button>
         </div>
@@ -146,13 +160,12 @@
     </div>
   </section>
 
-  <!-- ===== Energy / Tarot Cards ===== -->
+  <!-- ===== Tarot Cards ===== -->
   <section class="section" id="cards">
+    <span class="eyebrow center" data-i18n="cards_eyebrow">✦ اقرأ طاقتك</span>
     <h2 class="section-title" data-i18n="cards_title">🃏 كروت الطاقة</h2>
     <p class="section-lead" data-i18n="cards_lead">ركّز على سؤالك بقلبك، ثم اسحب كرتك.</p>
-
     <div class="energy-bar" id="cardHint"></div>
-
     <div class="card-deck" id="cardDeck"></div>
     <div class="card-result" id="cardResult" hidden>
       <h3 class="card-name" id="cardName"></h3>
@@ -164,14 +177,22 @@
     </div>
   </section>
 
-  <!-- ===== Ad slot (top) ===== -->
-  <div class="ad-slot" id="adTop" hidden>
-    <span class="ad-label" data-i18n="ad_label">إعلان</span>
-    <div class="ad-box" id="adBoxTop"></div>
-  </div>
+  <!-- ===== How it works ===== -->
+  <section class="section" id="how">
+    <span class="eyebrow center" data-i18n="how_eyebrow">✦ بخطوات بسيطة</span>
+    <h2 class="section-title" data-i18n="how_title">كيف تبدأ رحلتك</h2>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><h3 data-i18n="how_1_t">اكتشف</h3><p data-i18n="how_1_d">افتح طاقة يومك واسحب كروتك مجاناً.</p></div>
+      <div class="step"><span class="step-num">2</span><h3 data-i18n="how_2_t">تعلّم</h3><p data-i18n="how_2_d">اختر كورساً أو خدمة تناسب رحلتك.</p></div>
+      <div class="step"><span class="step-num">3</span><h3 data-i18n="how_3_t">احجز</h3><p data-i18n="how_3_d">احجز جلسة مع أستاذ متخصّص وعِش التجربة.</p></div>
+    </div>
+  </section>
+
+  <div class="ad-slot" id="adTop" hidden><span class="ad-label" data-i18n="ad_label">إعلان</span><div class="ad-box" id="adBoxTop"></div></div>
 
   <!-- ===== Courses ===== -->
   <section class="section" id="courses">
+    <span class="eyebrow center" data-i18n="courses_eyebrow">✦ تعلّم في وقتك</span>
     <h2 class="section-title" data-i18n="courses_title">📚 الكورسات المسجّلة</h2>
     <p class="section-lead" data-i18n="courses_lead">تعلّم في وقتك من كورسات معدّة بعناية.</p>
     <div class="grid" id="coursesGrid"></div>
@@ -179,33 +200,48 @@
 
   <!-- ===== Masters ===== -->
   <section class="section" id="masters">
+    <span class="eyebrow center" data-i18n="masters_eyebrow">✦ خبراء موثوقون</span>
     <h2 class="section-title" data-i18n="masters_title">👩‍🏫 الأساتذة والحجوزات</h2>
     <p class="section-lead" data-i18n="masters_lead">احجز جلستك المباشرة مع أستاذ متخصّص.</p>
     <div class="grid" id="mastersGrid"></div>
   </section>
 
-  <!-- ===== Premium ===== -->
-  <section class="section" id="premium">
-    <div class="premium-card">
-      <h2 class="premium-title" data-i18n="premium_title">⭐ AURA Premium</h2>
-      <p class="premium-lead" data-i18n="premium_lead">تجربة أعمق، بدون إعلانات.</p>
-      <ul class="premium-list">
-        <li data-i18n="premium_f1">بدون إعلانات نهائياً</li>
-        <li data-i18n="premium_f2">كروت وقراءات إضافية</li>
-        <li data-i18n="premium_f3">قراءات طاقة متقدمة يومياً</li>
-      </ul>
-      <a class="btn btn-primary" id="premiumBtn" target="_blank" rel="noopener" data-i18n="premium_btn">أعلمني عند الإطلاق</a>
+  <!-- ===== Testimonials ===== -->
+  <section class="section" id="testimonials">
+    <span class="eyebrow center" data-i18n="tst_eyebrow">✦ قالوا عنّا</span>
+    <h2 class="section-title" data-i18n="tst_title">آراء عملائنا</h2>
+    <div class="grid" id="testimonialsGrid"></div>
+  </section>
+
+  <!-- ===== Pricing ===== -->
+  <section class="section" id="pricing">
+    <span class="eyebrow center" data-i18n="price_eyebrow">✦ باقات مرنة</span>
+    <h2 class="section-title" data-i18n="price_title">اختر باقتك</h2>
+    <p class="section-lead" data-i18n="price_lead">ابدأ مجاناً، وارتقِ متى شئت.</p>
+    <div class="pricing-grid" id="pricingGrid"></div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="section" id="faq">
+    <span class="eyebrow center" data-i18n="faq_eyebrow">✦ أسئلة شائعة</span>
+    <h2 class="section-title" data-i18n="faq_title">عندك سؤال؟</h2>
+    <div class="faq-list" id="faqList"></div>
+  </section>
+
+  <!-- ===== CTA band ===== -->
+  <section class="cta-band">
+    <div class="cta-inner">
+      <h2 data-i18n="cta_title">ابدأ رحلتك الروحية اليوم 🌙</h2>
+      <p data-i18n="cta_text">انضم لآلاف الأعضاء واكتشف طاقتك الحقيقية.</p>
+      <a href="#masters" class="btn btn-primary" data-i18n="cta_btn">احجز جلستك الأولى</a>
     </div>
   </section>
 
-  <!-- ===== Ad slot (bottom) ===== -->
-  <div class="ad-slot" id="adBottom" hidden>
-    <span class="ad-label" data-i18n="ad_label">إعلان</span>
-    <div class="ad-box" id="adBoxBottom"></div>
-  </div>
+  <div class="ad-slot" id="adBottom" hidden><span class="ad-label" data-i18n="ad_label">إعلان</span><div class="ad-box" id="adBoxBottom"></div></div>
 
   <!-- ===== Support ===== -->
   <section class="section" id="support">
+    <span class="eyebrow center" data-i18n="support_eyebrow">✦ نحن هنا</span>
     <h2 class="section-title" data-i18n="support_title">💬 الدعم والدفع</h2>
     <p class="section-lead" data-i18n="support_lead">نحن هنا لمساعدتك في أي وقت.</p>
     <div class="support-grid">
@@ -233,18 +269,35 @@
     </div>
   </section>
 
+  <!-- ===== Footer ===== -->
   <footer class="footer">
-    <div class="brand brand-footer"><span class="brand-mark">✦</span><span class="brand-name">AURA</span></div>
-    <p class="footer-tag" data-i18n="footer_tag">طاقتك تبدأ من هنا 🌙</p>
+    <div class="footer-cols">
+      <div class="footer-col">
+        <div class="brand brand-footer"><span class="brand-mark">✦</span><span class="brand-name">AURA</span></div>
+        <p class="footer-tag" data-i18n="footer_tag">طاقتك تبدأ من هنا 🌙</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="foot_explore">استكشف</h4>
+        <a href="#services" data-i18n="nav_services">الخدمات</a>
+        <a href="#courses" data-i18n="nav_courses">الكورسات</a>
+        <a href="#masters" data-i18n="nav_masters">الأساتذة</a>
+        <a href="#pricing" data-i18n="nav_pricing">الأسعار</a>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="foot_help">مساعدة</h4>
+        <a href="#faq" data-i18n="faq_title">الأسئلة الشائعة</a>
+        <a href="#support" data-i18n="nav_support">الدعم</a>
+      </div>
+    </div>
     <p class="footer-copy">© <span id="year"></span> AURA. <span data-i18n="rights">جميع الحقوق محفوظة.</span></p>
   </footer>
 
-  <!-- ===== Ad gate modal (rewarded card) ===== -->
+  <!-- ===== Ad gate modal ===== -->
   <div class="modal-overlay" id="adGate" hidden>
     <div class="modal adgate-modal">
       <button class="modal-close" id="adGateClose" aria-label="close">×</button>
       <h3 class="modal-title" id="adGateTitle" data-i18n="adgate_title">شاهد إعلاناً لفتح الكرت</h3>
-      <p class="modal-body" id="adGateBody" data-i18n="adgate_body">الكرت الأول مجاني. لفتح كرت إضافي، شاهد إعلاناً قصيراً ✨</p>
+      <p class="modal-body" id="adGateBody" data-i18n="adgate_body">كرت واحد مجاني كل يوم. لفتح كرت إضافي، شاهد إعلاناً قصيراً ✨</p>
       <div class="adgate-box" id="adGateBox"></div>
       <button class="btn btn-primary btn-block" id="adGateBtn" disabled>افتح الكرت 🔓</button>
     </div>
@@ -256,8 +309,6 @@
       <button class="modal-close" id="modalClose" aria-label="close">×</button>
       <h3 class="modal-title" id="modalTitle"></h3>
       <p class="modal-body" id="modalBody"></p>
-
-      <!-- Booking form (shown only for session bookings) -->
       <form class="booking-form" id="bookingForm" hidden>
         <input type="text" id="bkName" class="field" data-i18n-ph="book_name" placeholder="اسمك" />
         <input type="text" id="bkContact" class="field" data-i18n-ph="book_contact" placeholder="رقمك / إيميلك" />
@@ -265,9 +316,7 @@
         <p class="form-msg" id="formMsg" hidden></p>
         <button type="submit" class="btn btn-primary btn-block" id="bkConfirm" data-i18n="book_confirm">اطلب الحجز</button>
       </form>
-
       <div class="paypal-box" id="paypalBox" hidden></div>
-
       <div class="modal-actions">
         <a class="btn btn-primary" id="modalWhatsapp" target="_blank" rel="noopener" data-i18n="modal_wa">احجز عبر واتساب</a>
         <a class="btn btn-ghost" id="modalPaypal" target="_blank" rel="noopener" data-i18n="modal_pay">ادفع عبر PayPal</a>
@@ -275,18 +324,18 @@
     </div>
   </div>
 
-  <!-- ===== App-style bottom navigation ===== -->
+  <!-- ===== Bottom nav ===== -->
   <nav class="bottom-nav" id="bottomNav" aria-label="navigation">
     <a href="#top" class="bn-item" data-sec="top"><span class="bn-ic">🏠</span><span class="bn-label" data-i18n="bn_home">الرئيسية</span></a>
-    <a href="#daily" class="bn-item" data-sec="daily"><span class="bn-ic">🔮</span><span class="bn-label" data-i18n="bn_daily">طاقتك</span></a>
+    <a href="#services" class="bn-item" data-sec="services"><span class="bn-ic">✦</span><span class="bn-label" data-i18n="bn_services">الخدمات</span></a>
     <a href="#cards" class="bn-item" data-sec="cards"><span class="bn-ic">🃏</span><span class="bn-label" data-i18n="bn_cards">الكروت</span></a>
     <a href="#courses" class="bn-item" data-sec="courses"><span class="bn-ic">📚</span><span class="bn-label" data-i18n="bn_courses">كورسات</span></a>
     <a href="#support" class="bn-item" data-sec="support"><span class="bn-ic">💬</span><span class="bn-label" data-i18n="bn_support">الدعم</span></a>
   </nav>
 
-  <script src="config.js?v=16"></script>
-  <script src="i18n.js?v=16"></script>
-  <script src="app.js?v=16"></script>
+  <script src="config.js?v=17"></script>
+  <script src="i18n.js?v=17"></script>
+  <script src="app.js?v=17"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));

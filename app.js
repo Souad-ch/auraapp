@@ -63,6 +63,10 @@
     $("#langToggle").textContent = lang === "ar" ? "EN" : "ع";
     renderCourses();
     renderMasters();
+    renderServices();
+    renderTestimonials();
+    renderPricing();
+    renderFaq();
     renderTimeSlots();
     setupSupportLinks();
     refreshZodiac();
@@ -342,6 +346,97 @@
       slots.map((s) => `<option value="${s}">${s}</option>`).join("");
   }
 
+  /* ---------- Services ---------- */
+  function renderServices() {
+    const grid = $("#servicesGrid"); if (!grid || typeof SERVICES === "undefined") return;
+    grid.innerHTML = "";
+    SERVICES.forEach((s, i) => {
+      const el = document.createElement("div");
+      el.className = "tile service-tile";
+      el.innerHTML = `<div class="tile-icon">${esc(s.icon)}</div>
+        <h3 class="tile-title">${esc(s.title[lang])}</h3>
+        <p class="tile-desc">${esc(s.desc[lang])}</p>`;
+      grid.appendChild(el); reveal(el, i);
+    });
+  }
+
+  /* ---------- Testimonials ---------- */
+  function renderTestimonials() {
+    const grid = $("#testimonialsGrid"); if (!grid || typeof TESTIMONIALS === "undefined") return;
+    grid.innerHTML = "";
+    TESTIMONIALS.forEach((tst, i) => {
+      const el = document.createElement("div");
+      el.className = "tile testimonial";
+      el.innerHTML = `<div class="tst-stars">${"★".repeat(tst.stars || 5)}</div>
+        <p class="tst-text">“${esc(tst.text[lang])}”</p>
+        <div class="tst-name">${esc(tst.name[lang])}</div>`;
+      grid.appendChild(el); reveal(el, i);
+    });
+  }
+
+  /* ---------- Pricing ---------- */
+  function renderPricing() {
+    const grid = $("#pricingGrid"); if (!grid || typeof PRICING === "undefined") return;
+    grid.innerHTML = "";
+    PRICING.forEach((pl, i) => {
+      const el = document.createElement("div");
+      el.className = "price-card" + (pl.popular ? " popular" : "");
+      const feats = pl.features.map((f) => `<li>${esc(f[lang])}</li>`).join("");
+      const isFree = pl.id === "free";
+      el.innerHTML = `
+        ${pl.popular ? `<span class="price-badge">${esc(t("price_popular"))}</span>` : ""}
+        <h3 class="price-name">${esc(pl.name[lang])}</h3>
+        <div class="price-amount">${isFree ? esc(t("price_free_badge")) : esc(pl.price[lang])}</div>
+        <ul class="price-feats">${feats}</ul>
+        <button class="btn ${pl.popular ? "btn-primary" : "btn-ghost"} btn-block">${esc(isFree ? t("hero_btn") : t("price_choose"))}</button>`;
+      const btn = el.querySelector("button");
+      if (isFree) btn.addEventListener("click", () => location.hash = "#cards");
+      else btn.addEventListener("click", () => window.open(waLink(`${t("wa_price_msg")} ${pl.name[lang]}`), "_blank", "noopener"));
+      grid.appendChild(el); reveal(el, i);
+    });
+  }
+
+  /* ---------- FAQ accordion ---------- */
+  function renderFaq() {
+    const list = $("#faqList"); if (!list || typeof FAQS === "undefined") return;
+    list.innerHTML = "";
+    FAQS.forEach((f, i) => {
+      const el = document.createElement("div");
+      el.className = "faq-item";
+      el.innerHTML = `<button class="faq-q" aria-expanded="false"><span>${esc(f.q[lang])}</span><span class="faq-ic">+</span></button>
+        <div class="faq-a"><p>${esc(f.a[lang])}</p></div>`;
+      const q = el.querySelector(".faq-q");
+      q.addEventListener("click", () => {
+        const open = el.classList.toggle("open");
+        q.setAttribute("aria-expanded", open ? "true" : "false");
+        q.querySelector(".faq-ic").textContent = open ? "−" : "+";
+      });
+      list.appendChild(el); reveal(el, i % 4);
+    });
+  }
+
+  /* ---------- Animated stat counters ---------- */
+  function setupStats() {
+    const nums = $$("[data-count]");
+    if (!nums.length) return;
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      nums.forEach((n) => { n.textContent = (+n.dataset.count).toLocaleString(); }); return;
+    }
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (!en.isIntersecting) return;
+        const el = en.target, to = +el.dataset.count, start = performance.now(), dur = 1400;
+        (function step(now) {
+          const p = Math.min((now - start) / dur, 1), eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(to * eased).toLocaleString() + (p >= 1 && to >= 1000 ? "+" : "");
+          if (p < 1) requestAnimationFrame(step);
+        })(start);
+        obs.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    nums.forEach((n) => obs.observe(n));
+  }
+
   /* ---------- Modal: course subscription ---------- */
   function openCourse(course) {
     const name = course.title[lang];
@@ -531,9 +626,9 @@
     deferredPrompt.prompt(); await deferredPrompt.userChoice;
     deferredPrompt = null; banner.hidden = true;
   }
-  $("#installBtn").addEventListener("click", doInstall);
-  $("#installBtnHero").addEventListener("click", doInstall);
-  $("#installClose").addEventListener("click", () => {
+  const _ib = $("#installBtn"); if (_ib) _ib.addEventListener("click", doInstall);
+  const _ibh = $("#installBtnHero"); if (_ibh) _ibh.addEventListener("click", doInstall);
+  const _ic = $("#installClose"); if (_ic) _ic.addEventListener("click", () => {
     banner.hidden = true; localStorage.setItem("aura_install_dismissed", "1");
   });
   window.addEventListener("appinstalled", () => { banner.hidden = true; });
@@ -555,8 +650,8 @@
   }
   function setupReveals() {
     document.querySelectorAll(
-      ".section-title, .section-lead, .daily-card, .card-deck, .cards-actions, " +
-      ".support-card, .premium-card, .footer > *"
+      ".section-title, .section-lead, .eyebrow, .daily-card, .card-deck, .cards-actions, " +
+      ".step, .support-card, .cta-inner, .hero-copy, .footer-col"
     ).forEach((el, i) => reveal(el, i % 4));
   }
   // gold scroll-progress bar at the top
@@ -603,4 +698,5 @@
   setupReveals();
   renderCardHint();
   setupBottomNav();
+  setupStats();
 })();

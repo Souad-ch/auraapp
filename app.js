@@ -650,7 +650,7 @@
   }
   function setupReveals() {
     document.querySelectorAll(
-      ".section-title, .section-lead, .eyebrow, .daily-card, .card-deck, .cards-actions, " +
+      ".section-title, .section-lead, .eyebrow, .daily-card, " +
       ".step, .support-card, .cta-inner, .hero-copy, .footer-col"
     ).forEach((el, i) => reveal(el, i % 4));
   }

@@ -337,8 +337,15 @@
   <script src="i18n.js?v=18"></script>
   <script src="app.js?v=18"></script>
   <script>
+    // Retire any previously-installed caching service worker and clear caches,
+    // so the site always loads the latest version fresh.
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+      navigator.serviceWorker.getRegistrations().then(function (rs) {
+        rs.forEach(function (r) { r.update(); });
+      }).catch(function () {});
+    }
+    if (self.caches) {
+      caches.keys().then(function (ks) { ks.forEach(function (k) { caches.delete(k); }); }).catch(function () {});
     }
   </script>
 </body>

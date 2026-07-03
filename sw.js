@@ -1,55 +1,18 @@
-/* AURA — service worker (offline support) */
-const CACHE = "aura-v18";
-const ASSETS = [
-  "./",
-  "./index.html",
-  "./styles.css",
-  "./config.js",
-  "./i18n.js",
-  "./app.js",
-  "./manifest.json",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png",
-  "./icons/og.png"
-];
+/* AURA — self-retiring service worker.
+   Earlier versions cached files, which kept serving stale pages on some
+   devices. This version caches nothing: on activation it deletes every cache,
+   unregisters itself, and reloads open tabs so the site always loads the
+   latest version fresh from the network. */
+self.addEventListener("install", () => self.skipWaiting());
 
-self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)).then(() => self.skipWaiting()));
-});
-
-self.addEventListener("activate", (e) => {
-  e.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
-    ).then(() => self.clients.claim())
-  );
-});
-
-// config.js and HTML must always be fresh (network-first) so config/content
-// changes show up immediately; static assets stay cache-first for speed/offline.
-function networkFirst(req) {
-  return fetch(req).then((res) => {
-    const copy = res.clone();
-    caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {});
-    return res;
-  }).catch(() => caches.match(req));
-}
-function cacheFirst(req) {
-  return caches.match(req).then((cached) =>
-    cached || fetch(req).then((res) => {
-      const copy = res.clone();
-      caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {});
-      return res;
-    }).catch(() => cached)
-  );
-}
-
-self.addEventListener("fetch", (e) => {
-  if (e.request.method !== "GET") return;
-  const url = new URL(e.request.url);
-  // Same-origin app files (HTML/CSS/JS/JSON) are always network-first so the
-  // whole app updates together and never mixes new HTML with stale CSS/JS.
-  // Cross-origin assets (fonts, etc.) stay cache-first for speed/offline.
-  const sameOrigin = url.origin === self.location.origin;
-  e.respondWith(sameOrigin ? networkFirst(e.request) : cacheFirst(e.request));
+self.addEventListener("activate", (event) => {
+  event.waitUntil((async () => {
+    try {
+      const keys = await caches.keys();
+      await Promise.all(keys.map((k) => caches.delete(k)));
+      await self.registration.unregister();
+      const clients = await self.clients.matchAll({ type: "window" });
+      clients.forEach((c) => { try { c.navigate(c.url); } catch (e) {} });
+    } catch (e) { /* ignore */ }
+  })());
 });

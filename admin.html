@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0c0a1e" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>AURA — لوحة التحكم</title>
+  <title>AURA — لوحة تحكم الموقع</title>
   <link rel="icon" type="image/png" href="icons/icon-192.png" />
-  <link rel="stylesheet" href="styles.css?v=16" />
-  <link rel="stylesheet" href="admin.css?v=16" />
+  <link rel="stylesheet" href="styles.css?v=25" />
+  <link rel="stylesheet" href="admin.css?v=25" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Cinzel:wght@500;700&display=swap" rel="stylesheet" />
 </head>
@@ -18,26 +18,20 @@
   <header class="admin-nav">
     <div class="brand"><span class="brand-mark">✦</span><span class="brand-name">AURA</span><span class="admin-tag">لوحة التحكم</span></div>
     <div class="admin-nav-right">
-      <a href="index.html" class="btn btn-ghost btn-sm">عرض الموقع</a>
+      <a href="index.html" class="btn btn-ghost btn-sm">الموقع</a>
+      <a href="account.html" class="btn btn-ghost btn-sm">حسابي</a>
       <button class="btn btn-ghost btn-sm" id="logoutBtn" hidden>خروج</button>
     </div>
   </header>
 
-  <!-- Setup notice (no Supabase) -->
   <section class="admin-wrap" id="setupNotice" hidden>
-    <div class="admin-card center">
-      <h2>⚙️ إعداد مطلوب</h2>
-      <p class="muted">لوحة التحكم تحتاج Supabase. افتحي <code>config.js</code> واملئي
-        <code>supabase.url</code> و <code>supabase.anonKey</code>، وشغّلي ملف
-        <code>supabase-schema.sql</code> في Supabase، ثم أنشئي مستخدماً للأدمن من
-        Authentication → Users.</p>
-    </div>
+    <div class="admin-card center"><h2>⚙️ إعداد مطلوب</h2>
+      <p class="muted">املئي <code>config.js</code> بـ Supabase، وشغّلي <code>supabase-setup.sql</code> ثم <code>supabase-site.sql</code>.</p></div>
   </section>
 
-  <!-- Login -->
   <section class="admin-wrap" id="loginView" hidden>
     <form class="admin-card center login-card" id="loginForm">
-      <h2>🔐 تسجيل الدخول</h2>
+      <h2>🔐 دخول الأدمن</h2>
       <input type="email" id="email" class="field" placeholder="الإيميل" autocomplete="username" />
       <input type="password" id="password" class="field" placeholder="كلمة المرور" autocomplete="current-password" />
       <p class="form-msg err" id="loginMsg" hidden></p>
@@ -45,47 +39,53 @@
     </form>
   </section>
 
-  <!-- Dashboard -->
   <main class="admin-wrap" id="dashboard" hidden>
     <div class="tabs">
       <button class="tab active" data-tab="bookings">📅 الحجوزات</button>
       <button class="tab" data-tab="courses">📚 الكورسات</button>
-      <button class="tab" data-tab="masters">👩‍🏫 الأساتذة</button>
+      <button class="tab" data-tab="teachers">👩‍🏫 الأساتذة</button>
+      <button class="tab" data-tab="books">📖 الكتب</button>
+      <button class="tab" data-tab="texts">✍️ النصوص</button>
     </div>
 
-    <!-- Bookings -->
     <section class="tab-panel" id="panel-bookings">
       <h3>الحجوزات</h3>
       <div class="table-wrap"><table class="admin-table" id="bookingsTable">
-        <thead><tr><th>التاريخ</th><th>الوقت</th><th>الأستاذ</th><th>العميل</th><th>تواصل</th><th>الحالة</th><th></th></tr></thead>
-        <tbody></tbody>
+        <thead><tr><th>التاريخ</th><th>الأستاذ</th><th>العميل</th><th>تواصل</th><th>الحالة</th><th></th></tr></thead><tbody></tbody>
       </table></div>
       <p class="muted empty" id="bookingsEmpty" hidden>لا توجد حجوزات بعد.</p>
     </section>
 
-    <!-- Courses -->
     <section class="tab-panel" id="panel-courses" hidden>
-      <div class="panel-head"><h3>الكورسات</h3><button class="btn btn-primary btn-sm" id="addCourse">+ كورس جديد</button></div>
+      <div class="panel-head"><h3>الكورسات</h3><button class="btn btn-primary btn-sm" data-add="courses">+ كورس</button></div>
       <div class="cards-list" id="coursesList"></div>
     </section>
 
-    <!-- Masters -->
-    <section class="tab-panel" id="panel-masters" hidden>
-      <div class="panel-head"><h3>الأساتذة</h3><button class="btn btn-primary btn-sm" id="addMaster">+ أستاذ جديد</button></div>
-      <div class="cards-list" id="mastersList"></div>
+    <section class="tab-panel" id="panel-teachers" hidden>
+      <div class="panel-head"><h3>الأساتذة (الظاهرون بالموقع)</h3><button class="btn btn-primary btn-sm" data-add="teachers">+ أستاذ</button></div>
+      <div class="cards-list" id="teachersList"></div>
+    </section>
+
+    <section class="tab-panel" id="panel-books" hidden>
+      <div class="panel-head"><h3>الكتب</h3><button class="btn btn-primary btn-sm" data-add="books">+ كتاب</button></div>
+      <div class="cards-list" id="booksList"></div>
+    </section>
+
+    <section class="tab-panel" id="panel-texts" hidden>
+      <h3>نصوص السيكشنات</h3>
+      <p class="muted" style="margin-bottom:14px">عدّلي النص واضغطي حفظ — يظهر فوراً على الموقع.</p>
+      <div id="textsList"></div>
     </section>
   </main>
 
-  <!-- Edit modal -->
   <div class="modal-overlay" id="editModal" hidden>
-    <div class="modal">
-      <button class="modal-close" id="editClose" aria-label="close">×</button>
+    <div class="modal"><button class="modal-close" id="editClose" aria-label="close">×</button>
       <h3 class="modal-title" id="editTitle"></h3>
       <form id="editForm" class="admin-form"></form>
     </div>
   </div>
 
-  <script src="config.js?v=16"></script>
-  <script src="admin.js?v=16"></script>
+  <script src="config.js?v=25"></script>
+  <script src="admin.js?v=25"></script>
 </body>
 </html>

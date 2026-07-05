@@ -71,6 +71,7 @@
     setupSupportLinks();
     refreshZodiac();
     renderCardHint();
+    applySiteContent(_siteContent);
   }
   $("#langToggle").addEventListener("click", () => {
     lang = lang === "ar" ? "en" : "ar";
@@ -522,30 +523,41 @@
     } catch (e) { /* fall back silently to WhatsApp */ }
   }
 
-  /* Load courses & masters from Supabase (overrides config defaults when present) */
+  /* Load site content from Supabase (overrides config defaults when present).
+     The DB stores single-language text; we mirror it to both ar/en so the
+     existing bilingual renderers keep working. */
   function fmtPrice(amount, l) { const n = Number(amount) || 0; return l === "ar" ? `${n} $` : `$${n}`; }
+  function bi(v) { const s = v == null ? "" : String(v); return { ar: s, en: s }; }
   function normCourse(r) {
-    return { id: r.id, icon: r.icon || "📘", amount: Number(r.amount) || 0,
-      title: { ar: r.title_ar, en: r.title_en || r.title_ar },
-      desc: { ar: r.desc_ar || "", en: r.desc_en || r.desc_ar || "" },
-      price: { ar: fmtPrice(r.amount, "ar"), en: fmtPrice(r.amount, "en") } };
+    return { id: r.id, icon: r.cover || "📘", amount: Number(r.price) || 0,
+      title: bi(r.title), desc: bi(r.description || ""),
+      price: { ar: fmtPrice(r.price, "ar"), en: fmtPrice(r.price, "en") } };
   }
   function normMaster(r) {
-    return { id: r.id, avatar: r.avatar || "🌟", sessionPrice: Number(r.session_price) || 0,
-      name: { ar: r.name_ar, en: r.name_en || r.name_ar },
-      specialty: { ar: r.specialty_ar || "", en: r.specialty_en || r.specialty_ar || "" },
-      services: { ar: r.services_ar || "", en: r.services_en || r.services_ar || "" } };
+    return { id: r.id, avatar: r.avatar || "🌟", type: "live", sessionPrice: Number(r.session_price) || 0,
+      name: bi(r.name), specialty: bi(r.specialty || ""), services: bi(r.services || "") };
+  }
+  let _siteContent = [];
+  function applySiteContent(rows) {
+    (rows || []).forEach((r) => {
+      $$(`[data-i18n="${r.key}"]`).forEach((el) => {
+        const val = lang === "ar" ? r.value_ar : (r.value_en || r.value_ar);
+        if (val && val.trim()) el.textContent = val;
+      });
+    });
   }
   async function hydrateFromSupabase() {
     const sb = await loadSupabase();
     if (!sb) return;
     try {
-      const [cs, ms] = await Promise.all([
-        sb.from("courses").select("*").eq("active", true).order("sort"),
-        sb.from("masters").select("*").eq("active", true).order("sort")
+      const [cs, ts, sc] = await Promise.all([
+        sb.from("courses_public").select("*").order("created_at", { ascending: false }),
+        sb.from("teachers").select("*").eq("published", true).order("sort"),
+        sb.from("site_content").select("*")
       ]);
       if (cs.data && cs.data.length) { cfg.courses = cs.data.map(normCourse); renderCourses(); }
-      if (ms.data && ms.data.length) { cfg.masters = ms.data.map(normMaster); renderMasters(); }
+      if (ts.data && ts.data.length) { cfg.masters = ts.data.map(normMaster); renderMasters(); }
+      if (sc.data && sc.data.length) { _siteContent = sc.data; applySiteContent(_siteContent); }
     } catch (e) { /* keep config defaults */ }
   }
 

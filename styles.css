@@ -540,3 +540,60 @@ body {
   .stage-panel, .float-card { display: inline-flex; }
   .hero-ministats { display: none; }
 }
+
+/* ============================================================
+   DARK CINEMATIC theme override (holographic accents on dark)
+   ============================================================ */
+:root {
+  --bg: #0c0a1e;
+  --bg2: #151130;
+  --ink: #f1eeff;
+  --ink-soft: #d4cdf3;
+  --muted: #a79fce;
+  --card: rgba(255, 255, 255, 0.055);
+  --card-solid: #171334;
+  --card-border: rgba(180, 160, 255, 0.20);
+  --shadow: 0 28px 64px rgba(0, 0, 0, 0.55);
+  --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.45);
+  --text: #f1eeff;
+}
+
+.sky {
+  background:
+    radial-gradient(85% 60% at 12% 6%, rgba(255, 111, 181, 0.20), transparent 60%),
+    radial-gradient(85% 60% at 92% 16%, rgba(75, 182, 240, 0.18), transparent 60%),
+    radial-gradient(120% 90% at 50% 118%, rgba(53, 211, 176, 0.16), transparent 55%),
+    linear-gradient(160deg, #120e28 0%, #0c0a1e 55%, #0a0818 100%);
+}
+.sky::after { background: radial-gradient(120% 120% at 50% 30%, transparent 55%, rgba(0,0,0,.55) 100%); }
+.star { background: #d9d0ff; opacity: .7; }
+.glow { opacity: .38; }
+
+.nav { background: rgba(12, 10, 30, 0.72); border-bottom-color: rgba(180,160,255,.16); }
+.lang-toggle { background: rgba(255,255,255,.06); }
+.btn-ghost { background: rgba(255,255,255,.05); }
+.field, .zodiac-input { background: rgba(255,255,255,.06); color: var(--ink); }
+.modal { background: var(--card-solid); border-color: rgba(180,160,255,.22); }
+.modal-overlay { background: rgba(0,0,0,.6); }
+.bottom-nav { background: rgba(12,10,30,.9); border-top-color: rgba(180,160,255,.16); }
+.install-banner { background: rgba(23,19,52,.94); }
+.footer { background: rgba(0,0,0,.28); border-top-color: rgba(180,160,255,.14); }
+.energy-bar { background: rgba(255,255,255,.06); }
+
+/* glass panels on dark */
+.stage-panel { background: linear-gradient(160deg, rgba(255,255,255,.09), rgba(255,255,255,.02));
+  border-color: rgba(255,255,255,.14); }
+.float-card { background: rgba(23,19,52,.72); border-color: rgba(180,160,255,.24); }
+.float-card .fc-2 .fc-txt strong, .fc-2 .fc-txt strong { color: var(--ink); }
+
+/* splash dark */
+.splash { background: radial-gradient(120% 100% at 50% 30%, #1a1440 0%, #0f0b26 55%, #0a0818 100%); }
+
+/* tarot cards: luminous on dark */
+.tcard-front { background: linear-gradient(155deg, #221a49 0%, #2c2056 50%, #1c2a55 100%);
+  border-color: rgba(180,160,255,.35);
+  box-shadow: var(--shadow-soft), inset 0 0 0 3px rgba(255,255,255,.10), inset 0 0 24px rgba(168,107,255,.25); }
+.tcard-back { background: linear-gradient(155deg, #3a2470 0%, #2a2a72 50%, #1f4a7a 100%); }
+
+/* step number / avatar keep holographic */
+.step h3, .price-name, .tile-title, .support-card h3, .faq-q { color: var(--ink); }

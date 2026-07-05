@@ -107,8 +107,15 @@
   }
   async function watch(cid) {
     const { data } = await sb.rpc("course_content", { cid });
-    if (data && data.content_url) window.open(data.content_url, "_blank", "noopener");
-    else alert("المحتوى غير متاح.");
+    if (!data || !data.content_url) { alert("المحتوى غير متاح."); return; }
+    let url = data.content_url;
+    if (!/^https?:\/\//i.test(url)) {
+      // uploaded file → generate a temporary secure link
+      const s = await sb.storage.from("course-videos").createSignedUrl(url, 3600);
+      if (s.error || !s.data) { alert("تعذّر فتح الفيديو."); return; }
+      url = s.data.signedUrl;
+    }
+    window.open(url, "_blank", "noopener");
   }
 
   /* ---------- Master ---------- */
@@ -155,11 +162,28 @@
   $("#courseClose").addEventListener("click", () => { $("#courseModal").hidden = true; });
   $("#courseForm").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const row = { owner: me.id, title: $("#cTitle").value.trim(), description: $("#cDesc").value.trim(),
-      price: Number($("#cPrice").value) || 0, cover: $("#cCover").value.trim() || "📘", content_url: $("#cUrl").value.trim() };
-    const res = editId ? await sb.from("courses").update(row).eq("id", editId) : await sb.from("courses").insert(row);
-    if (res.error) { alert("خطأ: " + res.error.message); return; }
-    $("#courseModal").hidden = true; loadMasterCourses(); loadMaster();
+    const btn = $("#courseSave"), msg = $("#courseMsg");
+    const file = $("#cFile").files[0];
+    let content_url = $("#cUrl").value.trim();
+    msg.hidden = true;
+    btn.disabled = true; btn.textContent = "جارٍ الحفظ...";
+    try {
+      if (file) {
+        btn.textContent = "جارٍ رفع الفيديو... ⏳";
+        const safe = file.name.replace(/[^\w.\-]/g, "_");
+        const path = me.id + "/" + Date.now() + "-" + safe;
+        const up = await sb.storage.from("course-videos").upload(path, file, { upsert: false });
+        if (up.error) { msg.textContent = "خطأ رفع الفيديو: " + up.error.message; msg.className = "form-msg err"; msg.hidden = false; return; }
+        content_url = path; // storage path
+      }
+      const row = { owner: me.id, title: $("#cTitle").value.trim(), description: $("#cDesc").value.trim(),
+        price: Number($("#cPrice").value) || 0, cover: $("#cCover").value.trim() || "📘", content_url };
+      const res = editId ? await sb.from("courses").update(row).eq("id", editId) : await sb.from("courses").insert(row);
+      if (res.error) { msg.textContent = "خطأ: " + res.error.message; msg.className = "form-msg err"; msg.hidden = false; return; }
+      $("#courseModal").hidden = true; loadMasterCourses(); loadMaster();
+    } finally {
+      btn.disabled = false; btn.textContent = "حفظ";
+    }
   });
 
   $("#grantBtn").addEventListener("click", async () => {

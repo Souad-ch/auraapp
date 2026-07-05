@@ -597,3 +597,8 @@ body {
 
 /* step number / avatar keep holographic */
 .step h3, .price-name, .tile-title, .support-card h3, .faq-q { color: var(--ink); }
+
+/* Guarantee the reshuffle button never overlaps the cards, even if a stale
+   cached script applies a reveal transform to the deck. */
+.card-deck, .cards-actions { transform: none !important; opacity: 1 !important; }
+.cards-actions { position: relative; z-index: 3; margin-top: 40px; }

@@ -24,8 +24,8 @@ const AURA_CONFIG = {
   payhipStore: "",
 
   supabase: {
-    url: "https://xuxuvvzzamjwvliovduz.supabase.co",
-    anonKey: "sb_publishable_HbwUZ2OxpG0ufS_MSedVEw_K2jhntpM"
+    url: "https://qwpccrznxidehtbbbwyq.supabase.co",
+    anonKey: "sb_publishable_UDA6gH82b6FjX4bYLm5o_A_n5OWL24V"
   },
 
   adsense: { client: "", slotTop: "", slotBottom: "" },

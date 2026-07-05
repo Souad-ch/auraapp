@@ -509,3 +509,34 @@ body {
 .footer-col a { display: block; color: var(--muted); text-decoration: none; margin-bottom: 8px; font-size: .92rem; transition: color .2s; }
 .footer-col a:hover { color: var(--accent); }
 @media (max-width: 700px) { .footer-cols { grid-template-columns: 1fr 1fr; gap: 24px; } .footer-col:first-child { grid-column: 1 / -1; } }
+
+/* ============================================================
+   Cinematic hero — glass stage + floating info cards (desktop)
+   ============================================================ */
+.stage-panel { display: none; position: absolute; inset: 4% 2%; border-radius: 32px; z-index: 0;
+  background: linear-gradient(160deg, rgba(255,255,255,.55), rgba(255,255,255,.12));
+  border: 1px solid rgba(255,255,255,.7); box-shadow: var(--shadow); backdrop-filter: blur(6px); }
+.float-card { display: none; position: absolute; z-index: 6; align-items: center; gap: 10px;
+  background: rgba(255,255,255,.74); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,.85);
+  border-radius: 16px; padding: 12px 16px; box-shadow: var(--shadow); white-space: nowrap; }
+.float-card .fc-big { font-family: "El Messiri", serif; font-weight: 800; font-size: 1.25rem;
+  background: var(--holo-strong); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.float-card .fc-sub { font-size: .74rem; color: var(--muted); }
+.fc-1, .fc-3 { flex-direction: column; align-items: flex-start; gap: 2px; }
+.fc-1 { top: 5%; inset-inline-start: 2%; }
+.fc-3 { bottom: 6%; inset-inline-start: 10%; }
+.fc-2 { top: 46%; inset-inline-end: 0; }
+.fc-2 .fc-ic { font-size: 1.5rem; }
+.fc-2 .fc-txt { display: flex; flex-direction: column; line-height: 1.35; }
+.fc-2 .fc-txt strong { color: var(--ink); font-size: .9rem; }
+.fc-2 .fc-txt small { color: var(--muted); font-size: .72rem; }
+@media (prefers-reduced-motion: no-preference) {
+  .fc-1 { animation: float 6s ease-in-out infinite; }
+  .fc-2 { animation: float 7.2s ease-in-out .5s infinite; }
+  .fc-3 { animation: float 6.5s ease-in-out .25s infinite; }
+}
+@media (min-width: 900px) {
+  .hero-stage { width: 460px; height: 430px; }
+  .stage-panel, .float-card { display: inline-flex; }
+  .hero-ministats { display: none; }
+}

@@ -58,3 +58,14 @@
 .admin-field { display: flex; flex-direction: column; gap: 6px; font-size: .9rem; color: var(--muted); }
 .admin-field input[type="checkbox"] { width: 22px; height: 22px; }
 .admin-form textarea { min-height: 70px; resize: vertical; }
+
+/* Account dashboard */
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 22px; }
+.stat-box { background: var(--card); backdrop-filter: var(--glass-blur); border: 1px solid var(--card-border);
+  border-radius: 16px; padding: 20px 12px; text-align: center; }
+.stat-box strong { display: block; font-size: 1.8rem; font-family: "El Messiri", serif;
+  background: var(--holo-strong); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.stat-box span { font-size: .82rem; color: var(--muted); }
+.grant-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.grant-row .field { flex: 1; min-width: 140px; }
+@media (max-width: 600px) { .stats-row { grid-template-columns: 1fr; } }

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0c0a1e" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>AURA — حسابي</title>
+  <link rel="icon" type="image/png" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="styles.css?v=23" />
+  <link rel="stylesheet" href="admin.css?v=23" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Cinzel:wght@500;700&display=swap" rel="stylesheet" />
+</head>
+<body class="admin-body">
+  <div class="sky" aria-hidden="true"><div class="glow glow-1"></div><div class="glow glow-2"></div></div>
+
+  <header class="admin-nav">
+    <div class="brand"><span class="brand-mark">✦</span><span class="brand-name">AURA</span><span class="admin-tag" id="roleTag">حسابي</span></div>
+    <div class="admin-nav-right">
+      <a href="index.html" class="btn btn-ghost btn-sm">الموقع</a>
+      <button class="btn btn-ghost btn-sm" id="logoutBtn" hidden>خروج</button>
+    </div>
+  </header>
+
+  <!-- Setup notice -->
+  <section class="admin-wrap" id="setupNotice" hidden>
+    <div class="admin-card center">
+      <h2>⚙️ إعداد مطلوب</h2>
+      <p class="muted">هذه الصفحة تحتاج Supabase. املئي <code>config.js</code> بـ <code>url</code> و <code>anonKey</code>،
+        وشغّلي <code>supabase-platform.sql</code> في Supabase.</p>
+    </div>
+  </section>
+
+  <!-- Auth -->
+  <section class="admin-wrap" id="authView" hidden>
+    <div class="admin-card center login-card">
+      <h2 id="authTitle">🔐 تسجيل الدخول</h2>
+      <input type="text" id="fullName" class="field" placeholder="اسمك الكامل" hidden />
+      <input type="email" id="email" class="field" placeholder="الإيميل" autocomplete="username" />
+      <input type="password" id="password" class="field" placeholder="كلمة المرور" autocomplete="current-password" />
+      <p class="form-msg err" id="authMsg" hidden></p>
+      <button class="btn btn-primary btn-block" id="authSubmit">دخول</button>
+      <p class="muted" style="margin-top:14px">
+        <span id="authSwitchTxt">لا تملك حساباً؟</span>
+        <a href="#" id="authSwitch" style="color:var(--accent);font-weight:700">أنشئ حساباً</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Dashboard -->
+  <main class="admin-wrap" id="dashboard" hidden>
+    <div class="admin-card" style="margin-bottom:20px">
+      <h2 id="welcome">أهلاً بك 🌙</h2>
+      <p class="muted" id="roleLine"></p>
+    </div>
+
+    <!-- CUSTOMER -->
+    <section id="custView" hidden>
+      <div class="admin-card" style="margin-bottom:20px">
+        <h3>💎 اشتراكي</h3>
+        <p id="subLine" class="muted">—</p>
+        <a class="btn btn-primary btn-sm" id="subCta" target="_blank" rel="noopener" hidden>اشترك الآن</a>
+      </div>
+      <h3 style="margin-bottom:14px">📚 كورساتي</h3>
+      <div class="cards-list" id="myCourses"></div>
+      <p class="muted empty" id="myCoursesEmpty" hidden>لم تشترِ أي كورس بعد. تصفّح الكورسات من الموقع 🌙</p>
+    </section>
+
+    <!-- MASTER -->
+    <section id="masterView" hidden>
+      <div class="stats-row" id="masterStats"></div>
+      <div class="panel-head"><h3>📚 كورساتي</h3><button class="btn btn-primary btn-sm" id="addCourseBtn">+ كورس جديد</button></div>
+      <div class="cards-list" id="masterCourses"></div>
+      <div class="admin-card" style="margin-top:20px">
+        <h3>🔓 منح وصول لطالب (بعد الدفع)</h3>
+        <div class="grant-row">
+          <input type="email" id="grantEmail" class="field" placeholder="إيميل الطالب" />
+          <select id="grantCourse" class="field"></select>
+          <button class="btn btn-primary btn-sm" id="grantBtn">منح</button>
+        </div>
+        <p class="form-msg" id="grantMsg" hidden></p>
+      </div>
+    </section>
+
+    <!-- ADMIN -->
+    <section id="adminView" hidden>
+      <div class="admin-card center">
+        <h3>👑 لوحة الأدمن</h3>
+        <p class="muted">إدارة الكورسات والأساتذة والحجوزات.</p>
+        <a href="admin.html" class="btn btn-primary btn-sm">افتح لوحة التحكم</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Add / edit course modal -->
+  <div class="modal-overlay" id="courseModal" hidden>
+    <div class="modal">
+      <button class="modal-close" id="courseClose" aria-label="close">×</button>
+      <h3 class="modal-title">كورس</h3>
+      <form id="courseForm" class="admin-form">
+        <label class="admin-field"><span>عنوان الكورس</span><input class="field" id="cTitle" required /></label>
+        <label class="admin-field"><span>وصف مختصر</span><textarea class="field" id="cDesc"></textarea></label>
+        <label class="admin-field"><span>السعر ($)</span><input class="field" type="number" id="cPrice" value="0" /></label>
+        <label class="admin-field"><span>أيقونة</span><input class="field" id="cCover" value="📘" /></label>
+        <label class="admin-field"><span>رابط الفيديو (Vimeo / يوتيوب غير مدرج / درايف)</span><input class="field" id="cUrl" placeholder="https://..." /></label>
+        <button type="submit" class="btn btn-primary btn-block">حفظ</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="config.js?v=23"></script>
+  <script src="account.js?v=23"></script>
+</body>
+</html>

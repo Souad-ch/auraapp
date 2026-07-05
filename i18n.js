@@ -18,7 +18,7 @@ const I18N = {
     how_3_t: "احجز", how_3_d: "احجز جلسة مع أستاذ متخصّص وعِش التجربة.",
     courses_eyebrow: "✦ تعلّم في وقتك", masters_eyebrow: "✦ خبراء موثوقون",
     books_eyebrow: "✦ اقرأ وتعمّق", books_title: "📚 مكتبة الكتب", books_lead: "كتب رقمية لرحلتك الروحية — حمّلها فوراً بعد الشراء.",
-    buy_now: "شراء وتحميل", nav_books: "الكتب",
+    buy_now: "شراء وتحميل", nav_books: "الكتب", nav_account: "حسابي",
     badge_live: "جلسة مباشرة", badge_recorded: "مسجّل + مباشر",
     wa_book_msg: "مرحباً AURA، أرغب بشراء كتاب:",
     wa_course_buy_msg: "مرحباً AURA، أرغب بشراء كورس:",
@@ -98,7 +98,7 @@ const I18N = {
   en: {
     nav_daily: "Daily Energy", nav_cards: "Cards", nav_courses: "Courses",
     nav_masters: "Masters", nav_support: "Support",
-    nav_services: "Services", nav_pricing: "Pricing", nav_book: "Book now",
+    nav_services: "Services", nav_pricing: "Pricing", nav_book: "Book now", nav_account: "Account", nav_books: "Books",
     hero_eyebrow: "✦ Energy & Spirituality Platform",
     hero_headline: "Your energy starts here",
     hero_cta2: "Book a session",

@@ -713,3 +713,25 @@ body {
   .sc-bgword, .sc-progress { display: none; }
   .holo-orb { animation: none; }
 }
+
+/* ---- Cinematic content sections (courses / masters) ---- */
+.section-cine { position: relative; overflow: hidden; }
+.sec-glow {
+  position: absolute; z-index: 0; width: 60vw; max-width: 520px; aspect-ratio: 1;
+  border-radius: 50%; filter: blur(70px); opacity: .5; pointer-events: none;
+  will-change: transform;
+}
+.sec-glow-a { top: -10%; right: -12%; background: radial-gradient(circle, rgba(255,111,181,.5), transparent 66%); }
+.sec-glow-b { bottom: -14%; left: -12%; background: radial-gradient(circle, rgba(75,182,240,.5), transparent 66%); }
+.section-cine > :not(.sec-glow) { position: relative; z-index: 1; }
+
+/* Dramatic 3D flip-in for the cards in cinematic sections (staggered by app.js) */
+#courses .tile.reveal, #masters .tile.reveal {
+  transform: perspective(1000px) rotateX(14deg) translateY(64px) scale(.9);
+  filter: blur(4px);
+}
+#courses .tile.reveal.in, #masters .tile.reveal.in { transform: none; filter: none; }
+@media (prefers-reduced-motion: reduce) {
+  #courses .tile.reveal, #masters .tile.reveal { transform: none; filter: none; }
+  .sec-glow { display: none; }
+}

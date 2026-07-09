@@ -602,3 +602,114 @@ body {
    cached script applies a reveal transform to the deck. */
 .card-deck, .cards-actions { transform: none !important; opacity: 1 !important; }
 .cards-actions { position: relative; z-index: 3; margin-top: 40px; }
+
+/* =========================================================================
+   CINEMATIC SCROLL — parallax, escalating reveals & pinned holographic
+   showcase. Every scroll should reveal something nicer. (v25)
+   ========================================================================= */
+
+/* Richer scroll reveals — escalating entrances driven by scroll-fx.js */
+.rv { opacity: 0; will-change: opacity, transform; transition:
+  opacity .9s cubic-bezier(.16,.84,.34,1), transform .9s cubic-bezier(.16,.84,.34,1),
+  filter .9s ease; }
+.rv-up      { transform: translateY(48px) scale(.96); }
+.rv-scale   { transform: scale(.82); filter: blur(6px); }
+.rv-left    { transform: translateX(-56px); }
+.rv-right   { transform: translateX(56px); }
+.rv-rise    { transform: translateY(70px) scale(.9); filter: blur(4px); }
+.rv.in      { opacity: 1; transform: none; filter: none; }
+
+/* Kinetic shimmer on every section title as it enters */
+.section-title.in {
+  background: var(--holo-strong); background-size: 220% auto;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: holoShimmer 6s linear infinite;
+}
+@keyframes holoShimmer { to { background-position: 220% center; } }
+
+/* Parallax layers get GPU hints */
+[data-parallax] { will-change: transform; }
+
+/* ---- Pinned holographic showcase ---- */
+.showcase { position: relative; height: 300vh; }
+.showcase-sticky {
+  position: sticky; top: 0; height: 100vh; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+}
+/* giant ghost word behind everything */
+.sc-bgword {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  font-family: "Cinzel", "El Messiri", serif; font-weight: 700;
+  font-size: clamp(6rem, 34vw, 28rem); letter-spacing: .04em;
+  color: transparent; -webkit-text-stroke: 1.5px rgba(180,160,255,.14);
+  opacity: .5; white-space: nowrap; pointer-events: none; z-index: 0;
+}
+/* holographic 3D-looking orb (pure CSS "render") */
+.holo-orb {
+  position: relative; width: min(58vw, 340px); aspect-ratio: 1; z-index: 1;
+  will-change: transform; transform: rotate(0deg) scale(.9);
+}
+.holo-orb-core {
+  position: absolute; inset: 14%; border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, #fff 0%, rgba(255,255,255,.5) 8%, transparent 26%),
+    conic-gradient(from 210deg, #ff6fb5, #a86bff, #4bb6f0, #35d3b0, #ffe6a3, #ff6fb5);
+  filter: saturate(1.3) blur(.3px);
+  box-shadow: inset -24px -30px 60px rgba(10,6,30,.55), inset 20px 24px 50px rgba(255,255,255,.35),
+              0 30px 90px rgba(120,80,240,.45);
+  animation: orbHue 14s linear infinite;
+}
+@keyframes orbHue { to { filter: saturate(1.3) hue-rotate(360deg); } }
+.holo-orb-glow {
+  position: absolute; inset: -18%; border-radius: 50%; z-index: -1;
+  background: radial-gradient(circle, rgba(168,107,255,.55), transparent 62%);
+  filter: blur(26px);
+}
+.holo-orb-ring {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 1.5px solid rgba(180,160,255,.28);
+}
+.holo-orb-ring.r1 { transform: rotateX(74deg); }
+.holo-orb-ring.r2 { transform: rotateX(74deg) rotateY(60deg); border-color: rgba(75,182,240,.28); }
+.holo-orb-ring.r3 { inset: 8%; transform: rotateX(78deg) rotateZ(30deg); border-color: rgba(53,211,176,.26); }
+
+/* cross-fading text phases */
+.sc-phases { position: relative; z-index: 2; margin-top: 30px; min-height: 190px; width: min(92%, 640px); }
+.sc-phase {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center;
+  gap: 12px; opacity: 0; transform: translateY(26px) scale(.98);
+  transition: opacity .5s ease, transform .5s ease; pointer-events: none;
+}
+.sc-phase.on { opacity: 1; transform: none; pointer-events: auto; }
+.sc-title {
+  font-family: "El Messiri", "Cinzel", serif; font-weight: 800;
+  font-size: clamp(2rem, 7vw, 3.4rem); line-height: 1.1;
+  background: var(--holo-strong); background-size: 200% auto;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: holoShimmer 5s linear infinite;
+}
+.sc-lead { color: var(--muted); font-size: 1.05rem; max-width: 30ch; }
+.sc-phase .btn { margin-top: 6px; }
+.sc-progress {
+  position: absolute; bottom: 42px; left: 50%; transform: translateX(-50%);
+  width: min(60%, 320px); height: 3px; border-radius: 3px;
+  background: rgba(180,160,255,.16); overflow: hidden; z-index: 2;
+}
+.sc-progress span { display: block; height: 100%; width: 0%;
+  background: var(--holo-strong); box-shadow: 0 0 12px rgba(168,107,255,.6); }
+
+@media (max-width: 560px) {
+  .showcase { height: 280vh; }
+  .sc-lead { font-size: .98rem; }
+}
+
+/* Respect reduced motion — flatten the whole showcase to a normal section */
+@media (prefers-reduced-motion: reduce) {
+  .rv { opacity: 1 !important; transform: none !important; filter: none !important; }
+  .showcase { height: auto; }
+  .showcase-sticky { position: static; height: auto; padding: 60px 20px; }
+  .sc-phase { position: static; opacity: 1; transform: none; margin-bottom: 30px; }
+  .sc-bgword, .sc-progress { display: none; }
+  .holo-orb { animation: none; }
+}

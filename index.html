@@ -29,7 +29,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="AURA" />
-  <link rel="stylesheet" href="styles.css?v=24" />
+  <link rel="stylesheet" href="styles.css?v=25" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Cinzel:wght@500;600;700&family=El+Messiri:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -202,10 +202,42 @@
     </div>
   </section>
 
+  <!-- ===== Cinematic scroll showcase (pinned) ===== -->
+  <section class="showcase" id="showcase" aria-hidden="true">
+    <div class="showcase-sticky">
+      <div class="sc-bgword" data-sc-word>AURA</div>
+      <div class="holo-orb" data-sc-orb>
+        <div class="holo-orb-core"></div>
+        <div class="holo-orb-ring r1"></div>
+        <div class="holo-orb-ring r2"></div>
+        <div class="holo-orb-ring r3"></div>
+        <div class="holo-orb-glow"></div>
+      </div>
+      <div class="sc-phases">
+        <div class="sc-phase" data-sc-phase="0">
+          <span class="eyebrow center" data-i18n="sc_eyebrow">✦ تجربة روحانية</span>
+          <h2 class="sc-title" data-i18n="sc_1_t">اكشف طاقتك</h2>
+          <p class="sc-lead" data-i18n="sc_1_d">كل صباح رسالة، رقم، ولون يفتحون يومك.</p>
+        </div>
+        <div class="sc-phase" data-sc-phase="1">
+          <h2 class="sc-title" data-i18n="sc_2_t">تعلّم من الأساتذة</h2>
+          <p class="sc-lead" data-i18n="sc_2_d">كورسات وجلسات مباشرة تنقلك لمستوى أعمق.</p>
+        </div>
+        <div class="sc-phase" data-sc-phase="2">
+          <h2 class="sc-title" data-i18n="sc_3_t">وازن روحك</h2>
+          <p class="sc-lead" data-i18n="sc_3_d">طاقة، تأمّل، وشفاء — رحلة كاملة في مكان واحد.</p>
+          <a href="#services" class="btn btn-primary" data-i18n="hero_btn">ابدأ رحلتك</a>
+        </div>
+      </div>
+      <div class="sc-progress"><span data-sc-bar></span></div>
+    </div>
+  </section>
+
   <div class="ad-slot" id="adTop" hidden><span class="ad-label" data-i18n="ad_label">إعلان</span><div class="ad-box" id="adBoxTop"></div></div>
 
   <!-- ===== Courses ===== -->
-  <section class="section" id="courses">
+  <section class="section section-cine" id="courses">
+    <div class="sec-glow sec-glow-a" data-parallax="0.14" aria-hidden="true"></div>
     <span class="eyebrow center" data-i18n="courses_eyebrow">✦ تعلّم في وقتك</span>
     <h2 class="section-title" data-i18n="courses_title">📚 الكورسات المسجّلة</h2>
     <p class="section-lead" data-i18n="courses_lead">تعلّم في وقتك من كورسات معدّة بعناية.</p>
@@ -213,7 +245,8 @@
   </section>
 
   <!-- ===== Masters ===== -->
-  <section class="section" id="masters">
+  <section class="section section-cine" id="masters">
+    <div class="sec-glow sec-glow-b" data-parallax="0.14" aria-hidden="true"></div>
     <span class="eyebrow center" data-i18n="masters_eyebrow">✦ خبراء موثوقون</span>
     <h2 class="section-title" data-i18n="masters_title">👩‍🏫 الأساتذة والحجوزات</h2>
     <p class="section-lead" data-i18n="masters_lead">احجز جلستك المباشرة مع أستاذ متخصّص.</p>
@@ -347,9 +380,10 @@
     <a href="#support" class="bn-item" data-sec="support"><span class="bn-ic">💬</span><span class="bn-label" data-i18n="bn_support">الدعم</span></a>
   </nav>
 
-  <script src="config.js?v=24"></script>
-  <script src="i18n.js?v=24"></script>
-  <script src="app.js?v=24"></script>
+  <script src="config.js?v=25"></script>
+  <script src="i18n.js?v=25"></script>
+  <script src="app.js?v=25"></script>
+  <script src="scroll-fx.js?v=25"></script>
   <script>
     // Retire any previously-installed caching service worker and clear caches,
     // so the site always loads the latest version fresh.

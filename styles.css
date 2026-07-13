@@ -239,22 +239,24 @@ body {
   padding: 9px 20px; font-weight: 700; color: var(--ink-soft); box-shadow: var(--shadow-soft); }
 
 /* ===== Tarot cards ===== */
-.card-deck { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-.tcard { width: 110px; height: 165px; border: none; background: transparent; cursor: pointer; perspective: 1000px;
-  transition: transform .25s var(--ease-soft); padding: 0; }
-.tcard:hover { transform: translateY(-8px); }
-.tcard-inner { position: relative; width: 110px; height: 165px;
+.card-deck { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+.tcard { width: 124px; height: 190px; border: none; background: transparent; cursor: pointer; perspective: 1000px;
+  transition: transform .3s var(--ease-soft); padding: 0; }
+.tcard:hover { transform: translateY(-10px); }
+.tcard-inner { display: block; position: relative; width: 124px; height: 190px;
   -webkit-transform-style: preserve-3d; transform-style: preserve-3d;
   transition: -webkit-transform .8s var(--ease-soft), transform .8s var(--ease-soft); }
 .tcard.flipped .tcard-inner { -webkit-transform: rotateY(180deg); transform: rotateY(180deg); }
-.tcard-face { position: absolute; top: 0; left: 0; width: 110px; height: 165px; display: flex; align-items: center; justify-content: center;
-  border-radius: 18px; -webkit-backface-visibility: hidden; backface-visibility: hidden; box-shadow: var(--shadow-soft); }
+.tcard-face { position: absolute; top: 0; left: 0; width: 124px; height: 190px; display: flex; align-items: center; justify-content: center;
+  border-radius: 16px; -webkit-backface-visibility: hidden; backface-visibility: hidden; box-shadow: var(--shadow-soft); overflow: hidden; }
+/* Face-down design: deep holographic card with an ornate inner frame + emblem */
 .tcard-front { background: linear-gradient(155deg, #f4ecff 0%, #ffe6f4 48%, #e6f1ff 100%);
-  border: 1px solid rgba(139,109,255,.4); font-size: 2.6rem; color: var(--accent);
-  box-shadow: var(--shadow-soft), inset 0 0 0 4px rgba(255,255,255,.6), inset 0 0 24px rgba(201,167,255,.3);
-  filter: drop-shadow(0 0 10px rgba(168,107,255,.5)); }
-.tcard:hover .tcard-front { border-color: var(--accent); box-shadow: var(--shadow), inset 0 0 0 4px rgba(255,255,255,.7), 0 0 22px rgba(168,107,255,.35); }
-.tcard-back { -webkit-transform: rotateY(180deg); transform: rotateY(180deg); font-size: 3rem;
+  border: 1px solid rgba(139,109,255,.4); font-size: 2.4rem; color: var(--accent);
+  box-shadow: var(--shadow-soft), inset 0 0 0 3px rgba(255,255,255,.55), inset 0 0 0 5px rgba(168,107,255,.28), inset 0 0 26px rgba(201,167,255,.3); }
+.tcard-front::after { content: ""; position: absolute; inset: 10px; border-radius: 10px;
+  border: 1px solid rgba(168,107,255,.35); pointer-events: none; }
+.tcard:hover .tcard-front { border-color: var(--accent); box-shadow: var(--shadow), inset 0 0 0 3px rgba(255,255,255,.7), 0 0 26px rgba(168,107,255,.5); }
+.tcard-back { -webkit-transform: rotateY(180deg); transform: rotateY(180deg); font-size: 3.2rem;
   background: linear-gradient(155deg, #ffd6f0 0%, #cdb6ff 50%, #b9e6ff 100%); border: 1px solid var(--accent);
   box-shadow: var(--shadow), inset 0 0 0 4px rgba(255,255,255,.5), 0 0 26px rgba(168,107,255,.4); }
 .card-result { max-width: 520px; margin: 30px auto 0; text-align: center; background: var(--card); backdrop-filter: var(--glass-blur);
@@ -590,9 +592,13 @@ body {
 .splash { background: radial-gradient(120% 100% at 50% 30%, #1a1440 0%, #0f0b26 55%, #0a0818 100%); }
 
 /* tarot cards: luminous on dark */
-.tcard-front { background: linear-gradient(155deg, #221a49 0%, #2c2056 50%, #1c2a55 100%);
-  border-color: rgba(180,160,255,.35);
-  box-shadow: var(--shadow-soft), inset 0 0 0 3px rgba(255,255,255,.10), inset 0 0 24px rgba(168,107,255,.25); }
+.tcard-front { background:
+    radial-gradient(120% 80% at 50% 0%, rgba(168,107,255,.28), transparent 60%),
+    linear-gradient(155deg, #221a49 0%, #2c2056 50%, #1c2a55 100%);
+  border-color: rgba(180,160,255,.4); color: #d9ccff;
+  box-shadow: var(--shadow-soft), inset 0 0 0 3px rgba(180,160,255,.14), inset 0 0 0 5px rgba(168,107,255,.18), inset 0 0 26px rgba(168,107,255,.3); }
+.tcard-front::after { border-color: rgba(180,160,255,.3); }
+.tcard:hover .tcard-front { box-shadow: var(--shadow), inset 0 0 0 3px rgba(180,160,255,.22), 0 0 30px rgba(168,107,255,.55); }
 .tcard-back { background: linear-gradient(155deg, #3a2470 0%, #2a2a72 50%, #1f4a7a 100%); }
 
 /* step number / avatar keep holographic */
@@ -723,6 +729,8 @@ body {
 }
 .sec-glow-a { top: -10%; right: -12%; background: radial-gradient(circle, rgba(255,111,181,.5), transparent 66%); }
 .sec-glow-b { bottom: -14%; left: -12%; background: radial-gradient(circle, rgba(75,182,240,.5), transparent 66%); }
+.sec-glow-c { top: -8%; left: -14%; background: radial-gradient(circle, rgba(53,211,176,.42), transparent 66%); }
+.sec-glow-d { bottom: -12%; right: -14%; background: radial-gradient(circle, rgba(168,107,255,.5), transparent 66%); }
 .section-cine > :not(.sec-glow) { position: relative; z-index: 1; }
 
 /* Dramatic 3D flip-in for the cards in cinematic sections (staggered by app.js) */

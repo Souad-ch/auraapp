@@ -213,14 +213,19 @@ function animate() {
 
   // camera travels forward through space as you scroll (the "flight")
   const camZ = 6 - scrollN * 24;
-  camera.position.x = Math.sin(scrollN * 6.28) * 0.55;
+  const wide = camera.aspect > 1.15;
+  camera.position.x = Math.sin(scrollN * 6.28) * 0.5;
   camera.position.y = 0.35 + Math.sin(t * 0.3) * 0.06;
   camera.position.z = camZ;
-  camera.lookAt(camera.position.x, 1.6, camZ - 8);
-  // the emblem stage + portal float ahead of the camera, high, so text stays clear below
-  const sx = camera.position.x, sy = 2.25, sz = camZ - 6.5;
-  if (stageGroup) stageGroup.position.set(sx, sy, sz);
-  if (portalG) { portalG.position.set(sx, sy, sz - 0.3); portalG.rotation.z = t * 0.05; portalG.children[1].rotation.z = -t * 0.08; }
+  // desktop: emblem sits on the LEFT, vertically centered (text is on the right).
+  // mobile: emblem sits UP, text below.
+  const emY = wide ? 1.0 : 2.25;
+  const emX = camera.position.x - (wide ? 2.9 : 0);
+  const lookY = wide ? 1.0 : 1.6;
+  camera.lookAt(camera.position.x, lookY, camZ - 8);
+  const sz = camZ - 6.5;
+  if (stageGroup) stageGroup.position.set(emX, emY, sz);
+  if (portalG) { portalG.position.set(emX, emY, sz - 0.3); portalG.rotation.z = t * 0.05; portalG.children[1].rotation.z = -t * 0.08; }
 
   // cross-fade emblems: only the active one grows in
   for (const key in emblems) {

@@ -65,6 +65,10 @@
   .cue{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:30;color:var(--muted);font-size:.8rem;
     background:rgba(255,255,255,.06);border:1px solid rgba(184,156,244,.2);padding:7px 15px;border-radius:100px;animation:bob 1.8s ease-in-out infinite}
   @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+  .sound{position:fixed;top:14px;left:22px;z-index:50;width:44px;height:44px;border-radius:50%;cursor:pointer;
+    display:grid;place-items:center;font-size:1.05rem;color:var(--ink);
+    background:rgba(255,255,255,.06);border:1px solid rgba(184,156,244,.28);backdrop-filter:blur(10px);transition:.25s}
+  .sound.on{background:linear-gradient(135deg,rgba(166,120,230,.4),rgba(227,182,97,.3));border-color:rgba(227,182,97,.5);box-shadow:0 0 18px rgba(166,120,230,.5)}
   .foot{position:relative;z-index:2;text-align:center;padding:20px 22px 60px;color:var(--muted);font-size:.9rem}
   .foot a{color:var(--mauve);font-weight:700;text-decoration:none}
   @media (max-width:760px){ .card{width:100%;max-width:320px} }
@@ -80,49 +84,117 @@
 <div class="scrim"></div>
 
 <div class="peek"><div class="brand"><span class="mk">✦</span><span class="nm">AURA</span></div><a href="index.html">الموقع</a></div>
+<button id="sound" class="sound" aria-label="الموسيقى" title="الموسيقى">🔈</button>
+
+<!-- Background music: a soft generated ambient pad (royalty-free, starts on first tap).
+     To use your own track: place an mp3 you have the rights to at assets/ambient.mp3 and it will be preferred. -->
+<audio id="bgm" loop preload="none"><source src="assets/ambient.mp3" type="audio/mpeg" /></audio>
+<script>
+(function(){
+  var btn=document.getElementById('sound'), audio=document.getElementById('bgm');
+  var on=false, started=false, mode=null, ctx, master, useFile=false;
+  function startFile(){ // try the user's mp3 first
+    return audio.play().then(function(){ useFile=true; mode='file'; audio.volume=0; fadeFile(0.55); return true; }).catch(function(){ return false; });
+  }
+  function fadeFile(to){ var s=audio.volume, t0=performance.now(); (function st(){ var k=Math.min(1,(performance.now()-t0)/1500); audio.volume=s+(to-s)*k; if(k<1) requestAnimationFrame(st); })(); }
+  function startPad(){ // generated calm ambient (no file / no rights needed)
+    try{
+      ctx=new (window.AudioContext||window.webkitAudioContext)();
+      master=ctx.createGain(); master.gain.value=0; master.connect(ctx.destination);
+      var filt=ctx.createBiquadFilter(); filt.type='lowpass'; filt.frequency.value=680; filt.Q.value=0.6; filt.connect(master);
+      [110,164.81,220,277.18].forEach(function(f,i){
+        var o=ctx.createOscillator(); o.type='sine'; o.frequency.value=f;
+        var g=ctx.createGain(); g.gain.value=(i===0?0.12:0.06); o.connect(g); g.connect(filt);
+        var lfo=ctx.createOscillator(); lfo.frequency.value=0.05+i*0.02; var lg=ctx.createGain(); lg.gain.value=2.6;
+        lfo.connect(lg); lg.connect(o.detune); lfo.start(); o.start();
+      });
+      var flfo=ctx.createOscillator(); flfo.frequency.value=0.03; var flg=ctx.createGain(); flg.gain.value=280;
+      flfo.connect(flg); flg.connect(filt.frequency); flfo.start();
+      mode='pad';
+    }catch(e){ mode=null; }
+  }
+  function fadePad(to){ if(!master) return; var now=ctx.currentTime; master.gain.cancelScheduledValues(now); master.gain.setValueAtTime(master.gain.value,now); master.gain.linearRampToValueAtTime(to,now+1.5); }
+  async function enable(){
+    if(!started){ started=true; var ok=await startFile(); if(!ok) startPad(); }
+    else { if(mode==='file'){ audio.play(); fadeFile(0.55);} else { if(ctx&&ctx.state==='suspended')ctx.resume(); fadePad(0.5);} }
+    on=true; btn.textContent='🔊'; btn.classList.add('on');
+  }
+  function disable(){ on=false; btn.textContent='🔈'; btn.classList.remove('on'); if(mode==='file') fadeFile(0); else fadePad(0); }
+  btn.addEventListener('click',function(e){ e.stopPropagation(); on?disable():enable(); });
+  function first(){ if(!started) enable(); window.removeEventListener('pointerdown',first); window.removeEventListener('touchstart',first); window.removeEventListener('scroll',first); window.removeEventListener('keydown',first); }
+  window.addEventListener('pointerdown',first,{passive:true}); window.addEventListener('touchstart',first,{passive:true});
+  window.addEventListener('scroll',first,{passive:true}); window.addEventListener('keydown',first);
+})();
+</script>
 
 <div class="wrap">
-  <section class="zone in" id="top">
+  <section class="zone in" id="top" data-emblem="crystal">
     <span class="eyebrow">✦ منصّة الطاقة والروحانيات</span>
     <h1>طاقتك تبدأ من هنا</h1>
-    <p class="lead">تجربة سينمائية غامرة — كريستالة طاقتك تتوهّج، وأنتِ تطيرين خلال عالمها مع كل تمريرة.</p>
-    <a class="btn" href="#z1">ابدأ رحلتك</a>
+    <p class="lead">تجربة سينمائية غامرة — كل قسم يفتح لك عالمه، برمزه الخاص وطاقته.</p>
+    <a class="btn" href="#energy">ابدأ رحلتك</a>
   </section>
 
-  <section class="zone" id="z1">
+  <!-- MOON: energy reading / tarot -->
+  <section class="zone" id="energy" data-emblem="moon">
     <span class="eyebrow">٠١ — اقرأي طاقتك</span>
-    <h1>اسحبي كرت طاقتك</h1>
+    <h1>طاقة اليوم والكروت</h1>
+    <p class="lead">قمرك يكشف رسالتك — رقمك، لونك، وكرت طاقتك اليومي.</p>
     <div class="cards">
-      <div class="card"><div class="ic">🌙</div><h3>القمر</h3><p>حدْسك يقودك الليلة.</p></div>
-      <div class="card"><div class="ic">☀️</div><h3>الشمس</h3><p>طاقة وفرح ونجاح.</p></div>
-      <div class="card"><div class="ic">⭐</div><h3>النجمة</h3><p>أمل وإلهام جديد.</p></div>
+      <div class="card"><div class="ic">🌙</div><h3>طاقة اليوم</h3><p>رسالة ورقم ولون كل صباح.</p></div>
+      <div class="card"><div class="ic">🃏</div><h3>كروت الطاقة</h3><p>اسحبي كرتك اليومي.</p></div>
+      <div class="card"><div class="ic">🔯</div><h3>قراءة الأبراج</h3><p>طاقة مخصّصة لبرجك.</p></div>
     </div>
   </section>
 
-  <section class="zone" id="z2">
-    <span class="eyebrow">٠٢ — تعلّمي في وقتك</span>
-    <h1>اختاري كورسك</h1>
+  <!-- THETA: theta healing -->
+  <section class="zone" id="theta" data-emblem="theta">
+    <span class="eyebrow">٠٢ — إعادة برمجة</span>
+    <h1>ثيتا هيلينغ</h1>
+    <p class="lead">تردّدات موجة ثيتا تعيد برمجة المعتقدات وتفتح مسارات الشفاء.</p>
     <div class="cards">
-      <div class="card"><div class="ic">🌱</div><h3>ريكي — الأول</h3><p>أساسيات توجيه طاقة الشفاء.</p><div class="price">٤٩ $</div><button class="mini">اشتركي</button></div>
-      <div class="card"><div class="ic">💫</div><h3>ثيتا هيلينغ</h3><p>إعادة برمجة المعتقدات.</p><div class="price">٦٩ $</div><button class="mini">اشتركي</button></div>
-      <div class="card"><div class="ic">🔔</div><h3>المعالجة بالصوت</h3><p>الشفاء بالترددات.</p><div class="price">٥٥ $</div><button class="mini">اشتركي</button></div>
+      <div class="card"><div class="ic">🧠</div><h3>علاج الثيتا</h3><p>الوصول لموجة ثيتا العميقة.</p><div class="price">٦٩ $</div><button class="mini">اشتركي</button></div>
+      <div class="card"><div class="ic">💠</div><h3>تحرير المعتقدات</h3><p>إعادة برمجة العقل الباطن.</p><button class="mini">جلسة</button></div>
     </div>
   </section>
 
-  <section class="zone" id="z3">
-    <span class="eyebrow">٠٣ — جلسات مباشرة</span>
-    <h1>احجزي مع أستاذ</h1>
+  <!-- REIKI: energy healing -->
+  <section class="zone" id="reiki" data-emblem="reiki">
+    <span class="eyebrow">٠٣ — توجيه الطاقة</span>
+    <h1>الريكي والعلاج بالطاقة</h1>
+    <p class="lead">توجيه طاقة الشفاء عبر راحتيك لموازنة جسدك وروحك.</p>
     <div class="cards">
-      <div class="card"><div class="ic">🃏</div><h3>قراءة تاروت</h3><p>جلسة مباشرة خاصة.</p><button class="mini">احجزي</button></div>
-      <div class="card"><div class="ic">🧘</div><h3>تأمّل موجّه</h3><p>لايف + تسجيلات.</p><button class="mini">احجزي</button></div>
-      <div class="card"><div class="ic">🔮</div><h3>قياس شاكرات</h3><p>قراءة شخصية عميقة.</p><button class="mini">احجزي</button></div>
+      <div class="card"><div class="ic">🌱</div><h3>ريكي — الأول</h3><p>أساسيات توجيه الطاقة.</p><div class="price">٤٩ $</div><button class="mini">اشتركي</button></div>
+      <div class="card"><div class="ic">🌿</div><h3>ريكي — الثاني</h3><p>مستوى متقدّم وتطبيقات.</p><div class="price">٥٩ $</div><button class="mini">اشتركي</button></div>
     </div>
   </section>
 
-  <section class="zone" id="end">
+  <!-- SOUND: sound healing -->
+  <section class="zone" id="sound" data-emblem="sound">
+    <span class="eyebrow">٠٤ — الشفاء بالتردّد</span>
+    <h1>المعالجة بالصوت</h1>
+    <p class="lead">أوعية وتردّدات صوتية تعيد توازن الطاقة وتذيب التوتر.</p>
+    <div class="cards">
+      <div class="card"><div class="ic">🔔</div><h3>المعالجة بالصوت</h3><p>الشفاء بالترددات والأوعية.</p><div class="price">٥٥ $</div><button class="mini">اشتركي</button></div>
+      <div class="card"><div class="ic">🧘</div><h3>تأمّل بالصوت</h3><p>لايف + تسجيلات.</p><button class="mini">احجزي</button></div>
+    </div>
+  </section>
+
+  <!-- CHAKRA: chakra & sessions -->
+  <section class="zone" id="chakra" data-emblem="chakra">
+    <span class="eyebrow">٠٥ — توازن داخلي</span>
+    <h1>قياس الشاكرات</h1>
+    <p class="lead">قراءة شخصية لشاكراتك السبع وموازنة طاقتك الداخلية.</p>
+    <div class="cards">
+      <div class="card"><div class="ic">🌈</div><h3>قياس الشاكرات</h3><p>قراءة شخصية عميقة.</p><button class="mini">احجزي</button></div>
+      <div class="card"><div class="ic">🔮</div><h3>قراءة شخصية</h3><p>جلسة مباشرة خاصة.</p><button class="mini">احجزي</button></div>
+    </div>
+  </section>
+
+  <section class="zone" id="end" data-emblem="crystal">
     <span class="eyebrow">✦ جاهزة؟</span>
     <h1>ابدئي رحلتك اليوم</h1>
-    <p class="lead">هيك بيصير موقعك: عالم 3D سينمائي، كريستالة تتوهّج، وبطاقات زجاجية تطوف.</p>
+    <p class="lead">كل هذا وأكثر — في عالم AURA الغامر.</p>
     <a class="btn" href="index.html">🔮 ادخلي AURA</a>
   </section>
 

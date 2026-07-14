@@ -166,6 +166,14 @@ function init() {
 
   buildAll();
 
+  // glowing circular portal framing the emblems (inspired by "lucid")
+  const portalG = new THREE.Group(); portalG.position.set(0, 1.5, -0.3); scene.add(portalG);
+  const ring1 = new THREE.Mesh(new THREE.TorusGeometry(2.1, 0.018, 16, 140), new THREE.MeshBasicMaterial({ color: 0xe3b661, transparent: true, opacity: 0.55 }));
+  const ring2 = new THREE.Mesh(new THREE.TorusGeometry(2.28, 0.008, 12, 140), new THREE.MeshBasicMaterial({ color: 0xa678e6, transparent: true, opacity: 0.4 }));
+  const ring3 = new THREE.Mesh(new THREE.TorusGeometry(1.92, 0.004, 10, 140), new THREE.MeshBasicMaterial({ color: 0xcdbcf5, transparent: true, opacity: 0.3 }));
+  portalG.add(ring1, ring2, ring3);
+  window.__portal = portalG;
+
   const tints = [0xb98fe0, 0xe3b661, 0x9a72d6, 0xc7a0ea, 0xd9b877];
   for (let i = 0; i < 9; i++) {
     const p = makePanel(tints[i % tints.length]); const side = i % 2 ? -1 : 1;
@@ -222,6 +230,7 @@ function animate() {
 
   panels.forEach(p => { p.rotation.z += 0.0006; p.position.y += Math.sin(t * 0.6 + p.userData.bob) * 0.0015; });
   if (stars) stars.rotation.y = t * 0.02;
+  if (window.__portal) { window.__portal.rotation.z = t * 0.05; window.__portal.children[1].rotation.z = -t * 0.08; }
   composer.render();
 }
 

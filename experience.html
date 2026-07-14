@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0b0917" />
+<title>AURA — تجربة سينمائية 3D</title>
+<link rel="icon" type="image/png" href="icons/icon-192.png" />
+<style>
+  :root{
+    --ink:#f4efff; --muted:#b6aadd; --mauve:#a678e6; --gold:#e3b661;
+    --grad:linear-gradient(120deg,#c79bf0 0%,#a678e6 40%,#e3b661 100%);
+    --glass:linear-gradient(150deg,rgba(255,255,255,.10),rgba(255,255,255,.02));
+    --serif:"Cinzel","Iowan Old Style",Palatino,Georgia,serif;
+    --sans:"Cairo","SF Arabic","Segoe UI",system-ui,-apple-system,sans-serif;
+    --e:cubic-bezier(.19,1,.22,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#080611;color:var(--ink);font-family:var(--sans);overflow-x:hidden}
+  #scene{position:fixed;inset:0;z-index:0;display:block;width:100%;height:100%}
+  .scrim{position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(120% 80% at 50% 40%,transparent 40%,rgba(8,6,17,.55) 100%)}
+  .loading{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:#080611;transition:opacity .6s ease}
+  .loading.gone{opacity:0;pointer-events:none}
+  .loading .l{font-family:var(--serif);letter-spacing:.3em;color:var(--gold);font-size:1.4rem;animation:pulse 1.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+  .wrap{position:relative;z-index:2}
+  .peek{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:16px 22px}
+  .brand{display:flex;align-items:center;gap:9px;font-family:var(--serif);font-weight:700;letter-spacing:.2em;font-size:1.05rem}
+  .brand .mk{color:var(--gold)} .brand .nm{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .peek a{color:var(--muted);font-size:.8rem;font-weight:700;text-decoration:none;background:rgba(255,255,255,.06);padding:8px 16px;border-radius:100px;border:1px solid rgba(184,156,244,.2)}
+
+  .zone{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 22px 90px;position:relative}
+  .zone::before{content:"";position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
+    width:min(760px,94%);height:56%;border-radius:50%;pointer-events:none;z-index:0;
+    background:radial-gradient(ellipse,rgba(8,6,17,.66),rgba(8,6,17,.32) 55%,transparent 74%);filter:blur(24px)}
+  .zone>*{position:relative;z-index:1}
+  .eyebrow{display:inline-block;font-weight:800;letter-spacing:.24em;font-size:.76rem;color:var(--gold);margin-bottom:16px;
+    opacity:0;transform:translateY(24px);transition:.9s var(--e)}
+  .zone h1{font-family:var(--serif);font-weight:700;line-height:1.06;font-size:clamp(2.6rem,9vw,5.2rem);text-wrap:balance;
+    background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:18px;
+    filter:drop-shadow(0 8px 40px rgba(166,120,230,.5));opacity:0;transform:translateY(38px);transition:1s var(--e) .08s}
+  .zone .lead{color:var(--muted);font-size:1.08rem;line-height:1.85;max-width:32ch;margin:0 auto 28px;
+    opacity:0;transform:translateY(30px);transition:1s var(--e) .16s}
+  .zone.in .eyebrow,.zone.in h1,.zone.in .lead,.zone.in .cards,.zone.in .btn{opacity:1;transform:none}
+  .btn{display:inline-block;border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:1rem;padding:16px 38px;border-radius:100px;
+    text-decoration:none;background:var(--grad);color:#1a0f2e;box-shadow:0 16px 50px rgba(166,120,230,.5);
+    opacity:0;transform:translateY(24px);transition:1s var(--e) .24s} .btn:hover{filter:brightness(1.06)}
+
+  .cards{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;max-width:940px;margin-top:8px;
+    opacity:0;transform:translateY(40px);transition:1s var(--e) .2s}
+  .card{width:240px;border-radius:22px;padding:24px 22px;position:relative;overflow:hidden;text-align:center;
+    background:var(--glass);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(16px);
+    box-shadow:0 30px 70px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.22)}
+  .card::before{content:"";position:absolute;inset:0;background:linear-gradient(130deg,rgba(199,155,240,.22),transparent 42%,rgba(227,182,97,.18) 78%,transparent);pointer-events:none}
+  .card::after{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad)}
+  .card .ic{position:relative;width:60px;height:60px;margin:2px auto 14px;border-radius:16px;display:grid;place-items:center;font-size:1.8rem;
+    background:linear-gradient(150deg,rgba(199,155,240,.26),rgba(227,182,97,.2));border:1px solid rgba(255,255,255,.2)}
+  .card h3{position:relative;font-size:1.14rem;margin-bottom:6px;color:#fff}
+  .card p{position:relative;color:var(--muted);font-size:.92rem;line-height:1.6}
+  .card .price{position:relative;margin:12px 0 4px;font-weight:800;color:var(--gold)}
+  .card .mini{position:relative;margin-top:10px;border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:.85rem;padding:9px 22px;border-radius:100px;background:var(--grad);color:#1a0f2e}
+
+  .cue{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:30;color:var(--muted);font-size:.8rem;
+    background:rgba(255,255,255,.06);border:1px solid rgba(184,156,244,.2);padding:7px 15px;border-radius:100px;animation:bob 1.8s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+  .foot{position:relative;z-index:2;text-align:center;padding:20px 22px 60px;color:var(--muted);font-size:.9rem}
+  .foot a{color:var(--mauve);font-weight:700;text-decoration:none}
+  @media (max-width:760px){ .card{width:100%;max-width:320px} }
+  @media (prefers-reduced-motion:reduce){ .cue{animation:none} }
+</style>
+<script type="importmap">
+{ "imports": { "three": "./vendor/three/three.module.js" } }
+</script>
+</head>
+<body>
+<div class="loading" id="loading"><span class="l">✦ AURA</span></div>
+<canvas id="scene"></canvas>
+<div class="scrim"></div>
+
+<div class="peek"><div class="brand"><span class="mk">✦</span><span class="nm">AURA</span></div><a href="index.html">الموقع</a></div>
+
+<div class="wrap">
+  <section class="zone in" id="top">
+    <span class="eyebrow">✦ منصّة الطاقة والروحانيات</span>
+    <h1>طاقتك تبدأ من هنا</h1>
+    <p class="lead">تجربة سينمائية غامرة — كريستالة طاقتك تتوهّج، وأنتِ تطيرين خلال عالمها مع كل تمريرة.</p>
+    <a class="btn" href="#z1">ابدأ رحلتك</a>
+  </section>
+
+  <section class="zone" id="z1">
+    <span class="eyebrow">٠١ — اقرأي طاقتك</span>
+    <h1>اسحبي كرت طاقتك</h1>
+    <div class="cards">
+      <div class="card"><div class="ic">🌙</div><h3>القمر</h3><p>حدْسك يقودك الليلة.</p></div>
+      <div class="card"><div class="ic">☀️</div><h3>الشمس</h3><p>طاقة وفرح ونجاح.</p></div>
+      <div class="card"><div class="ic">⭐</div><h3>النجمة</h3><p>أمل وإلهام جديد.</p></div>
+    </div>
+  </section>
+
+  <section class="zone" id="z2">
+    <span class="eyebrow">٠٢ — تعلّمي في وقتك</span>
+    <h1>اختاري كورسك</h1>
+    <div class="cards">
+      <div class="card"><div class="ic">🌱</div><h3>ريكي — الأول</h3><p>أساسيات توجيه طاقة الشفاء.</p><div class="price">٤٩ $</div><button class="mini">اشتركي</button></div>
+      <div class="card"><div class="ic">💫</div><h3>ثيتا هيلينغ</h3><p>إعادة برمجة المعتقدات.</p><div class="price">٦٩ $</div><button class="mini">اشتركي</button></div>
+      <div class="card"><div class="ic">🔔</div><h3>المعالجة بالصوت</h3><p>الشفاء بالترددات.</p><div class="price">٥٥ $</div><button class="mini">اشتركي</button></div>
+    </div>
+  </section>
+
+  <section class="zone" id="z3">
+    <span class="eyebrow">٠٣ — جلسات مباشرة</span>
+    <h1>احجزي مع أستاذ</h1>
+    <div class="cards">
+      <div class="card"><div class="ic">🃏</div><h3>قراءة تاروت</h3><p>جلسة مباشرة خاصة.</p><button class="mini">احجزي</button></div>
+      <div class="card"><div class="ic">🧘</div><h3>تأمّل موجّه</h3><p>لايف + تسجيلات.</p><button class="mini">احجزي</button></div>
+      <div class="card"><div class="ic">🔮</div><h3>قياس شاكرات</h3><p>قراءة شخصية عميقة.</p><button class="mini">احجزي</button></div>
+    </div>
+  </section>
+
+  <section class="zone" id="end">
+    <span class="eyebrow">✦ جاهزة؟</span>
+    <h1>ابدئي رحلتك اليوم</h1>
+    <p class="lead">هيك بيصير موقعك: عالم 3D سينمائي، كريستالة تتوهّج، وبطاقات زجاجية تطوف.</p>
+    <a class="btn" href="index.html">🔮 ادخلي AURA</a>
+  </section>
+
+  <div class="foot">معاينة تجربة 3D — <a href="index.html">الرجوع للموقع</a></div>
+</div>
+<div class="cue">مرّري لأسفل ↓</div>
+
+<script type="module" src="experience.js?v=1"></script>
+</body>
+</html>

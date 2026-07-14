@@ -19,7 +19,7 @@ if ('IntersectionObserver' in window) {
   zones.forEach(z => io.observe(z));
 } else zones.forEach(z => z.classList.add('in'));
 
-let renderer, scene, camera, composer, env, panels = [], stars, clock;
+let renderer, scene, camera, composer, env, panels = [], stars, clock, stageGroup, portalG;
 let scrollN = 0, scrollTarget = 0;
 const emblems = {};
 
@@ -138,9 +138,9 @@ function buildAll() {
   });
   emblems.chakra.update = (t) => { const g = emblems.chakra.group; g.rotation.y = t * .25; g.userData.orbs.forEach((o, i) => { o.position.x = Math.sin(t * 1.5 + i) * 0.05; const p = 1 + 0.12 * Math.sin(t * 2 + i * 0.8); o.scale.setScalar(p); }); };
 
-  // add all to a shared stage (upper-center)
-  const stage = new THREE.Group(); stage.position.set(0, 1.5, 0); scene.add(stage);
-  Object.values(emblems).forEach(e => stage.add(e.group));
+  // add all to a shared stage (smaller, floats ahead of the camera each frame)
+  stageGroup = new THREE.Group(); stageGroup.scale.setScalar(0.72); scene.add(stageGroup);
+  Object.values(emblems).forEach(e => stageGroup.add(e.group));
   // remember base opacity for sound rings
   emblems.sound.group.userData.rings.forEach(r => r.material._k = 1);
 }
@@ -166,13 +166,12 @@ function init() {
 
   buildAll();
 
-  // glowing circular portal framing the emblems (inspired by "lucid")
-  const portalG = new THREE.Group(); portalG.position.set(0, 1.5, -0.3); scene.add(portalG);
+  // glowing circular portal framing the emblems (inspired by "lucid"); follows the stage
+  portalG = new THREE.Group(); scene.add(portalG);
   const ring1 = new THREE.Mesh(new THREE.TorusGeometry(2.1, 0.018, 16, 140), new THREE.MeshBasicMaterial({ color: 0xe3b661, transparent: true, opacity: 0.55 }));
   const ring2 = new THREE.Mesh(new THREE.TorusGeometry(2.28, 0.008, 12, 140), new THREE.MeshBasicMaterial({ color: 0xa678e6, transparent: true, opacity: 0.4 }));
   const ring3 = new THREE.Mesh(new THREE.TorusGeometry(1.92, 0.004, 10, 140), new THREE.MeshBasicMaterial({ color: 0xcdbcf5, transparent: true, opacity: 0.3 }));
   portalG.add(ring1, ring2, ring3);
-  window.__portal = portalG;
 
   const tints = [0xb98fe0, 0xe3b661, 0x9a72d6, 0xc7a0ea, 0xd9b877];
   for (let i = 0; i < 9; i++) {
@@ -212,10 +211,16 @@ function animate() {
   const t = reduce ? 1.5 : clock.getElapsedTime();
   scrollN += (scrollTarget - scrollN) * 0.06;
 
-  // gentle camera drift (keeps the stage framed, adds life)
-  camera.position.x = Math.sin(scrollN * 6.28) * 0.5;
-  camera.position.y = 0.5 + Math.sin(t * 0.3) * 0.06;
-  camera.lookAt(0, 1.0, -2);
+  // camera travels forward through space as you scroll (the "flight")
+  const camZ = 6 - scrollN * 24;
+  camera.position.x = Math.sin(scrollN * 6.28) * 0.55;
+  camera.position.y = 0.35 + Math.sin(t * 0.3) * 0.06;
+  camera.position.z = camZ;
+  camera.lookAt(camera.position.x, 1.6, camZ - 8);
+  // the emblem stage + portal float ahead of the camera, high, so text stays clear below
+  const sx = camera.position.x, sy = 2.25, sz = camZ - 6.5;
+  if (stageGroup) stageGroup.position.set(sx, sy, sz);
+  if (portalG) { portalG.position.set(sx, sy, sz - 0.3); portalG.rotation.z = t * 0.05; portalG.children[1].rotation.z = -t * 0.08; }
 
   // cross-fade emblems: only the active one grows in
   for (const key in emblems) {
@@ -230,7 +235,6 @@ function animate() {
 
   panels.forEach(p => { p.rotation.z += 0.0006; p.position.y += Math.sin(t * 0.6 + p.userData.bob) * 0.0015; });
   if (stars) stars.rotation.y = t * 0.02;
-  if (window.__portal) { window.__portal.rotation.z = t * 0.05; window.__portal.children[1].rotation.z = -t * 0.08; }
   composer.render();
 }
 

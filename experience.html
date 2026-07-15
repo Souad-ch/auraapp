@@ -110,7 +110,7 @@ body {
 #slide-2 .slide-title { margin-inline-start: calc(25vw + 40px); }
 #slide-2 .slide-desc { margin-inline-start: calc(50vw + 20px); width: calc(25vw - 60px); max-width: calc(25vw - 60px); }
 
-#slide-3 { inset-inline-start: calc(50vw + 20px); width: calc(25vw - 60px); max-width: calc(25vw - 60px); }
+#slide-3 { inset-inline-start: calc(50vw + 20px); width: auto; max-width: 44vw; }
 #slide-3 .slide-title { white-space: nowrap; }
 
 #slide-4 { inset-inline-start: calc(25% + 40px); max-width: 600px; }
@@ -170,6 +170,56 @@ body {
 .story-dash { width: 2px; height: 40px; background: rgba(255,255,255,.15); border-radius: 2px; }
 .story-dash-fill { width: 100%; height: 0%; background: linear-gradient(#c79bf0,#e3b661); border-radius: 2px; }
 
+/* ---------- cinematic video background (optional assets/hero.mp4) ---------- */
+.bg-video {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; z-index: 0; opacity: 0; transition: opacity 1.2s ease;
+  pointer-events: none;
+}
+.bg-video.on { opacity: 1; }
+
+/* ---------- glass services stack (reel-style "Our Services") ---------- */
+.svc-stack {
+  display: flex; flex-direction: column; gap: 14px;
+  width: min(420px, 88vw); margin-top: 6px;
+}
+.svc-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px; border-radius: 16px; text-align: start;
+  background: linear-gradient(150deg, rgba(255,255,255,.10), rgba(255,255,255,.02));
+  border: 1px solid rgba(199,155,240,.4);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 18px 44px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.18), 0 0 18px rgba(166,120,230,.14);
+  opacity: 0; transform: translateX(60px);
+  transition: opacity .7s cubic-bezier(.25,1,.5,1), transform .7s cubic-bezier(.25,1,.5,1);
+}
+.slide.active .svc-item { opacity: 1; transform: translateX(0); }
+.slide.active .svc-item:nth-child(1) { transition-delay: .35s; }
+.slide.active .svc-item:nth-child(2) { transition-delay: .5s; }
+.slide.active .svc-item:nth-child(3) { transition-delay: .65s; }
+.slide.active .svc-item:nth-child(4) { transition-delay: .8s; }
+.svc-item .svc-ic {
+  flex: 0 0 auto; width: 42px; height: 42px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 1.15rem;
+  background: rgba(166,120,230,.16); border: 1px solid rgba(227,182,97,.5);
+  box-shadow: 0 0 12px rgba(227,182,97,.25);
+}
+.svc-item h3 { font-size: .98rem; font-weight: 800; color: #fff; margin-bottom: 2px; }
+.svc-item p { font-size: .78rem; color: #b9addc; line-height: 1.55; }
+.pill-cta {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 18px;
+  padding: 12px 30px; border-radius: 100px; text-decoration: none;
+  font-size: .82rem; font-weight: 800; letter-spacing: .5px; color: #fff;
+  background: rgba(255,255,255,.06); border: 1px solid rgba(227,182,97,.65);
+  box-shadow: 0 0 22px rgba(227,182,97,.3), inset 0 0 14px rgba(166,120,230,.15);
+  backdrop-filter: blur(10px);
+  opacity: 0; transform: translateY(24px);
+  transition: opacity .7s cubic-bezier(.25,1,.5,1) .95s, transform .7s cubic-bezier(.25,1,.5,1) .95s, box-shadow .3s;
+  pointer-events: auto;
+}
+.slide.active .pill-cta { opacity: 1; transform: translateY(0); }
+.pill-cta:hover { box-shadow: 0 0 34px rgba(227,182,97,.55), inset 0 0 18px rgba(166,120,230,.25); }
+
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
   .cinematic-container { padding: 0 22px 30px 22px; }
@@ -196,6 +246,12 @@ body {
 <div class="cursor-inner"></div>
 <div class="cursor-outer"></div>
 
+<!-- Optional cinematic video backdrop: upload a clip you own to assets/hero.mp4
+     and it fades in behind the 3D scene automatically (reel-style). -->
+<video class="bg-video" id="bgVideo" autoplay muted loop playsinline preload="metadata">
+  <source src="assets/hero.mp4" type="video/mp4" />
+</video>
+
 <div class="cinematic-container">
   <div class="main-header">
     <div class="brand">AURA ✦</div>
@@ -204,7 +260,7 @@ body {
       <span class="nav-dot"></span>
       <a href="#slide-2" class="nav-link">طاقة اليوم</a>
       <span class="nav-dot"></span>
-      <a href="#slide-3" class="nav-link">ثيتا هيلينغ</a>
+      <a href="#slide-3" class="nav-link">خدماتنا</a>
       <span class="nav-dot"></span>
       <a href="#slide-4" class="nav-link">الشاكرات</a>
     </nav>
@@ -231,8 +287,14 @@ body {
   </div>
 
   <div class="slide" id="slide-3">
-    <h2 class="slide-title">ثيتا هيلينغ</h2>
-    <p class="slide-desc">تردّدات موجة ثيتا العميقة تعيد برمجة المعتقدات، وتفتح مسارات الشفاء. مع الريكي والمعالجة بالصوت — رحلة كاملة.</p>
+    <h2 class="slide-title">خدماتنا</h2>
+    <div class="svc-stack">
+      <div class="svc-item"><span class="svc-ic">🧠</span><div><h3>ثيتا هيلينغ</h3><p>تردّدات ثيتا العميقة تعيد برمجة المعتقدات.</p></div></div>
+      <div class="svc-item"><span class="svc-ic">🙌</span><div><h3>الريكي</h3><p>توجيه طاقة الشفاء لموازنة الجسد والروح.</p></div></div>
+      <div class="svc-item"><span class="svc-ic">🔔</span><div><h3>المعالجة بالصوت</h3><p>تردّدات وأوعية صوتية تذيب التوتر.</p></div></div>
+      <div class="svc-item"><span class="svc-ic">🃏</span><div><h3>قراءة التاروت</h3><p>جلسة مباشرة تكشف رسائل طاقتك.</p></div></div>
+    </div>
+    <a class="pill-cta" href="index.html">✦ ابدئي رحلتك</a>
   </div>
 
   <div class="slide" id="slide-4">
@@ -509,7 +571,7 @@ scene.add(camera);
 
 createBackgroundShader();
 
-renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:false, powerPreference:'high-performance' });
+renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true, powerPreference:'high-performance' });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.shadowMap.enabled = true;
@@ -707,6 +769,19 @@ function animate(){
   updateGridDots(currentScroll);
   renderer.render(scene, camera);
 }
+
+/* cinematic video backdrop: when assets/hero.mp4 exists, let it show through */
+(function(){
+  const vid = document.getElementById('bgVideo');
+  if (!vid) return;
+  vid.addEventListener('loadeddata', () => {
+    vid.classList.add('on');
+    scene.background = null;                    // let the video show through
+    camera.children.forEach(c => c.visible = false); // hide the shader plane
+    scene.fog = null;
+  });
+  vid.addEventListener('error', () => { vid.remove(); }, true);
+})();
 
 splitTitlesIntoChars();
 onWindowResize();

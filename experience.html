@@ -18,11 +18,16 @@ html, body {
   scrollbar-width: none;
 }
 body {
-  min-height: 900vh;
   font-family: 'Cairo', sans-serif;
   color: #ffffff;
   overflow-x: hidden;
 }
+/* the cinematic film gets ~5 screens of scroll room; the site flows after it */
+.film-spacer { height: 520vh; position: relative; z-index: 0; pointer-events: none; }
+body.past-film .cinematic-container,
+body.past-film .grid-horizontal-line,
+body.past-film .grid-lines,
+body.past-film #webgl { opacity: 0; transition: opacity .5s ease; pointer-events: none; }
 ::-webkit-scrollbar { display: none; width: 0; }
 
 #webgl {
@@ -236,6 +241,111 @@ body {
   #slide-2-img { width: 34vw; top: 84px; }
   .grid-lines { left: 16px; right: 16px; width: calc(100% - 32px); }
 }
+/* =========================================================================
+   LUXURY CONVERSION SITE (flows after the cinematic film)
+   ========================================================================= */
+.site{position:relative;z-index:30;background:
+  radial-gradient(120% 60% at 50% 0%,rgba(90,58,160,.28),transparent 60%),
+  linear-gradient(180deg,#0c0819 0%,#0a0715 40%,#0b0817 100%);
+  padding-top:40px;font-family:'Cairo',sans-serif}
+.site .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.sec{padding:96px 0;position:relative}
+.eyebrow2{display:inline-block;font-family:'Cinzel',serif;font-weight:700;letter-spacing:.28em;font-size:.72rem;color:#e3b661;margin-bottom:14px;text-transform:uppercase}
+.sec-title{font-family:'El Messiri',serif;font-weight:700;font-size:clamp(2rem,5vw,3.2rem);line-height:1.15;
+  background:linear-gradient(120deg,#e7dbfb 0%,#b98fe0 45%,#e3b661 100%);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:16px}
+.sec-lead{color:#b6aadd;font-size:1.06rem;line-height:1.9;max-width:56ch;margin-bottom:8px}
+.center{text-align:center}.center .sec-lead{margin-inline:auto}
+.reveal2{opacity:0;transform:translateY(38px);transition:opacity .9s cubic-bezier(.19,1,.22,1),transform 1s cubic-bezier(.19,1,.22,1)}
+.reveal2.in{opacity:1;transform:none}
+
+/* trust bar */
+.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:34px;border-radius:22px;margin-top:-30px;
+  background:linear-gradient(150deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(184,156,244,.2);
+  backdrop-filter:blur(14px);box-shadow:0 30px 70px rgba(0,0,0,.45)}
+.trust .t{display:flex;gap:14px;align-items:flex-start}
+.trust .t .i{flex:0 0 auto;font-size:1.5rem;filter:drop-shadow(0 0 10px rgba(227,182,97,.4))}
+.trust .t h4{font-size:1.02rem;color:#fff;margin-bottom:4px}
+.trust .t p{font-size:.88rem;color:#a99ecb;line-height:1.6}
+
+/* cards grid */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:38px}
+.lux-card{position:relative;overflow:hidden;border-radius:22px;padding:30px 26px;
+  background:linear-gradient(155deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+  border:1px solid rgba(184,156,244,.22);box-shadow:0 24px 60px rgba(0,0,0,.4);
+  transition:transform .3s var(--e,cubic-bezier(.19,1,.22,1)),box-shadow .3s,border-color .3s}
+.lux-card:hover{transform:translateY(-6px);border-color:rgba(227,182,97,.5);box-shadow:0 34px 80px rgba(120,80,200,.3)}
+.lux-card::before{content:"";position:absolute;top:0;inset-inline-start:0;right:0;height:3px;background:linear-gradient(120deg,#c79bf0,#a678e6,#e3b661)}
+.lux-card .ic{width:60px;height:60px;border-radius:16px;display:grid;place-items:center;font-size:1.7rem;margin-bottom:16px;
+  background:linear-gradient(150deg,rgba(199,155,240,.2),rgba(227,182,97,.16));border:1px solid rgba(227,182,97,.4)}
+.lux-card h3{font-family:'El Messiri',serif;font-size:1.3rem;color:#fff;margin-bottom:8px}
+.lux-card p{color:#b0a4d2;font-size:.96rem;line-height:1.7}
+.lux-card .price{margin-top:16px;font-weight:800;color:#e3b661;font-size:1.15rem;font-family:'Cinzel',serif}
+.lux-card .go{margin-top:16px;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:700;font-size:.9rem;color:#c9a7ff}
+.lux-card .go:hover{color:#e3b661}
+
+/* buttons */
+.btn2{display:inline-flex;align-items:center;gap:9px;padding:16px 40px;border-radius:100px;text-decoration:none;
+  font-weight:800;font-size:1rem;color:#150b26;background:linear-gradient(120deg,#c79bf0,#a678e6 45%,#e3b661);
+  box-shadow:0 18px 50px rgba(166,120,230,.45);transition:transform .25s,filter .25s;border:none;cursor:pointer;font-family:inherit}
+.btn2:hover{transform:translateY(-2px);filter:brightness(1.06)}
+.btn2.ghost{background:rgba(255,255,255,.05);color:#e7dbfb;border:1px solid rgba(227,182,97,.55);box-shadow:0 0 22px rgba(227,182,97,.2)}
+
+/* testimonials */
+.testi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:36px}
+.testi{border-radius:22px;padding:30px;background:linear-gradient(155deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(184,156,244,.2)}
+.testi .stars{color:#e3b661;letter-spacing:3px;margin-bottom:12px}
+.testi p{color:#d7cdf0;font-size:1.05rem;line-height:1.85;font-style:italic;margin-bottom:16px}
+.testi .who{color:#a99ecb;font-size:.9rem;font-weight:700}
+.ph-note{display:inline-block;margin-top:14px;font-size:.76rem;color:#7d7399;background:rgba(255,255,255,.04);border:1px dashed rgba(184,156,244,.3);padding:7px 14px;border-radius:100px}
+
+/* faq */
+.faq2{margin-top:34px;border-top:1px solid rgba(184,156,244,.16)}
+.faq2 .q{border-bottom:1px solid rgba(184,156,244,.16);padding:22px 6px;cursor:pointer}
+.faq2 .q h4{font-size:1.12rem;color:#f2ecff;display:flex;justify-content:space-between;align-items:center;gap:14px;font-weight:700}
+.faq2 .q h4 span{color:#e3b661;font-size:1.4rem;transition:transform .3s;flex:0 0 auto}
+.faq2 .q.open h4 span{transform:rotate(45deg)}
+.faq2 .q .a{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .4s ease;color:#b0a4d2;line-height:1.85}
+.faq2 .q.open .a{max-height:260px;padding-top:14px}
+
+/* pricing */
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:38px;align-items:stretch}
+.price-card{position:relative;border-radius:24px;padding:34px 28px;display:flex;flex-direction:column;
+  background:linear-gradient(155deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(184,156,244,.22)}
+.price-card.feat{border-color:rgba(227,182,97,.6);box-shadow:0 30px 70px rgba(166,120,230,.28)}
+.price-card .tag{position:absolute;top:-13px;inset-inline-start:50%;transform:translateX(-50%);font-size:.72rem;font-weight:800;letter-spacing:1px;
+  color:#150b26;background:linear-gradient(120deg,#e3b661,#c79bf0);padding:6px 18px;border-radius:100px}
+.price-card h3{font-family:'El Messiri',serif;font-size:1.4rem;color:#fff;margin-bottom:6px}
+.price-card .amt{font-family:'Cinzel',serif;font-size:2rem;color:#e3b661;margin:8px 0 4px}
+.price-card .amt small{font-size:.9rem;color:#a99ecb}
+.price-card ul{list-style:none;margin:18px 0 24px;display:flex;flex-direction:column;gap:11px}
+.price-card li{color:#c2b7e2;font-size:.95rem;display:flex;gap:9px}
+.price-card li::before{content:"✦";color:#e3b661;flex:0 0 auto}
+.price-card .btn2{margin-top:auto;justify-content:center}
+
+/* final cta */
+.final{text-align:center;padding:110px 24px 120px;position:relative;overflow:hidden}
+.final::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(760px,92%);height:120%;
+  background:radial-gradient(ellipse,rgba(166,120,230,.28),transparent 66%);filter:blur(50px);pointer-events:none}
+.final h2{position:relative;font-family:'El Messiri',serif;font-weight:700;font-size:clamp(2.2rem,6vw,3.6rem);
+  background:linear-gradient(120deg,#e7dbfb,#b98fe0 45%,#e3b661);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:16px}
+.final p{position:relative;color:#c2b7e2;font-size:1.1rem;line-height:1.8;max-width:44ch;margin:0 auto 30px}
+.final .trust-line{position:relative;margin-top:18px;color:#8f85ad;font-size:.86rem}
+
+/* footer */
+.site-footer{position:relative;z-index:30;background:#080512;border-top:1px solid rgba(184,156,244,.14);padding:56px 24px 40px}
+.site-footer .fwrap{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;gap:30px;justify-content:space-between}
+.site-footer .fbrand{font-family:'Cinzel',serif;letter-spacing:.2em;font-size:1.2rem;
+  background:linear-gradient(120deg,#c79bf0,#e3b661);-webkit-background-clip:text;background-clip:text;color:transparent}
+.site-footer a{color:#a99ecb;text-decoration:none;font-size:.92rem;display:block;margin-top:10px}
+.site-footer a:hover{color:#e3b661}
+.site-footer h5{color:#e7dbfb;font-size:.82rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.site-footer .copy{max-width:1180px;margin:36px auto 0;padding-top:20px;border-top:1px solid rgba(184,156,244,.12);color:#7d7399;font-size:.82rem;text-align:center}
+
+@media (max-width:900px){
+  .trust,.grid3,.testi-grid,.price-grid{grid-template-columns:1fr}
+  .sec{padding:64px 0}
+  .trust{margin-top:0}
+}
 </style>
 <script type="importmap">
 { "imports": { "three": "./vendor/three/three.module.js" } }
@@ -321,6 +431,115 @@ body {
   </div>
 </div>
 
+<!-- scroll room for the cinematic film (fixed layers play during this) -->
+<div class="film-spacer" id="film-spacer"></div>
+
+<!-- ===================== LUXURY CONVERSION SITE ===================== -->
+<main class="site" id="site">
+  <div class="wrap">
+
+    <!-- Trust bar -->
+    <div class="trust reveal2">
+      <div class="t"><span class="i">🎓</span><div><h4>أساتذة متخصّصون</h4><p>كل جلسة وكل كورس مع خبير حقيقي في مجاله — لا محتوى عام.</p></div></div>
+      <div class="t"><span class="i">🔒</span><div><h4>خصوصية تامة</h4><p>بياناتك محميّة ولا تُشارك أبداً. تجربتك تخصّك وحدك.</p></div></div>
+      <div class="t"><span class="i">🌙</span><div><h4>مباشر ومسجّل</h4><p>احضري جلسة لايف، أو تعلّمي في وقتك من كورسات دائمة الوصول.</p></div></div>
+    </div>
+
+    <!-- Services -->
+    <section class="sec center" id="s-services">
+      <span class="eyebrow2 reveal2">خدماتنا</span>
+      <h2 class="sec-title reveal2">رحلة كاملة نحو توازنك</h2>
+      <p class="sec-lead reveal2">ابدئي مجاناً بطاقة يومك، ثم تعمّقي مع أساتذة يرافقونك خطوة بخطوة.</p>
+      <div class="grid3">
+        <div class="lux-card reveal2"><div class="ic">🔮</div><h3>طاقة اليوم</h3><p>رسالة ورقم ولون وكرت طاقة كل صباح — تفتحين يومك بوعيٍ صافٍ. مجاناً كل يوم.</p><a class="go" href="index.html#cards">اكشفي طاقتك ←</a></div>
+        <div class="lux-card reveal2"><div class="ic">🃏</div><h3>قراءة التاروت</h3><p>جلسة مباشرة تكشف رسائل طاقتك وتضيء الأسئلة التي تشغل قلبك.</p><a class="go" href="index.html#masters">احجزي جلسة ←</a></div>
+        <div class="lux-card reveal2"><div class="ic">🧠</div><h3>ثيتا هيلينغ</h3><p>تصلين لموجة ثيتا العميقة لتحرّري المعتقدات التي تعيقك وتعيدي برمجتها.</p><a class="go" href="index.html#masters">احجزي جلسة ←</a></div>
+        <div class="lux-card reveal2"><div class="ic">🙌</div><h3>الريكي</h3><p>توجيه طاقة الشفاء عبر راحتيكِ لموازنة جسدك واستعادة صفائك الداخلي.</p><a class="go" href="index.html#courses">تعلّمي الريكي ←</a></div>
+        <div class="lux-card reveal2"><div class="ic">🔔</div><h3>المعالجة بالصوت</h3><p>تردّدات وأوعية تبتيّة تُذيب التوتر وتعيد اهتزاز طاقتك إلى توازنها.</p><a class="go" href="index.html#courses">تعرّفي أكثر ←</a></div>
+        <div class="lux-card reveal2"><div class="ic">🌈</div><h3>قياس الشاكرات</h3><p>قراءة شخصية عميقة لشاكراتك السبع، مع خطوات عملية لإعادة موازنتها.</p><a class="go" href="index.html#masters">احجزي قراءتك ←</a></div>
+      </div>
+    </section>
+
+    <!-- Courses -->
+    <section class="sec center" id="s-courses">
+      <span class="eyebrow2 reveal2">كورسات مسجّلة</span>
+      <h2 class="sec-title reveal2">تعلّمي في وقتك، مدى الحياة</h2>
+      <p class="sec-lead reveal2">محتوى معدّ بعناية تحضرينه متى شئتِ من حسابك، وتعودين إليه كلما احتجتِ.</p>
+      <div class="grid3">
+        <div class="lux-card reveal2"><div class="ic">🌱</div><h3>ريكي — المستوى الأول</h3><p>أساسيات توجيه طاقة الشفاء، من أول اتصال بالطاقة حتى أول جلسة كاملة.</p><div class="price">٤٩ $</div><a class="go" href="account.html">اشتركي الآن ←</a></div>
+        <div class="lux-card reveal2"><div class="ic">🌿</div><h3>ريكي — المستوى الثاني</h3><p>مستوى متقدّم وتطبيقات عملية لتعميق ممارستك وعلاج الآخرين.</p><div class="price">٥٩ $</div><a class="go" href="account.html">اشتركي الآن ←</a></div>
+        <div class="lux-card reveal2"><div class="ic">💫</div><h3>ثيتا هيلينغ</h3><p>تقنيات علاج الثيتا وإعادة برمجة المعتقدات، خطوة بخطوة.</p><div class="price">٦٩ $</div><a class="go" href="account.html">اشتركي الآن ←</a></div>
+      </div>
+    </section>
+
+    <!-- Testimonials (PLACEHOLDER) -->
+    <section class="sec center" id="s-testi">
+      <span class="eyebrow2 reveal2">قالوا عنّا</span>
+      <h2 class="sec-title reveal2">تجارب تلمس الروح</h2>
+      <div class="testi-grid">
+        <div class="testi reveal2"><div class="stars">★★★★★</div><p>«خرجت من جلسة الثيتا وكأن حِملاً ثقيلاً نُزع عن صدري. شعور بالخفّة لم أعرفه من سنوات.»</p><div class="who">— نموذج مؤقّت</div></div>
+        <div class="testi reveal2"><div class="stars">★★★★★</div><p>«كرت الطاقة اليومي صار طقسي الأول كل صباح. تفاصيل صغيرة غيّرت طاقة يومي بالكامل.»</p><div class="who">— نموذج مؤقّت</div></div>
+      </div>
+      <span class="ph-note reveal2">⚠️ شهادات نموذجية — استبدليها بكلمات عملاء حقيقيين قبل الإطلاق.</span>
+    </section>
+
+    <!-- Objections / FAQ -->
+    <section class="sec" id="s-faq">
+      <div class="center">
+        <span class="eyebrow2 reveal2">قبل أن تبدئي</span>
+        <h2 class="sec-title reveal2">أسئلة قد تدور في بالك</h2>
+      </div>
+      <div class="faq2 reveal2">
+        <div class="q"><h4>ما زلت مترددة — كيف أعرف أن هذا يناسبني؟<span>+</span></h4><div class="a">ابدئي مجاناً تماماً: اكشفي طاقتك اليومية واسحبي كرت التاروت بدون أي التزام أو بطاقة. جرّبي الإحساس أولاً، ثم قرّري بنفسك.</div></div>
+        <div class="q"><h4>هل الدفع آمن؟<span>+</span></h4><div class="a">الدفع يتم عبر PayPal بشكل آمن، ولا نحتفظ ببيانات بطاقتك عندنا. خيار شام كاش قادم قريباً.</div></div>
+        <div class="q"><h4>ليس لديّ وقت لجلسات مباشرة.<span>+</span></h4><div class="a">جميع الكورسات مسجّلة ودائمة الوصول من حسابك — تحضرينها في أي وقت يناسبك وتعودين إليها كلما شئتِ.</div></div>
+        <div class="q"><h4>هل النتائج مضمونة؟<span>+</span></h4><div class="a">لا نَعِد بمعجزات. نقدّم أدوات وممارسات حقيقية أثبتت قيمتها لكثيرين، لكن التجربة شخصية وتختلف من شخص لآخر — وصدقنا معك جزء من قيمتنا.</div></div>
+        <div class="q"><h4>كيف أتواصل مع الأستاذ بعد الحجز؟<span>+</span></h4><div class="a">بعد إتمام الحجز، يرتّب لك فريقنا موعد الجلسة المباشرة ويرسل لك رابط الحضور. أنتِ لستِ وحدك في هذه الرحلة.</div></div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="sec center" id="s-pricing">
+      <span class="eyebrow2 reveal2">باقاتنا</span>
+      <h2 class="sec-title reveal2">ابدئي مجاناً، وارتقي متى شئتِ</h2>
+      <div class="price-grid">
+        <div class="price-card reveal2">
+          <h3>البداية</h3><div class="amt">مجاناً</div>
+          <ul><li>طاقة اليوم كل صباح</li><li>كرت تاروت واحد يومياً</li><li>قراءة الأبراج</li></ul>
+          <a class="btn2 ghost" href="index.html">ابدئي الآن</a>
+        </div>
+        <div class="price-card feat reveal2"><div class="tag">الأكثر طلباً</div>
+          <h3>العضوية</h3><div class="amt">Premium</div>
+          <ul><li>كل مزايا البداية</li><li>تأمّلات مسجّلة حصرية</li><li>خصومات على الكورسات والجلسات</li><li>محتوى شهري جديد</li></ul>
+          <a class="btn2" href="account.html">اشتركي</a>
+        </div>
+        <div class="price-card reveal2">
+          <h3>الجلسات الفردية</h3><div class="amt">من ٣٠ <small>$ / جلسة</small></div>
+          <ul><li>تاروت • ثيتا • قراءة شخصية</li><li>مع أستاذ متخصّص</li><li>مباشرة وخاصة بالكامل</li></ul>
+          <a class="btn2 ghost" href="index.html#masters">احجزي جلسة</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final" id="s-cta">
+      <h2 class="reveal2">طاقتكِ تنتظرك — ابدئي اليوم</h2>
+      <p class="reveal2">كل رحلة تبدأ بخطوة واحدة. اكشفي طاقتك الآن مجاناً، ودعي الإحساس يقودك إلى ما بعد ذلك.</p>
+      <a class="btn2 reveal2" href="index.html">🔮 ابدئي رحلتك مجاناً</a>
+      <div class="trust-line reveal2">بدون بطاقة ائتمان · بدون التزام · تلغين متى شئتِ</div>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="fwrap">
+    <div><div class="fbrand">AURA ✦</div><p style="color:#8f85ad;margin-top:10px;max-width:26ch;line-height:1.7">طاقتكِ تبدأ من هنا. منصّة الطاقة والروحانيات.</p></div>
+    <div><h5>استكشفي</h5><a href="index.html#services">الخدمات</a><a href="index.html#courses">الكورسات</a><a href="index.html#masters">الأساتذة</a><a href="index.html#pricing">الأسعار</a></div>
+    <div><h5>حسابك</h5><a href="account.html">تسجيل الدخول</a><a href="account.html">كورساتي</a><a href="index.html#support">الدعم</a></div>
+  </div>
+  <div class="copy">© <span id="yr"></span> AURA — جميع الحقوق محفوظة.</div>
+</footer>
+
 <canvas id="webgl"></canvas>
 
 <script type="module">
@@ -332,7 +551,7 @@ let stage;                       // pivot group holding the morphing emblems
 const emblems = {};
 let activeEmblem = 'crystal';
 const clock = new THREE.Clock();
-let currentScroll = 0;
+let currentScroll = 0, _past = false;
 
 let mouseX = 0, mouseY = 0, targetMouseX = 0, targetMouseY = 0;
 let cursorX = innerWidth/2, cursorY = innerHeight/2;
@@ -686,10 +905,24 @@ function setupNavigation(){
   links.forEach((link,i)=>{
     link.addEventListener('click',(e)=>{
       e.preventDefault();
-      const maxScroll=document.documentElement.scrollHeight-innerHeight;
-      window.scrollTo({ top:maxScroll*targets[i], behavior:'smooth' });
+      const filmEl=document.getElementById('film-spacer');
+      const filmEnd=filmEl?filmEl.offsetHeight-innerHeight:(document.documentElement.scrollHeight-innerHeight);
+      window.scrollTo({ top:filmEnd*targets[i], behavior:'smooth' });
     });
   });
+}
+
+/* luxury site: scroll reveals, FAQ accordion, year */
+function setupSite(){
+  const yr=document.getElementById('yr'); if(yr) yr.textContent=new Date().getFullYear();
+  document.querySelectorAll('.faq2 .q').forEach(q=>{
+    q.addEventListener('click',()=>q.classList.toggle('open'));
+  });
+  const items=document.querySelectorAll('.reveal2');
+  if('IntersectionObserver' in window){
+    const io=new IntersectionObserver((es)=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }),{threshold:.14});
+    items.forEach((el,i)=>{ el.style.transitionDelay=(Math.min(i%3,3)*0.08)+'s'; io.observe(el); });
+  } else items.forEach(el=>el.classList.add('in'));
 }
 
 /* ---------- animate ---------- */
@@ -697,11 +930,17 @@ function animate(){
   requestAnimationFrame(animate);
   const deltaTime = clock.getDelta();
 
-  const maxScroll = document.documentElement.scrollHeight - innerHeight;
   const scrollTop = window.scrollY !== undefined ? window.scrollY
     : (window.pageYOffset !== undefined ? window.pageYOffset : document.documentElement.scrollTop);
-  const targetScroll = maxScroll > 0 ? scrollTop/maxScroll : 0;
+  const filmEl = document.getElementById('film-spacer');
+  const filmEnd = filmEl ? Math.max(1, filmEl.offsetHeight - innerHeight) : (document.documentElement.scrollHeight - innerHeight);
+  const targetScroll = Math.max(0, Math.min(1, scrollTop / filmEnd));
   currentScroll += (targetScroll - currentScroll) * 0.025;
+
+  // once the film is fully behind the site, stop rendering it (save battery) & hide layers
+  const past = scrollTop > filmEnd + innerHeight * 0.4;
+  if (past !== _past) { _past = past; document.body.classList.toggle('past-film', past); }
+  if (past) return;
 
   mouseX += (targetMouseX - mouseX) * 0.05;
   mouseY += (targetMouseY - mouseY) * 0.05;
@@ -787,6 +1026,7 @@ splitTitlesIntoChars();
 onWindowResize();
 animate();
 setupNavigation();
+setupSite();
 </script>
 </body>
 </html>
